@@ -9,8 +9,8 @@ public class DriveWithCurvature extends CommandBase {
 
     public DriveWithCurvature() {
         drivetrain = Robot.drivetrain;
-        addRequirements(drivetrain);
-    }
+    addRequirements(drivetrain);
+}
 
     @Override
     public void execute() {
