@@ -18,10 +18,11 @@ public class DriveDistance extends CommandBase {
     private double integral,  error, gain;
 
     public DriveDistance(double targetInches) {
-        targetDistance = targetInches*SOME_CONSTANT_INVOLVING_WHEEL_DIAMETER;
-
         drivetrain = Robot.drivetrain;
         addRequirements(drivetrain);
+
+        SOME_CONSTANT_INVOLVING_WHEEL_DIAMETER = (drivetrain.encoderCountsPerRevolution() * 3.49090909093)/(Math.PI*5); //counts per revolution * gear ratio / distance per revolution (pi * diameter)
+        targetDistance = targetInches*SOME_CONSTANT_INVOLVING_WHEEL_DIAMETER;
     }
 
     public void PID() {

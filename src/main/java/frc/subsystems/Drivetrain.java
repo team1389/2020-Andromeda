@@ -55,6 +55,10 @@ public class Drivetrain extends SubsystemBase {
         rightB.set(-rightPower);
     }
 
+    public double encoderCountsPerRevolution() {
+        return leftAEncoder.getCountsPerRevolution();
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run; use it for debugging and stuff
