@@ -1,8 +1,10 @@
 package frc.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -13,6 +15,8 @@ public class Drivetrain extends SubsystemBase {
     private DifferentialDrive differentialDrive;
     private SpeedControllerGroup right, left;
     private CANSparkMax rightA, rightB, leftA, leftB;
+
+    private CANEncoder leftAEncoder, leftBEncoder, rightAEncoder, rightBEncoder;
 
     public AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
 
@@ -27,8 +31,17 @@ public class Drivetrain extends SubsystemBase {
 
         differentialDrive = new DifferentialDrive(left, right);
 
+        leftAEncoder = new CANEncoder(leftA);
+        leftBEncoder = new CANEncoder(leftB);
+        rightAEncoder = new CANEncoder(rightA);
+        rightBEncoder = new CANEncoder(rightB);
+
+        leftAEncoder.setPosition(0);
+
         ahrs.reset();
     }
+
+    public double leftAEncoder() {return leftAEncoder.getPosition();}
 
     public void drive(double leftY, double rightX, boolean leftBumper) {
         differentialDrive.curvatureDrive(leftY, rightX, leftBumper);
