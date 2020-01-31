@@ -35,7 +35,6 @@ public class Shooter extends SubsystemBase {
         shooterLeft.set(ControlMode.PercentOutput, percent);
         shooterRight.set(ControlMode.PercentOutput, percent);
     }
-
     public void setIndexerVoltage(double percent) {
         indexerLeft.set(ControlMode.PercentOutput, percent);
         indexerRight.set(ControlMode.PercentOutput, percent);
