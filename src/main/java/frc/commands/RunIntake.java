@@ -1,11 +1,8 @@
 package frc.commands;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.subsystems.Drivetrain;
 import frc.subsystems.Intake;
 
 public class RunIntake extends CommandBase {
@@ -30,11 +27,10 @@ public class RunIntake extends CommandBase {
         }*/
 
 
-        if(Robot.oi.manipLeftTrigger() > 0) {
+        if (Robot.oi.manipLeftTrigger() > 0) {
             intake.startIntaking();
             System.out.println("Jebediah is trying to intake power cells, and probably failing!");
-        }
-        else {
+        } else {
             intake.stopIntaking();
         }
     }
