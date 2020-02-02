@@ -6,8 +6,6 @@ package frc.robot;
 public class RobotMap {
     public static int FRONT_SHOOTER_LEFT;
     public static int FRONT_SHOOTER_RIGHT;
-    public static int BACK_SHOOTER_LEFT;
-    public static int BACK_SHOOTER_RIGHT;
 
     public static int RIGHT_DRIVE_A = 3;
     public static int RIGHT_DRIVE_B = 4;

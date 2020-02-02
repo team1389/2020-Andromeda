@@ -17,34 +17,22 @@ public class Shooter extends SubsystemBase {
 
     private final TalonSRX shooterLeft;
     private final TalonSRX shooterRight;
-    private final TalonSRX indexerLeft;
-    private final TalonSRX indexerRight;
-
 
     public Shooter() {
         shooterLeft = new TalonSRX(RobotMap.FRONT_SHOOTER_LEFT);
         shooterRight = new TalonSRX(RobotMap.FRONT_SHOOTER_RIGHT);
-        indexerLeft = new TalonSRX(RobotMap.BACK_SHOOTER_LEFT);
-        indexerRight = new TalonSRX(RobotMap.BACK_SHOOTER_RIGHT);
 
         shooterRight.setInverted(true);
-        indexerRight.setInverted(true);
     }
 
     public void setShooterVoltage(double percent) {
         shooterLeft.set(ControlMode.PercentOutput, percent);
         shooterRight.set(ControlMode.PercentOutput, percent);
     }
-    public void setIndexerVoltage(double percent) {
-        indexerLeft.set(ControlMode.PercentOutput, percent);
-        indexerRight.set(ControlMode.PercentOutput, percent);
-    }
 
     public void stopMotors() {
         shooterLeft.set(ControlMode.PercentOutput, 0);
         shooterRight.set(ControlMode.PercentOutput, 0);
-        indexerLeft.set(ControlMode.PercentOutput, 0);
-        indexerRight.set(ControlMode.PercentOutput, 0);
     }
 
 }
