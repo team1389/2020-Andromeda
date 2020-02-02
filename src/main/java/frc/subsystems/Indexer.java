@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {   //The motor to stop the balls is a BAG Motor
-    public DigitalInput indexBeamBreak;
-    public CANSparkMax indexMotor;
+    
+    private DigitalInput indexBeamBreak;
+    private CANSparkMax indexMotor;
 
     public Indexer() {
         indexBeamBreak = new DigitalInput(RobotMap.DIO_INDEX_BEAM_BREAK); //parameter is the port

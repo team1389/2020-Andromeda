@@ -20,4 +20,12 @@ public class RobotMap {
 
     //Sensors
     public static int DIO_INDEX_BEAM_BREAK;
+
+    // Need values for climber
+    public static int CLIMBER_SPARK; //somewhere between 5 and 8
+    public static int RIGHT_FORWARD_SOLENOID;
+    public static int RIGHT_REVERSE_SOLENOID;
+    public static int LEFT_FORWARD_SOLENOID;
+    public static int LEFT_REVERSE_SOLENOID;
+    public static int can_PCM_2;
 }

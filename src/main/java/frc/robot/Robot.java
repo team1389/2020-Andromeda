@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.commands.ClimbControl;
 import frc.subsystems.*;
 
 /**
@@ -24,7 +25,7 @@ public class Robot extends TimedRobot {
     public static Indexer indexer = new Indexer();
     public static Intake intake = new Intake();
     public static Shooter shooter = new Shooter();
-
+    public static Climber climber = new Climber();
 
     @Override
     public void robotInit() {
