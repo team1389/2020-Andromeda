@@ -10,6 +10,7 @@ package frc.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -18,6 +19,8 @@ public class Shooter extends SubsystemBase {
     private final TalonSRX shooterLeft;
     private final TalonSRX shooterRight;
 
+    public Encoder leftEncoder = new Encoder(0,1);
+    public Encoder rightEncoder = new Encoder(0, 1);
     public Shooter() {
         shooterLeft = new TalonSRX(RobotMap.FRONT_SHOOTER_LEFT);
         shooterRight = new TalonSRX(RobotMap.FRONT_SHOOTER_RIGHT);

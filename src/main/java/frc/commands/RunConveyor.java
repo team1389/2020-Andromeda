@@ -28,7 +28,7 @@ public class RunConveyor extends CommandBase {
         }
 
         if(isConveying) {
-            conveyor.startConveying();
+            conveyor.startConveying(.5);
             System.out.println("Jebediah is yeeting balls through the conveyor belt!");
         }
         else {
