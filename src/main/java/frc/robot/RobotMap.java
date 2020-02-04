@@ -9,6 +9,7 @@ public class RobotMap {
     public static int BACK_SHOOTER_LEFT = 0;
     public static int BACK_SHOOTER_RIGHT = 0;
 
+
     //ONLY BELOW IS REAL PORT NUMS. EVERYTHING ELSE IS FAKE NEWS
     public static int RIGHT_DRIVE_A = 3;
     public static int RIGHT_DRIVE_B = 4;
@@ -22,4 +23,12 @@ public class RobotMap {
 
     //Sensors
     public static int DIO_INDEX_BEAM_BREAK = 0;
+
+    // Need values for climber
+    public static int CLIMBER_SPARK = 0; //somewhere between 5 and 8
+    public static int RIGHT_FORWARD_SOLENOID = 0;
+    public static int RIGHT_REVERSE_SOLENOID = 0;
+    public static int LEFT_FORWARD_SOLENOID = 0;
+    public static int LEFT_REVERSE_SOLENOID = 0;
+    public static int can_PCM_2 = 0;
 }

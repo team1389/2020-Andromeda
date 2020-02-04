@@ -26,8 +26,10 @@ public class Robot extends TimedRobot {
     //NOTE: OI must be initialized after all the the other systems
     public static OI oi = new OI();
 
+    public static Climber climber = new Climber();
 
     @Override
+
     public void robotInit() {
         Shuffleboard.getTab("gyro tab").add((Sendable) drivetrain.ahrs);
     }
