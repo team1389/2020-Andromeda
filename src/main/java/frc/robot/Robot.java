@@ -18,12 +18,13 @@ public class Robot extends TimedRobot {
      */
 
 
-    public static OI oi = new OI();
     public static Drivetrain drivetrain = new Drivetrain();
     public static Conveyor conveyor = new Conveyor();
     public static Indexer indexer = new Indexer();
     public static Intake intake = new Intake();
     public static Shooter shooter = new Shooter();
+    //NOTE: OI must be initialized after all the the other systems
+    public static OI oi = new OI();
 
 
     @Override
