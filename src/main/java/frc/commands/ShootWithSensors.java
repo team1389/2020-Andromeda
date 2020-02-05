@@ -5,7 +5,6 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
 
-import javax.swing.*;
 
 public class ShootWithSensors extends SequentialCommandGroup {
 
@@ -25,11 +24,12 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         public ShootOnce() {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-            addCommands(// To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                        new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters()),
-                        new InstantCommand(() -> Robot.indexer.runIndexer(.75)),
-                        new WaitCommand(0.25),
-                        new SendBallToShooter()
+            addCommands(
+// To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
+                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters()),
+                    new InstantCommand(() -> Robot.indexer.runIndexer(.75)),
+                    new WaitCommand(0.25),
+                    new SendBallToShooter()
             );
         }
 
@@ -118,7 +118,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public void execute() {
-                Robot.conveyor.startConveying(0.5);
+            Robot.conveyor.startConveying(0.5);
         }
 
         @Override

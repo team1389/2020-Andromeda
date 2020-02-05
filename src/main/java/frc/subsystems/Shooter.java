@@ -8,12 +8,9 @@
 package frc.subsystems;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -37,13 +34,13 @@ public class Shooter extends SubsystemBase {
         shooterLeft.set(percent);
         shooterRight.follow(shooterLeft);
 
-        shooterRight.setInverted(true);
     }
 
     public void stopMotors() {
         shooterLeft.set(0);
         shooterRight.set(0);
     }
+
     public CANPIDController getShooterLeftPIDController() {
         pid = shooterLeft.getPIDController();
         pid.setP(kP);
@@ -51,9 +48,11 @@ public class Shooter extends SubsystemBase {
         pid.setD(kD);
         return pid;
     }
+
     public double getShooterLeftRPM() {
         return shooterLeft.getEncoder().getVelocity();
     }
+
     public double getShooterRightRPM() {
         return shooterRight.getEncoder().getVelocity();
     }
