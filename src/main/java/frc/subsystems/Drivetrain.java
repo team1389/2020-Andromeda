@@ -48,10 +48,12 @@ public class Drivetrain extends SubsystemBase {
 
     public void set(double leftPower, double rightPower) {
         leftA.set(leftPower);
-        leftB.set(leftPower);
+        leftB.follow(leftA);
+        //leftB.set(leftPower);
 
         rightA.set(-rightPower);
-        rightB.set(-rightPower);
+        //rightB.set(-rightPower);
+        rightB.follow(rightA);
     }
 
     public double encoderCountsPerRevolution() {
@@ -62,4 +64,5 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run; use it for debugging and stuff
     }
+
 }
