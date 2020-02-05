@@ -26,13 +26,17 @@ public class Shooter extends SubsystemBase {
     public Shooter() {
         shooterLeft = new CANSparkMax(RobotMap.FRONT_SHOOTER_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterRight = new CANSparkMax(RobotMap.FRONT_SHOOTER_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterRight.follow(shooterLeft);
 
+        pid = new CANPIDController(shooterLeft);
+        pid.setP(kP);
+        pid.setI(kI);
+        pid.setD(kD);
         shooterRight.setInverted(true);
     }
 
     public void setShooterVoltage(double percent) {
         shooterLeft.set(percent);
-        shooterRight.follow(shooterLeft);
 
     }
 
@@ -42,10 +46,6 @@ public class Shooter extends SubsystemBase {
     }
 
     public CANPIDController getShooterLeftPIDController() {
-        pid = shooterLeft.getPIDController();
-        pid.setP(kP);
-        pid.setI(kI);
-        pid.setD(kD);
         return pid;
     }
 
