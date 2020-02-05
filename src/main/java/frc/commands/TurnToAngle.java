@@ -7,7 +7,6 @@ import frc.subsystems.Drivetrain;
 
 //This commands turns the robot to a specified angle, measured in degrees
 public class TurnToAngle extends CommandBase {
-    private double lol = 1;
     private double targetAngle;
     private Drivetrain drivetrain = new Drivetrain();
 
