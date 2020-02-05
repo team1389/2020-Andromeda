@@ -1,5 +1,6 @@
 package frc.commands;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.subsystems.Drivetrain;
@@ -10,10 +11,9 @@ public class TurnToAngle extends CommandBase {
     private Drivetrain drivetrain = new Drivetrain();
 
     //We use fancy PID get on our level (To any other teams looking at our code)
-    private double kP = 0.1;
-    private double kI = 0.1;
+    private PIDController pid;
 
-    private double integral,  error, gain;
+    private double error;
 
     public TurnToAngle(double targetDegrees, boolean isRelativeTurn) {
         targetAngle = targetDegrees;
@@ -27,15 +27,12 @@ public class TurnToAngle extends CommandBase {
     }
 
     public void PID() {
-        error = targetAngle - drivetrain.ahrs.getAngle();
-        integral += (error*.02); // Integral is increased by the error*time (which is I think  .02 seconds using normal IterativeRobot)
-        gain = kP*error + kI*integral;
     }
 
     @Override
     public void execute() {
-        PID();
+        error = targetAngle - drivetrain.ahrs.getAngle();
 
-        drivetrain.set(gain, -gain);
+        drivetrain.set(pid.calculate(error, targetAngle), -pid.calculate(error, targetAngle));
     }
 }
