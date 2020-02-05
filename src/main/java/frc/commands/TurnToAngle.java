@@ -26,9 +26,6 @@ public class TurnToAngle extends CommandBase {
         }
     }
 
-    public void PID() {
-    }
-
     @Override
     public void execute() {
         error = targetAngle - drivetrain.ahrs.getAngle();
