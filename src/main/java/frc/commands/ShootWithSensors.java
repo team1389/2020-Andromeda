@@ -95,7 +95,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public void end(boolean interrupted) {
-            Robot.shooter.stopMotors();
         }
 
         @Override
