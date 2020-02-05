@@ -10,29 +10,51 @@ package frc.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-    private final TalonSRX shooterLeft;
-    private final TalonSRX shooterRight;
+    public final CANSparkMax shooterLeft;
+    public final CANSparkMax shooterRight;
+    public int kP = 1;
+    public int kI = 0;
+    public int kD = 0;
+    public CANPIDController pid;
 
     public Shooter() {
-        shooterLeft = new TalonSRX(RobotMap.FRONT_SHOOTER_LEFT);
-        shooterRight = new TalonSRX(RobotMap.FRONT_SHOOTER_RIGHT);
+        shooterLeft = new CANSparkMax(RobotMap.FRONT_SHOOTER_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterRight = new CANSparkMax(RobotMap.FRONT_SHOOTER_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         shooterRight.setInverted(true);
     }
 
     public void setShooterVoltage(double percent) {
-        shooterLeft.set(ControlMode.PercentOutput, percent);
-        shooterRight.set(ControlMode.PercentOutput, percent);
+        shooterLeft.set(percent);
+        shooterRight.follow(shooterLeft);
+
+        shooterRight.setInverted(true);
     }
 
     public void stopMotors() {
-        shooterLeft.set(ControlMode.PercentOutput, 0);
-        shooterRight.set(ControlMode.PercentOutput, 0);
+        shooterLeft.set(0);
+        shooterRight.set(0);
     }
-
+    public CANPIDController getShooterLeftPIDController() {
+        pid = shooterLeft.getPIDController();
+        pid.setP(kP);
+        pid.setI(kI);
+        pid.setD(kD);
+        return pid;
+    }
+    public double getShooterLeftRPM() {
+        return shooterLeft.getEncoder().getVelocity();
+    }
+    public double getShooterRightRPM() {
+        return shooterRight.getEncoder().getVelocity();
+    }
 }

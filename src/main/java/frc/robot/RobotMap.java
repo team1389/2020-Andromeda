@@ -17,7 +17,8 @@ public class RobotMap {
     public static int INDEX_MOTOR;
 
     //Sensors
-    public static int DIO_INDEX_BEAM_BREAK;
+    public static int DIO_PRE_INDEX_BEAM_BREAK;
+    public static int DIO_POST_INDEX_BEAM_BREAK;
 
     // Need values for climber
     public static int CLIMBER_SPARK; //somewhere between 5 and 8

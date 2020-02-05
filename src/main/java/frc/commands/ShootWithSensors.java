@@ -1,10 +1,11 @@
 package frc.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
+
+import javax.swing.*;
 
 public class ShootWithSensors extends SequentialCommandGroup {
 
@@ -24,12 +25,11 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         public ShootOnce() {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-            addCommands(new SetBallInPlace(),
-                        // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing)
-                        new InstantCommand(() -> Robot.indexer.runIndexer(-0.5)),
-                        new WaitCommand(0.5),
-                        new InstantCommand(() -> Robot.indexer.runIndexer(0.5)),
-                        new WaitCommand(1)
+            addCommands(// To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
+                        new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters()),
+                        new InstantCommand(() -> Robot.indexer.runIndexer(.75)),
+                        new WaitCommand(0.25),
+                        new SendBallToShooter()
             );
         }
 
@@ -40,26 +40,91 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     //Does the process to make sure only 1 ball is in place and preps the shooter motors
-    private class SetBallInPlace extends CommandBase {
+    private class SendBallToIndexer extends CommandBase {
 
-        private boolean ballInPlace;
+        private boolean ballPreIndex;
 
-        public SetBallInPlace() {
-            addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
+        public SendBallToIndexer() {
+            addRequirements(Robot.conveyor, Robot.indexer);
         }
 
         @Override
         public void initialize() {
-            ballInPlace = Robot.indexer.ballDetected();
+            ballPreIndex = Robot.indexer.ballDetected();
         }
 
         @Override
         public void execute() {
-            Robot.shooter.setShooterVoltage(1);             // Prep the shooter to speed
-            while (!ballInPlace) {                  //Check if a ball is in place
-                Robot.conveyor.startConveying(0.5);     // Move conveyor if not in place
-                ballInPlace = Robot.indexer.ballDetected();     //Update ballInPlace
-            }
+            Robot.conveyor.startConveying(0.5);     // Move conveyor if not in place
+            ballPreIndex = Robot.indexer.ballDetected();     //Update ballPreIndex
+        }
+
+        @Override
+        public void end(boolean interrupted) {
+            Robot.indexer.stopIndexer();
+            Robot.conveyor.stopConveying();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return !ballPreIndex;
+        }
+    }
+
+    private class SpinUpShooters extends CommandBase {
+        private CANPIDController pid = Robot.shooter.getShooterLeftPIDController();
+        private double shooterRPM;
+        private double shooterTargetRPM;
+        private double tolerance, threshold;
+
+
+        public SpinUpShooters() {
+            addRequirements(Robot.shooter);
+        }
+
+        @Override
+        public void initialize() {
+            //shooterTargetRPM = the target rpm of the shooters
+        }
+
+        @Override
+        public void execute() {
+            pid.setReference(shooterTargetRPM, ControlType.kVelocity);
+            shooterRPM = Robot.shooter.getShooterLeftRPM();
+        }
+
+        @Override
+        public void end(boolean interrupted) {
+            Robot.shooter.stopMotors();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return tolerance <= Math.abs(shooterTargetRPM - threshold);
+        }
+
+    }
+
+    private class SendBallToShooter extends CommandBase {
+        private boolean ballPostIndex;
+
+        public SendBallToShooter() {
+            addRequirements(Robot.conveyor);
+        }
+
+        @Override
+        public void initialize() {
+        }
+
+
+        @Override
+        public void execute() {
+                Robot.conveyor.startConveying(0.5);
+        }
+
+        @Override
+        public boolean isFinished() {
+            return !ballPostIndex;
         }
 
         @Override
