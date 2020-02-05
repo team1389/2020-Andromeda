@@ -7,10 +7,11 @@ import frc.subsystems.Drivetrain;
 
 //This commands turns the robot to a specified angle, measured in degrees
 public class TurnToAngle extends CommandBase {
+    private double lol = 1;
     private double targetAngle;
     private Drivetrain drivetrain = new Drivetrain();
 
-    //We use fancy PID get on our level (To any other teams looking at our code)
+    //We use fancy PID get on our level (To any other teams looking at our code) product integral and derivitave ladies love him
     private PIDController pid;
 
     private double error;
