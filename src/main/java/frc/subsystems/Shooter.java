@@ -11,26 +11,22 @@ package frc.subsystems;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-    private CANSparkMax shooterTop;
-    private CANSparkMax shooterBottom;
-    private DigitalInput shooterBeamBreak;
-    private double kP = 0.001;
-    private double kI = 0;
-    private double kD = 0;
-    private CANPIDController pid;
+    public final CANSparkMax shooterTop;
+    public final CANSparkMax shooterBottom;
+    public double kP = 0.000350;
+    public double kI = 0.000001;
+    public int kD = 0;
+    public CANPIDController pid;
 
     public Shooter() {
         shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterBottom = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterBottom.follow(shooterTop);
-
-        shooterBeamBreak = new DigitalInput(RobotMap.DIO_SHOOTER_BEAM_BREAK);
 
         pid = new CANPIDController(shooterTop);
         pid.setP(kP);
@@ -40,7 +36,6 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterVoltage(double percent) {
         shooterTop.set(percent);
-
     }
 
     public void stopMotors() {
@@ -60,8 +55,10 @@ public class Shooter extends SubsystemBase {
         return shooterBottom.getEncoder().getVelocity();
     }
 
-    public boolean isBallShot() {
-        //The councils still out on this name choice
-        return shooterBeamBreak.get();
+
+    public void runShooter() {
+        shooterTop.set(1);
+        shooterTop.set(1);
+        System.out.println("Running shoot method 3");
     }
 }

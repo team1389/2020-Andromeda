@@ -1,17 +1,19 @@
 package frc.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Conveyor extends SubsystemBase {
-    private TalonSRX conveyorMotorA;
-    private TalonSRX conveyorMotorB;
+    public VictorSPX conveyorMotorA;
+    public VictorSPX conveyorMotorB;
 
     public Conveyor() {
-        conveyorMotorA = new TalonSRX(RobotMap.CONVEYOR_MOTOR_A);
-        conveyorMotorB = new TalonSRX(RobotMap.CONVEYOR_MOTOR_B);
+        conveyorMotorA = new VictorSPX(RobotMap.CONVEYOR_MOTOR_A);
+        conveyorMotorA.setInverted(true);
+        conveyorMotorB = new VictorSPX(RobotMap.CONVEYOR_MOTOR_B);
+        conveyorMotorB.setInverted(true);
 
     }
 
