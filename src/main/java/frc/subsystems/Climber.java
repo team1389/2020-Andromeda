@@ -12,9 +12,9 @@ public class Climber extends SubsystemBase {
     private final CANSparkMax spark;
 
     public Climber() {                  // Here
-        rSolenoid = new DoubleSolenoid(RobotMap.can_PCM_2, RobotMap.CLIMBER_RIGHT_FORWARD_SOLENOID,
+        rSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_RIGHT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_RIGHT_REVERSE_SOLENOID);
-        lSolenoid = new DoubleSolenoid(RobotMap.can_PCM_2, RobotMap.CLIMBER_LEFT_FORWARD_SOLENOID,
+        lSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_LEFT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_LEFT_REVERSE_SOLENOID);
         spark = new CANSparkMax(RobotMap.CLIMBER_SPARK, CANSparkMaxLowLevel.MotorType.kBrushless);
     }

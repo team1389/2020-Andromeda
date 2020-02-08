@@ -11,36 +11,40 @@ package frc.subsystems;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-    public final CANSparkMax shooterTop;
-    public final CANSparkMax shooterBottom;
-    public double kP = 0.000350;
-    public double kI = 0.000001;
-    public int kD = 0;
-    public CANPIDController pid;
+    private CANSparkMax shooterTopLeader;
+    private CANSparkMax shooterBottomFollower;
+    private DigitalInput shooterBeamBreak;
+    private double kP = 0.000350;
+    private double kI = 0.000001;
+    private int kD = 0;
+    private CANPIDController pid;
 
     public Shooter() {
-        shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterBottom = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterBottom.follow(shooterTop);
+        shooterTopLeader = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottomFollower = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottomFollower.follow(shooterTopLeader);
 
-        pid = new CANPIDController(shooterTop);
+        shooterBeamBreak = new DigitalInput(RobotMap.DIO_SHOOTER_BEAM_BREAK);
+
+        pid = new CANPIDController(shooterTopLeader);
         pid.setP(kP);
         pid.setI(kI);
         pid.setD(kD);
     }
 
     public void setShooterVoltage(double percent) {
-        shooterTop.set(percent);
+        shooterTopLeader.set(percent);
     }
 
     public void stopMotors() {
-        shooterTop.set(0);
-        shooterBottom.set(0);
+        shooterTopLeader.set(0);
+        shooterBottomFollower.set(0);
     }
 
     public CANPIDController getShooterTopPIDController() {
@@ -48,17 +52,16 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getShooterTopRPM() {
-        return shooterTop.getEncoder().getVelocity();
+        return shooterTopLeader.getEncoder().getVelocity();
     }
 
     public double getShooterBottomRPM() {
-        return shooterBottom.getEncoder().getVelocity();
+        return shooterBottomFollower.getEncoder().getVelocity();
+    }
+
+    public boolean ballInShooter() {
+        return shooterBeamBreak.get();
     }
 
 
-    public void runShooter() {
-        shooterTop.set(1);
-        shooterTop.set(1);
-        System.out.println("Running shoot method 3");
-    }
 }

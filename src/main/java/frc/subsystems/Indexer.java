@@ -2,16 +2,22 @@ package frc.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {   //The motor to stop the balls is a BAG Motor
 
+    private DigitalInput indexPreBeamBreak;
     private VictorSPX indexMotor;
 
     public Indexer() {
+        indexPreBeamBreak = new DigitalInput(RobotMap.DIO_PRE_INDEX_BEAM_BREAK);
         indexMotor = new VictorSPX(RobotMap.INDEX_MOTOR);
-        indexMotor.setInverted(true);
+    }
+
+    public boolean ballAtIndexer() {
+        return indexPreBeamBreak.get();
     }
 
 

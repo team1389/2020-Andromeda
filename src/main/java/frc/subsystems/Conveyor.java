@@ -6,25 +6,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Conveyor extends SubsystemBase {
-    public VictorSPX conveyorMotorA;
-    public VictorSPX conveyorMotorB;
+    //Front of the robot is the intake side
+    public VictorSPX conveyorMotorFront;
+    public VictorSPX conveyorMotorBack;
 
     public Conveyor() {
-        conveyorMotorA = new VictorSPX(RobotMap.CONVEYOR_MOTOR_A);
-        conveyorMotorA.setInverted(true);
-        conveyorMotorB = new VictorSPX(RobotMap.CONVEYOR_MOTOR_B);
-        conveyorMotorB.setInverted(true);
+        conveyorMotorFront = new VictorSPX(RobotMap.CONVEYOR_MOTOR_FRONT);
+        conveyorMotorFront.setInverted(true);
+        conveyorMotorBack = new VictorSPX(RobotMap.CONVEYOR_MOTOR_BACK);
+        conveyorMotorBack.setInverted(true);
 
     }
 
-    public void startConveying(double percent) {
-        conveyorMotorA.set(ControlMode.PercentOutput, percent);
-        conveyorMotorB.set(ControlMode.PercentOutput, percent);
+    public void runConveyor(double percent) {
+        conveyorMotorFront.set(ControlMode.PercentOutput, percent);
+        conveyorMotorBack.set(ControlMode.PercentOutput, percent);
     }
 
-    public void stopConveying() {
-        conveyorMotorA.set(ControlMode.PercentOutput, 0);
-        conveyorMotorB.set(ControlMode.PercentOutput, 0);
+    public void stopConveyor() {
+        conveyorMotorFront.set(ControlMode.PercentOutput, 0);
+        conveyorMotorBack.set(ControlMode.PercentOutput, 0);
 
     }
 }

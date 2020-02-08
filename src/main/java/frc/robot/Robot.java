@@ -24,9 +24,10 @@ public class Robot extends TimedRobot {
     public static Intake intake = new Intake();
     public static Shooter shooter = new Shooter();
     //NOTE: OI must be initialized after all the the other systems
+    public static Climber climber = new Climber();
+
     public static OI oi = new OI();
 
-    public static Climber climber = new Climber();
 
     @Override
 
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        intake.extendIntake();
         //Example of setting auto: Scheduler.getInstance().add(YOUR AUTO);
     }
 
