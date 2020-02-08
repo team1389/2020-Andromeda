@@ -6,19 +6,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Conveyor extends SubsystemBase {
-    private TalonSRX conveyorMotor;
+    private TalonSRX conveyorMotorA;
+    private TalonSRX conveyorMotorB;
 
     public Conveyor() {
-        conveyorMotor = new TalonSRX(RobotMap.CONVEYOR_MOTOR);
+        conveyorMotorA = new TalonSRX(RobotMap.CONVEYOR_MOTOR_A);
+        conveyorMotorB = new TalonSRX(RobotMap.CONVEYOR_MOTOR_B);
 
-        conveyorMotor.setInverted(true);
     }
 
     public void startConveying(double percent) {
-        conveyorMotor.set(ControlMode.PercentOutput, percent);
+        conveyorMotorA.set(ControlMode.PercentOutput, percent);
+        conveyorMotorB.set(ControlMode.PercentOutput, percent);
     }
 
     public void stopConveying() {
-        conveyorMotor.set(ControlMode.PercentOutput, 0);
+        conveyorMotorA.set(ControlMode.PercentOutput, 0);
+        conveyorMotorB.set(ControlMode.PercentOutput, 0);
+
     }
 }

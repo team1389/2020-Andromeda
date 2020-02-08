@@ -8,34 +8,60 @@
 package frc.subsystems;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-    private final TalonSRX shooterLeft;
-    private final TalonSRX shooterRight;
+    private CANSparkMax shooterTop;
+    private CANSparkMax shooterBottom;
+    private DigitalInput shooterBeamBreak;
+    private double kP = 0.001;
+    private double kI = 0;
+    private double kD = 0;
+    private CANPIDController pid;
 
-    public Encoder leftEncoder = new Encoder(0,1);
-    public Encoder rightEncoder = new Encoder(0, 1);
     public Shooter() {
-        shooterLeft = new TalonSRX(RobotMap.FRONT_SHOOTER_LEFT);
-        shooterRight = new TalonSRX(RobotMap.FRONT_SHOOTER_RIGHT);
+        shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottom = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottom.follow(shooterTop);
 
-        shooterRight.setInverted(true);
+        shooterBeamBreak = new DigitalInput(RobotMap.DIO_SHOOTER_BEAM_BREAK);
+
+        pid = new CANPIDController(shooterTop);
+        pid.setP(kP);
+        pid.setI(kI);
+        pid.setD(kD);
     }
 
     public void setShooterVoltage(double percent) {
-        shooterLeft.set(ControlMode.PercentOutput, percent);
-        shooterRight.set(ControlMode.PercentOutput, percent);
+        shooterTop.set(percent);
+
     }
 
     public void stopMotors() {
-        shooterLeft.set(ControlMode.PercentOutput, 0);
-        shooterRight.set(ControlMode.PercentOutput, 0);
+        shooterTop.set(0);
+        shooterBottom.set(0);
     }
 
+    public CANPIDController getShooterTopPIDController() {
+        return pid;
+    }
+
+    public double getShooterTopRPM() {
+        return shooterTop.getEncoder().getVelocity();
+    }
+
+    public double getShooterBottomRPM() {
+        return shooterBottom.getEncoder().getVelocity();
+    }
+
+    public boolean isBallShot() {
+        //The councils still out on this name choice
+        return shooterBeamBreak.get();
+    }
 }

@@ -9,21 +9,17 @@ import frc.robot.RobotMap;
 public class Indexer extends SubsystemBase {   //The motor to stop the balls is a BAG Motor
 
     private final DigitalInput indexPreBeamBreak;
-    private final DigitalInput indexPostBeamBreak;
     private final VictorSPX indexMotor;
 
     public Indexer() {
-        indexPreBeamBreak = new DigitalInput(RobotMap.DIO_INDEX_PRE_BEAM_BREAK); //parameter is the port
-        indexPostBeamBreak = new DigitalInput(RobotMap.DIO_INDEX_POST_BEAM_BREAK); //parameter is the port
+        indexPreBeamBreak = new DigitalInput(RobotMap.DIO_PRE_INDEX_BEAM_BREAK);
         indexMotor = new VictorSPX(RobotMap.INDEX_MOTOR);
     }
 
-    public boolean preBallDetector() {
+    public boolean ballAtIndexer() {
         return indexPreBeamBreak.get();
     }
-    public boolean postBallDetector() {
-        return indexPostBeamBreak.get();
-    }
+
 
     public void runIndexer(double percent) {
         indexMotor.set(ControlMode.PercentOutput, percent);

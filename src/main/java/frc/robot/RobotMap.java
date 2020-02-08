@@ -4,36 +4,36 @@ package frc.robot;
  * define Hardware Ports in here
  */
 public class RobotMap {
-    public static int FRONT_SHOOTER_LEFT = 0;
-    public static int FRONT_SHOOTER_RIGHT = 0;
-    public static int BACK_SHOOTER_LEFT = 0;
-    public static int BACK_SHOOTER_RIGHT = 0;
+    public static int SHOOTER_TOP;
+    public static int SHOOTER_BOTTOM;
 
+    public static int RIGHT_DRIVE_LEADER = 3;
+    public static int RIGHT_DRIVE_FOLLOWER = 4;
+    public static int LEFT_DRIVE_LEADER = 1;
+    public static int LEFT_DRIVE_FOLLOWER = 2;
+    //Intake
+    public static int INTAKE_MOTOR;
+    public static int INTAKE_RIGHT_FORWARD_SOLENOID;
+    public static int INTAKE_RIGHT_REVERSE_SOLENOID;
+    public static int INTAKE_LEFT_FORWARD_SOLENOID;
+    public static int INTAKE_LEFT_REVERSE_SOLENOID;
 
-    //ONLY BELOW IS REAL PORT NUMS. EVERYTHING ELSE IS FAKE NEWS
-    public static int RIGHT_DRIVE_A = 3;
-    public static int RIGHT_DRIVE_B = 4;
-    public static int LEFT_DRIVE_A = 1;
-    public static int LEFT_DRIVE_B = 2;
-    //ONLY ABOVE IS REAL PORT NUMS. EVERYTHING ELSE IS FAKE NEWS
+    //Conveyor
+    public static int CONVEYOR_MOTOR_A = 10;
+    public static int CONVEYOR_MOTOR_B = 12;
 
-    public static int INTAKE_MOTOR = 0;
-    public static int CONVEYOR_MOTOR = 0;
-    public static int INDEX_MOTOR = 0;
+    public static int INDEX_MOTOR;
 
     //Sensors
-<<<<<<< HEAD
-    public static int DIO_INDEX_PRE_BEAM_BREAK;
-    public static int DIO_INDEX_POST_BEAM_BREAK;
-=======
-    public static int DIO_INDEX_BEAM_BREAK = 0;
->>>>>>> f0e422aa265f558ff5ec3db0beb76db3b8b95a7a
+    public static int DIO_PRE_INDEX_BEAM_BREAK;
+    public static int DIO_SHOOTER_BEAM_BREAK;
 
-    // Need values for climber
-    public static int CLIMBER_SPARK = 0; //somewhere between 5 and 8
-    public static int RIGHT_FORWARD_SOLENOID = 0;
-    public static int RIGHT_REVERSE_SOLENOID = 0;
-    public static int LEFT_FORWARD_SOLENOID = 0;
-    public static int LEFT_REVERSE_SOLENOID = 0;
-    public static int can_PCM_2 = 0;
+    // Climber
+    public static int CLIMBER_SPARK; //somewhere between 5 and 8
+    public static int CLIMBER_RIGHT_FORWARD_SOLENOID;
+    public static int CLIMBER_RIGHT_REVERSE_SOLENOID;
+    public static int CLIMBER_LEFT_FORWARD_SOLENOID;
+    public static int CLIMBER_LEFT_REVERSE_SOLENOID;
+
+    public static int can_PCM_2;
 }
