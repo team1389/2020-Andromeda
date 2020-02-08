@@ -11,7 +11,6 @@ public class Conveyor extends SubsystemBase {
     public Conveyor() {
         conveyorMotor = new TalonSRX(RobotMap.CONVEYOR_MOTOR);
 
-        conveyorMotor.setInverted(true);
     }
 
     public void startConveying(double percent) {

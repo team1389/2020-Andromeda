@@ -16,44 +16,43 @@ import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-    public final CANSparkMax shooterLeft;
-    public final CANSparkMax shooterRight;
+    public final CANSparkMax shooterTop;
+    public final CANSparkMax shooterBottom;
     public int kP = 1;
     public int kI = 0;
     public int kD = 0;
     public CANPIDController pid;
 
     public Shooter() {
-        shooterLeft = new CANSparkMax(RobotMap.FRONT_SHOOTER_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterRight = new CANSparkMax(RobotMap.FRONT_SHOOTER_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterRight.follow(shooterLeft);
+        shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottom = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottom.follow(shooterTop);
 
-        pid = new CANPIDController(shooterLeft);
+        pid = new CANPIDController(shooterTop);
         pid.setP(kP);
         pid.setI(kI);
         pid.setD(kD);
-        shooterRight.setInverted(true);
     }
 
     public void setShooterVoltage(double percent) {
-        shooterLeft.set(percent);
+        shooterTop.set(percent);
 
     }
 
     public void stopMotors() {
-        shooterLeft.set(0);
-        shooterRight.set(0);
+        shooterTop.set(0);
+        shooterBottom.set(0);
     }
 
-    public CANPIDController getShooterLeftPIDController() {
+    public CANPIDController getShooterTopPIDController() {
         return pid;
     }
 
-    public double getShooterLeftRPM() {
-        return shooterLeft.getEncoder().getVelocity();
+    public double getShooterTopRPM() {
+        return shooterTop.getEncoder().getVelocity();
     }
 
-    public double getShooterRightRPM() {
-        return shooterRight.getEncoder().getVelocity();
+    public double getShooterBottomRPM() {
+        return shooterBottom.getEncoder().getVelocity();
     }
 }

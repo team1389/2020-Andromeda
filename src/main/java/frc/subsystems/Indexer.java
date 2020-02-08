@@ -12,7 +12,7 @@ public class Indexer extends SubsystemBase {   //The motor to stop the balls is 
     private final VictorSPX indexMotor;
 
     public Indexer() {
-        indexBeamBreak = new DigitalInput(RobotMap.DIO_INDEX_BEAM_BREAK); //parameter is the port
+        indexBeamBreak = new DigitalInput(RobotMap.DIO_PRE_INDEX_BEAM_BREAK); //parameter is the port
         indexMotor = new VictorSPX(RobotMap.INDEX_MOTOR);
     }
 
