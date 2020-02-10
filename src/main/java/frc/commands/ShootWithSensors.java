@@ -69,7 +69,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            return !ballPreIndex;
+            return ballPreIndex;
         }
     }
 
@@ -121,7 +121,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            return !ballPostIndex;
+            return ballPostIndex;
         }
 
         @Override
