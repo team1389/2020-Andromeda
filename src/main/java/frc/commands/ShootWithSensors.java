@@ -4,7 +4,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
-
+import utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
     double shootingSpeed;
@@ -76,27 +76,22 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private class SpinUpShooters extends CommandBase {
         private CANPIDController pid = Robot.shooter.getShooterTopPIDController();
         private double shooterRPM;
-        private double oldShooterRPM;
         private double shooterTargetRPM;
         private double tolerance;
-        private double slopeError;
-        private double timeStep;
-
+        private SizeLimitedQueue recentRPMs = new SizeLimitedQueue(7);
 
         public SpinUpShooters(double shooterTargetRPM) {
-            //TODO: Implement average over time for error
             addRequirements(Robot.shooter);
             this.shooterTargetRPM = shooterTargetRPM;
             tolerance = 5;
-            slopeError = 10;
-            timeStep = 0.02;
         }
-
 
         @Override
         public void execute() {
             pid.setReference(shooterTargetRPM, ControlType.kVelocity);
             shooterRPM = Robot.shooter.getShooterTopRPM();
+
+            recentRPMs.addElement(shooterRPM);
         }
 
         @Override
@@ -105,10 +100,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-
-            return tolerance <= Math.abs(shooterTargetRPM - shooterRPM);
+            return tolerance <= Math.abs(shooterTargetRPM - recentRPMs.getAverage());
         }
-
     }
 
     private class SendBallToShooter extends CommandBase {
