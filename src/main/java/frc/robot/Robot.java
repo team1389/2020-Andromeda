@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         intake.extendIntake();
-        //Example of setting auto: Scheduler.getInstance().add(YOUR AUTO);
+        //Example of setting auto: CommandScheduler.getInstance().schedule(YOUR AUTO);
     }
 
     /**
