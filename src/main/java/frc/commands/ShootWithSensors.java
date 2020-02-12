@@ -2,6 +2,7 @@ package frc.commands;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
 import utils.SizeLimitedQueue;
@@ -73,12 +74,11 @@ public class ShootWithSensors extends SequentialCommandGroup {
         }
     }
 
-    private class SpinUpShooters extends CommandBase {
+    public static class SpinUpShooters extends CommandBase {
         private CANPIDController pid = Robot.shooter.getShooterTopPIDController();
-        private double shooterRPM;
         private double shooterTargetRPM;
         private double tolerance;
-        private SizeLimitedQueue recentRPMs = new SizeLimitedQueue(7);
+        private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
 
         public SpinUpShooters(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
@@ -89,9 +89,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         @Override
         public void execute() {
             pid.setReference(shooterTargetRPM, ControlType.kVelocity);
-            shooterRPM = Robot.shooter.getShooterTopRPM();
 
-            recentRPMs.addElement(shooterRPM);
         }
 
         @Override
@@ -100,7 +98,10 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            return tolerance <= Math.abs(shooterTargetRPM - recentRPMs.getAverage());
+            double error = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
+            recentErrors.addElement(error);
+            SmartDashboard.putNumber("average error", recentErrors.getAverage());
+            return tolerance <= Math.abs(recentErrors.getAverage());
         }
     }
 

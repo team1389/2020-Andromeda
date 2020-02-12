@@ -18,12 +18,14 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         rightLeader = new CANSparkMax(RobotMap.RIGHT_DRIVE_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightFollower = new CANSparkMax(RobotMap.RIGHT_DRIVE_FOLLOWER, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightFollower.follow(rightLeader, rightFollower.getInverted());
+        rightLeader.restoreFactoryDefaults();
+        rightFollower.restoreFactoryDefaults();
+//        rightFollower.follow(rightLeader, rightFollower.getInverted());
 
 
         leftLeader = new CANSparkMax(RobotMap.LEFT_DRIVE_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftFollower = new CANSparkMax(RobotMap.LEFT_DRIVE_FOLLOWER, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftFollower.follow(leftLeader, leftFollower.getInverted());
+//        leftFollower.follow(leftLeader, leftFollower.getInverted());
 
         differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
 
@@ -45,6 +47,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double leftY, double rightX, boolean isQuickTurn) {
         differentialDrive.curvatureDrive(leftY, rightX, isQuickTurn);
+        System.out.println("running drive method");
     }
 
     public void set(double leftPower, double rightPower) {
@@ -58,7 +61,11 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run; use it for debugging and stuff
+        //followers are not running
+//        leftLeader.set(1);
+//        leftFollower.set(1);
+        rightLeader.set(1);
+        System.out.println("running Drivetrain 2");
     }
 
 }

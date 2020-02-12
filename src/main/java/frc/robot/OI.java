@@ -13,16 +13,25 @@ public class OI {
     RunConveyor runConveyor = new RunConveyor();
 
     JoystickButton bBtn;
-
+    JoystickButton aBtn;
+    JoystickButton lBumper;
+    JoystickButton xBtn;
     public OI() {
         initControllers();
 
         bBtn = new JoystickButton(manipController, XboxController.Button.kB.value);
-        bBtn.whileHeld(new ShootWithSensors());
+        bBtn.whileHeld(new ShootWithSensors.SpinUpShooters(2000));
 
-        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
-        Robot.intake.setDefaultCommand(runIntake);
-        Robot.conveyor.setDefaultCommand(runConveyor);
+        aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
+        aBtn.toggleWhenPressed(new RunIntake());
+
+        xBtn = new JoystickButton(manipController, XboxController.Button.kX.value);
+        xBtn.toggleWhenPressed(new RunIntakeReverse());
+
+        lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
+        lBumper.toggleWhenPressed(new RunConveyor());
+
+//        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
     }
 
     /**

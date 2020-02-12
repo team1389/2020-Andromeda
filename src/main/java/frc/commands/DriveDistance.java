@@ -33,7 +33,7 @@ public class DriveDistance extends CommandBase {
 
     @Override
     public void execute() {
-        error = targetDistance - drivetrain.leftAEncoder();
+        error = targetDistance - drivetrain.leftLeaderEncoder();
 
         drivetrain.set(pid.calculate(error, targetDistance), pid.calculate(error, targetDistance));
     }
