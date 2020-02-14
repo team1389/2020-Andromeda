@@ -20,12 +20,14 @@ public class Drivetrain extends SubsystemBase {
         rightFollower = new CANSparkMax(RobotMap.RIGHT_DRIVE_FOLLOWER, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightLeader.restoreFactoryDefaults();
         rightFollower.restoreFactoryDefaults();
-//        rightFollower.follow(rightLeader, rightFollower.getInverted());
+        rightFollower.follow(rightLeader);
 
 
         leftLeader = new CANSparkMax(RobotMap.LEFT_DRIVE_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftFollower = new CANSparkMax(RobotMap.LEFT_DRIVE_FOLLOWER, CANSparkMaxLowLevel.MotorType.kBrushless);
-//        leftFollower.follow(leftLeader, leftFollower.getInverted());
+        leftLeader.restoreFactoryDefaults();
+        leftFollower.restoreFactoryDefaults();
+        leftFollower.follow(leftLeader);
 
         differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
 
@@ -61,11 +63,6 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //followers are not running
-//        leftLeader.set(1);
-//        leftFollower.set(1);
-        rightLeader.set(1);
-        System.out.println("running Drivetrain 2");
     }
 
 }

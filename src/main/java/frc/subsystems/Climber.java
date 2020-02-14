@@ -19,7 +19,9 @@ public class Climber extends SubsystemBase {
         lSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_LEFT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_LEFT_REVERSE_SOLENOID);
         leftMotor = new CANSparkMax(RobotMap.CLIMBER_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftMotor.restoreFactoryDefaults();
         rightMotor = new CANSparkMax(RobotMap.CLIMBER_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightMotor.restoreFactoryDefaults();
     }
 
     public void extend() {

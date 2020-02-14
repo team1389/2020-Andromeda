@@ -31,7 +31,7 @@ public class OI {
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         lBumper.toggleWhenPressed(new RunConveyor());
 
-//        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
+        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
     }
 
     /**
