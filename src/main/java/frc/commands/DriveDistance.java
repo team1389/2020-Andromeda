@@ -1,4 +1,4 @@
-package frc.command;
+package frc.commands;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
@@ -41,9 +41,9 @@ public class DriveDistance extends CommandBase {
         error = targetDistance - drivetrain.leftLeaderEncoder();
         goalPower = pid.calculate(drivetrain.leftLeaderEncoder(), targetDistance);
 
+        //Limit max speed (only for testing, remove later)
         goalPower = Math.max(-0.2, Math.min(0.2, goalPower));
 
-        //Limit max speed (only for testing, remove late)
         drivetrain.set(goalPower, goalPower);
 
         System.out.println(error);

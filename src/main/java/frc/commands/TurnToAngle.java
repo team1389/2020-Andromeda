@@ -14,6 +14,7 @@ public class TurnToAngle extends CommandBase {
     private PIDController pid;
 
     private double error;
+    private double goalPower;
 
     public TurnToAngle(double targetDegrees, boolean isRelativeTurn) {
         targetAngle = targetDegrees;
@@ -30,6 +31,11 @@ public class TurnToAngle extends CommandBase {
     public void execute() {
         error = targetAngle - drivetrain.ahrs.getAngle();
 
-        drivetrain.set(pid.calculate(error, targetAngle), -pid.calculate(error, targetAngle));
+        goalPower = pid.calculate(targetAngle, drivetrain.ahrs.getAngle());
+
+        //Limit max speed (only for testing, remove later)
+        goalPower = Math.max(-0.2, Math.min(0.2, goalPower));
+
+        drivetrain.set(goalPower, -goalPower);
     }
 }

@@ -66,6 +66,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        drivetrain.set(1,1);
     }
 
     /**

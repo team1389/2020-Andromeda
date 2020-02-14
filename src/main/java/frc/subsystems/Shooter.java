@@ -27,7 +27,9 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         shooterTopLeader = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterTopLeader.restoreFactoryDefaults();
         shooterBottomFollower = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottomFollower.restoreFactoryDefaults();
         shooterBottomFollower.follow(shooterTopLeader);
 
         shooterBeamBreak = new DigitalInput(RobotMap.DIO_SHOOTER_BEAM_BREAK);

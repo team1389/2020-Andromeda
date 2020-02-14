@@ -9,20 +9,25 @@ import frc.robot.RobotMap;
 public class Climber extends SubsystemBase {
 
     private final DoubleSolenoid rSolenoid, lSolenoid;
-    private final CANSparkMax spark;
+    private CANSparkMax leftMotor;
+    private CANSparkMax rightMotor;
+
 
     public Climber() {                  // Here
         rSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_RIGHT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_RIGHT_REVERSE_SOLENOID);
         lSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_LEFT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_LEFT_REVERSE_SOLENOID);
-        spark = new CANSparkMax(RobotMap.CLIMBER_SPARK, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftMotor = new CANSparkMax(RobotMap.CLIMBER_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftMotor.restoreFactoryDefaults();
+        rightMotor = new CANSparkMax(RobotMap.CLIMBER_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightMotor.restoreFactoryDefaults();
     }
 
     public void extend() {
         rSolenoid.set(DoubleSolenoid.Value.kForward);
         lSolenoid.set(DoubleSolenoid.Value.kForward);
-        spark.set(1);
+        leftMotor.set(1);
     }
 
     public void retract() {

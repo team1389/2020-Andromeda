@@ -17,23 +17,11 @@ public class RunConveyor extends CommandBase {
 
     @Override
     public void execute() {
-        //a button
-        if(Robot.oi.manipAButton()) {
-            if(isConveying) {
-                isConveying = false;
-            }
-            else {
-                isConveying = true;
-            }
-        }
+        conveyor.runConveyor(1);
+    }
 
-        if(isConveying) {
-            conveyor.startConveying(.5);
-            System.out.println("Jebediah is yeeting balls through the conveyor belt!");
-        }
-        else {
-            conveyor.stopConveying();
-        }
-
+    @Override
+    public void end(boolean interrupted) {
+        conveyor.stopConveyor();
     }
 }
