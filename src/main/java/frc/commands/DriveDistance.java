@@ -7,14 +7,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.subsystems.Drivetrain;
 
-//This commands turns the robot to a specified angle, measured in degrees
 public class DriveDistance extends CommandBase {
     private double WHEEL_DIAMETER_CONSTANT = 10.3/(5*Math.PI);
 
     private double targetDistance;
     private Drivetrain drivetrain = new Drivetrain();
 
-    //We use fancy PID get on our level (To any other teams looking at our code) bruh they all do
     private PIDController pid;
 
     private double error;
@@ -26,7 +24,6 @@ public class DriveDistance extends CommandBase {
         drivetrain = Robot.drivetrain;
 
         drivetrain.resetEncoders();
-        System.out.println("init");
     }
 
     public DriveDistance(double targetInches) {
@@ -41,9 +38,9 @@ public class DriveDistance extends CommandBase {
         error = targetDistance - drivetrain.leftLeaderEncoder();
         goalPower = pid.calculate(drivetrain.leftLeaderEncoder(), targetDistance);
 
-        //Limit max speed (only for testing, remove later)
         goalPower = Math.max(-0.2, Math.min(0.2, goalPower));
 
+        //Limit max speed (only for testing, remove later)
         drivetrain.set(goalPower, goalPower);
 
         System.out.println(error);

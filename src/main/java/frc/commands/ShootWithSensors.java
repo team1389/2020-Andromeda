@@ -5,7 +5,7 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
-import utils.SizeLimitedQueue;
+import frc.utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
     double shootingSpeed;
@@ -101,7 +101,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             double error = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
             recentErrors.addElement(error);
             SmartDashboard.putNumber("average error", recentErrors.getAverage());
-            return tolerance <= Math.abs(recentErrors.getAverage());
+            return tolerance >= Math.abs(recentErrors.getAverage());
         }
     }
 

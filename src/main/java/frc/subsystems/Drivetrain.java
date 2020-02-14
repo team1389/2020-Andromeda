@@ -57,6 +57,10 @@ public class Drivetrain extends SubsystemBase {
         rightLeader.set(-rightPower);
     }
 
+    public double getAngle() {
+        return ahrs.getAngle();
+    }
+
     public double encoderCountsPerRevolution() {
         return leftLeaderEncoder.getCountsPerRevolution();
     }
