@@ -27,9 +27,12 @@ public class Climber extends SubsystemBase {
     public void extend() {
         rSolenoid.set(DoubleSolenoid.Value.kForward);
         lSolenoid.set(DoubleSolenoid.Value.kForward);
-        leftMotor.set(1);
     }
 
+    public void winch(){
+        leftMotor.set(1);
+        rightMotor.set(1);
+    }
     public void retract() {
         rSolenoid.set(DoubleSolenoid.Value.kReverse);
         lSolenoid.set(DoubleSolenoid.Value.kReverse);

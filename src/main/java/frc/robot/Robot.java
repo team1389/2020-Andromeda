@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     @Override
 
     public void robotInit() {
-        Shuffleboard.getTab("gyro tab").add((Sendable) drivetrain.ahrs);
+        Shuffleboard.getTab("gyro tab").add(drivetrain.ahrs);
     }
 
     /**
@@ -66,7 +66,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        drivetrain.set(1,1);
     }
 
     /**

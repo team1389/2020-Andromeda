@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 
-public class Shoot extends SequentialCommandGroup {
+public class ShootDontUse extends SequentialCommandGroup {
 
-    public Shoot() {
+    public ShootDontUse() {
         addRequirements(Robot.shooter, Robot.indexer);
         addCommands(new ShootOnce(), new ShootOnce(), new ShootOnce(), new ShootOnce(), new ShootOnce());
     }
