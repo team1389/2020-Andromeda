@@ -61,11 +61,7 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //followers are not running
-//        leftLeader.set(1);
-//        leftFollower.set(1);
-        rightLeader.set(1);
-        System.out.println("running Drivetrain 2");
+
     }
 
 }

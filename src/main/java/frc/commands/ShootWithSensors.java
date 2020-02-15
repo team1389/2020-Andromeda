@@ -109,7 +109,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         private boolean ballPostIndex;
 
         public SendBallToShooter() {
-            addRequirements(Robot.conveyor, Robot.shooter);
+            addRequirements(Robot.conveyor, Robot.shooter, Robot.intake);
             ballPostIndex = Robot.shooter.ballInShooter();
         }
 
@@ -118,6 +118,9 @@ public class ShootWithSensors extends SequentialCommandGroup {
         public void execute() {
             ballPostIndex = Robot.shooter.ballInShooter();
             Robot.conveyor.runConveyor(0.5);
+            if(ballPostIndex)
+                Robot.intake.ballCounter--;
+
         }
 
         @Override

@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
     public static Indexer indexer = new Indexer();
     public static Intake intake = new Intake();
     public static Shooter shooter = new Shooter();
+    public static RGB rgb = new RGB();
     //NOTE: OI must be initialized after all the the other systems
     public static Climber climber = new Climber();
 
@@ -48,7 +49,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        intake.extendIntake();
+
         //Example of setting auto: CommandScheduler.getInstance().schedule(YOUR AUTO);
     }
 
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        rgb.beLit();
     }
 
     /**
