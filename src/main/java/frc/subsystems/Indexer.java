@@ -3,6 +3,7 @@ package frc.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -17,7 +18,7 @@ public class Indexer extends SubsystemBase {   //The motor to stop the balls is 
     }
 
     public boolean ballAtIndexer() {
-        return indexPreBeamBreak.get();
+        return !indexPreBeamBreak.get();
     }
 
 
@@ -27,5 +28,10 @@ public class Indexer extends SubsystemBase {   //The motor to stop the balls is 
 
     public void stopIndexer() {
         indexMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putBoolean("Pre index", ballAtIndexer());
     }
 }

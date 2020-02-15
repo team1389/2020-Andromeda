@@ -15,13 +15,22 @@ public class OI {
     private JoystickButton aBtn;
     private JoystickButton lBumper;
     private JoystickButton xBtn;
+    private JoystickButton yBtn;
+    private JoystickButton rBumper;
 
     public OI() {
         driveController = new XboxController(0);
         manipController = new XboxController(1);
 
+        yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
+        yBtn.whenPressed(new ShootWithSensors.SendBallToIndexer());
+
+        rBumper = new JoystickButton(manipController, XboxController.Button.kBumperRight.value);
+        rBumper.whenPressed(new ShootWithSensors.SendBallToShooter());
+
         bBtn = new JoystickButton(manipController, XboxController.Button.kB.value);
-        bBtn.whileHeld(new ShootWithSensors.SpinUpShooters(2000));
+        bBtn.whileHeld(new ShootWithSensors(100));
+
 
         aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
         aBtn.toggleWhenPressed(new RunIntake());
@@ -32,7 +41,7 @@ public class OI {
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         lBumper.toggleWhenPressed(new RunConveyor());
 
-        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
+//        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
     }
 
 

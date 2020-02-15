@@ -12,9 +12,7 @@ public class Conveyor extends SubsystemBase {
 
     public Conveyor() {
         conveyorMotorFront = new VictorSPX(RobotMap.CONVEYOR_MOTOR_FRONT);
-        conveyorMotorFront.setInverted(true);
         conveyorMotorBack = new VictorSPX(RobotMap.CONVEYOR_MOTOR_BACK);
-        conveyorMotorBack.setInverted(true);
 
     }
 

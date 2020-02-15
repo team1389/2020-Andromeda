@@ -20,7 +20,7 @@ public class RunIntake extends CommandBase {
 
     @Override
     public void execute() {
-        intake.runIntake(1);
+        intake.runIntake(0.9);
     }
 
     @Override

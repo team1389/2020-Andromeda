@@ -10,9 +10,9 @@ import frc.utils.SizeLimitedQueue;
 public class ShootWithSensors extends SequentialCommandGroup {
     double shootingSpeed;
 
-    public ShootWithSensors() {
+    public ShootWithSensors(double shootingSpeed) {
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-        shootingSpeed = 2000;
+        this.shootingSpeed = shootingSpeed;
         addCommands(new ShootOnce(), new ShootOnce(), new ShootOnce(), new ShootOnce(), new ShootOnce());
     }
 
@@ -30,7 +30,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addCommands(
 // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
                     new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shootingSpeed)),
-                    new InstantCommand(() -> Robot.indexer.runIndexer(.75)),
+                    new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(0.25),
                     new SendBallToShooter()
             );
@@ -43,7 +43,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     //Does the process to make sure only 1 ball is in place and preps the shooter motors
-    private class SendBallToIndexer extends CommandBase {
+    public static class SendBallToIndexer extends CommandBase {
 
         private boolean ballPreIndex;
 
@@ -58,12 +58,14 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public void execute() {
-            Robot.conveyor.runConveyor(0.5);     // Move conveyor if not in place
+            System.out.println("Running command");
+            Robot.conveyor.runConveyor(1);     // Move conveyor if not in place
             ballPreIndex = Robot.indexer.ballAtIndexer();     //Update ballPreIndex
         }
 
         @Override
         public void end(boolean interrupted) {
+            System.out.println("killed command");
             Robot.indexer.stopIndexer();
             Robot.conveyor.stopConveyor();
         }
@@ -106,7 +108,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         }
     }
 
-    private class SendBallToShooter extends CommandBase {
+    public static class SendBallToShooter extends CommandBase {
         private boolean ballPostIndex;
 
         public SendBallToShooter() {

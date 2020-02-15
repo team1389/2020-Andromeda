@@ -12,6 +12,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -62,8 +63,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean ballInShooter() {
-        return shooterBeamBreak.get();
+        return !shooterBeamBreak.get();
     }
 
-
+    @Override
+    public void periodic() {
+        SmartDashboard.putBoolean("Ball in shooter", ballInShooter());
+    }
 }

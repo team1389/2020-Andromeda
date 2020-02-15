@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+
     }
 
     /**
