@@ -13,8 +13,8 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
         intakeMotor = new VictorSPX(RobotMap.INTAKE_MOTOR);
-        leftExtender = new DoubleSolenoid(RobotMap.INTAKE_LEFT_FORWARD_SOLENOID, RobotMap.INTAKE_LEFT_REVERSE_SOLENOID);
-        rightExtender = new DoubleSolenoid(RobotMap.INTAKE_RIGHT_FORWARD_SOLENOID,
+        leftExtender = new DoubleSolenoid(RobotMap.PCM_CAN,RobotMap.INTAKE_LEFT_FORWARD_SOLENOID, RobotMap.INTAKE_LEFT_REVERSE_SOLENOID);
+        rightExtender = new DoubleSolenoid(RobotMap.PCM_CAN, RobotMap.INTAKE_RIGHT_FORWARD_SOLENOID,
                 RobotMap.INTAKE_RIGHT_REVERSE_SOLENOID);
     }
 

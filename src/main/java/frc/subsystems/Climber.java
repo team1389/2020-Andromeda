@@ -8,15 +8,15 @@ import frc.robot.RobotMap;
 
 public class Climber extends SubsystemBase {
 
-    private final DoubleSolenoid rSolenoid, lSolenoid;
+    public final DoubleSolenoid rSolenoid, lSolenoid;
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
 
 
     public Climber() {                  // Here
-        rSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_RIGHT_FORWARD_SOLENOID,
+        rSolenoid = new DoubleSolenoid(RobotMap.PCM_CAN, RobotMap.CLIMBER_RIGHT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_RIGHT_REVERSE_SOLENOID);
-        lSolenoid = new DoubleSolenoid(RobotMap.CLIMBER_LEFT_FORWARD_SOLENOID,
+        lSolenoid = new DoubleSolenoid(RobotMap.PCM_CAN,  RobotMap.CLIMBER_LEFT_FORWARD_SOLENOID,
                 RobotMap.CLIMBER_LEFT_REVERSE_SOLENOID);
         leftMotor = new CANSparkMax(RobotMap.CLIMBER_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftMotor.restoreFactoryDefaults();
