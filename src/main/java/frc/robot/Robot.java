@@ -32,10 +32,13 @@ public class Robot extends TimedRobot {
 
     public static OI oi = new OI();
 
+    public SendableChooser<Command> autoChooser = new SendableChooser();
+
     @Override
 
     public void robotInit() {
         Shuffleboard.getTab("gyro tab").add(drivetrain.ahrs);
+        SmartDashboard.putData("Autonomous Chooser", autoChooser);
     }
 
     /**
@@ -53,6 +56,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         intake.extendIntake();
         //Example of setting auto: CommandScheduler.getInstance().schedule(YOUR AUTO);
+        CommandScheduler.getInstance().schedule(autoChooser.getSelected());
     }
 
     /**
