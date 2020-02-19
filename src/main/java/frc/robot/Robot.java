@@ -32,10 +32,22 @@ public class Robot extends TimedRobot {
 
     public static OI oi = new OI();
 
+    private SendableChooser shooterSlotChooser = new SendableChooser();
+
     @Override
 
     public void robotInit() {
         Shuffleboard.getTab("gyro tab").add(drivetrain.ahrs);
+
+        shooterSlotChooser.addOption("Slot 1", 1);
+        shooterSlotChooser.addOption("Slot 2", 2);
+        shooterSlotChooser.addOption("Slot 3", 3);
+        shooterSlotChooser.addOption("Slot 4", 4);
+        shooterSlotChooser.addOption("Slot 5", 5);
+        shooterSlotChooser.addOption("Slot 6", 6);
+        shooterSlotChooser.addOption("Slot 7", 7);
+        shooterSlotChooser.addOption("Slot 8", 8);
+        SmartDashboard.putData(shooterSlotChooser);
     }
 
     /**
@@ -46,6 +58,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+
     }
 
 
