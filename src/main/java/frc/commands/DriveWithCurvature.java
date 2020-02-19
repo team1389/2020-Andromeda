@@ -15,8 +15,9 @@ public class DriveWithCurvature extends CommandBase {
 
     @Override
     public void execute() {
-        double throttle = Robot.oi.driveController.getY(GenericHID.Hand.kLeft)/2;
-        double rotation = Robot.oi.driveController.getX(GenericHID.Hand.kRight)/2;
+        //initially halved
+        double throttle = Robot.oi.driveController.getY(GenericHID.Hand.kLeft)/3;
+        double rotation = Robot.oi.driveController.getX(GenericHID.Hand.kRight)/3;
         boolean isQuickTurn = Robot.oi.driveController.getBumper(GenericHID.Hand.kLeft);
         System.out.println("Jebediah is having fun driving around!");
         Robot.drivetrain.drive(throttle, rotation, isQuickTurn);
