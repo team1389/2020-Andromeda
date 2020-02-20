@@ -13,20 +13,23 @@ public class ShootWithSensors extends SequentialCommandGroup {
     double ShooterSpeed;
     static boolean outOfBalls;
 
-    public ShootWithSensors(double distance) {
+    public ShootWithSensors(double distance, int slot) {
         outOfBalls = false;
 
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         this.distance = distance;
         double shooterspeed;
-        if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 1")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 2")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 3")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 4")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 5")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 6")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 7")){ShooterSpeed=distance/10;}
-        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 8")){ShooterSpeed=distance/10;}
+        switch (slot) {
+            case 1: ShooterSpeed = distance/10; break;
+            case 2: ShooterSpeed = distance/10; break;
+            case 3: ShooterSpeed = distance/10; break;
+            case 4: ShooterSpeed = distance/10; break;
+            case 5: ShooterSpeed = distance/10; break;
+            case 6: ShooterSpeed = distance/10; break;
+            case 7: ShooterSpeed = distance/10; break;
+            case 8: ShooterSpeed = distance/10; break;
+
+        }
 
         addCommands(
                 new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
