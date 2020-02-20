@@ -71,7 +71,6 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double leftY, double rightX, boolean isQuickTurn) {
         differentialDrive.curvatureDrive(leftY, rightX, isQuickTurn);
-        System.out.println("running drive method");
     }
 
     public void set(double leftPower, double rightPower) {
