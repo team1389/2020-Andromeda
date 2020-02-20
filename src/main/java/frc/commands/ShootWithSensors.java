@@ -2,6 +2,7 @@ package frc.commands;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
@@ -10,10 +11,21 @@ import frc.utils.SizeLimitedQueue;
 public class ShootWithSensors extends SequentialCommandGroup {
     double shootingSpeed;
 
+    static boolean outOfBalls;
+
     public ShootWithSensors(double shootingSpeed) {
+        outOfBalls = false;
+
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         this.shootingSpeed = shootingSpeed;
-        addCommands(new ShootOnce(), new ShootOnce(), new ShootOnce(), new ShootOnce(), new ShootOnce());
+        addCommands(
+                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
+                new WaitCommand(0.25),
+                new ShootOnce(0.25),
+                new ShootOnce(0),
+                new ShootOnce(0),
+                new ShootOnce(0),
+                new ShootOnce(0));
     }
 
     @Override
@@ -23,15 +35,20 @@ public class ShootWithSensors extends SequentialCommandGroup {
         Robot.conveyor.stopConveyor();
     }
 
+    @Override
+    public boolean isFinished() {
+        return outOfBalls;
+    }
+
     private class ShootOnce extends SequentialCommandGroup {
 
-        public ShootOnce() {
+        public ShootOnce(double waitSeconds) {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
-// To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
+                    // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
                     new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shootingSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
-                    new WaitCommand(0.25),
+                    new WaitCommand(waitSeconds),
                     new SendBallToShooter()
             );
         }
@@ -44,7 +61,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     //Does the process to make sure only 1 ball is in place and preps the shooter motors
     public static class SendBallToIndexer extends CommandBase {
-
+        private Timer timer = new Timer();
         private boolean ballPreIndex;
 
         public SendBallToIndexer() {
@@ -54,6 +71,9 @@ public class ShootWithSensors extends SequentialCommandGroup {
         @Override
         public void initialize() {
             ballPreIndex = Robot.indexer.ballAtIndexer();
+
+            timer.reset();
+            timer.start();
         }
 
         @Override
@@ -72,6 +92,12 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
+            if(timer.get() >= 1) {
+                outOfBalls = true;
+                return true;
+            }
+
+            //End if the ball reaches the indexer or if 1 second has passed
             return ballPreIndex;
         }
     }
@@ -109,6 +135,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     public static class SendBallToShooter extends CommandBase {
+        private Timer timer = new Timer();
         private boolean ballPostIndex;
 
         public SendBallToShooter() {
@@ -116,16 +143,21 @@ public class ShootWithSensors extends SequentialCommandGroup {
             ballPostIndex = Robot.shooter.ballInShooter();
         }
 
+        @Override
+        public void initialize() {
+            timer.reset();
+            timer.start();
+        }
 
         @Override
         public void execute() {
             ballPostIndex = Robot.shooter.ballInShooter();
-            Robot.conveyor.runConveyor(0.5);
+            Robot.conveyor.runConveyor(1);
         }
 
         @Override
         public boolean isFinished() {
-            return ballPostIndex;
+            return ballPostIndex || timer.get() >= 1;
         }
 
         @Override

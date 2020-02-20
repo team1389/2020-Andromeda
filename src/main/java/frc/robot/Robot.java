@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     public static OI oi = new OI();
 
     private SendableChooser shooterSlotChooser = new SendableChooser();
+    public SendableChooser<Command> autoChooser = new SendableChooser();
 
     @Override
 
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
         shooterSlotChooser.addOption("Slot 7", 7);
         shooterSlotChooser.addOption("Slot 8", 8);
         SmartDashboard.putData(shooterSlotChooser);
+        SmartDashboard.putData("Autonomous Chooser", autoChooser);
     }
 
     /**
@@ -66,6 +68,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         intake.extendIntake();
         //Example of setting auto: CommandScheduler.getInstance().schedule(YOUR AUTO);
+        CommandScheduler.getInstance().schedule(autoChooser.getSelected());
     }
 
     /**
@@ -80,7 +83,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
     }
 
     /**
