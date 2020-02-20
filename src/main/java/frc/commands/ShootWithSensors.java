@@ -18,18 +18,9 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         this.distance = distance;
-        double shooterspeed;
-        switch (slot) {
-            case 1: ShooterSpeed = distance/10; break;
-            case 2: ShooterSpeed = distance/10; break;
-            case 3: ShooterSpeed = distance/10; break;
-            case 4: ShooterSpeed = distance/10; break;
-            case 5: ShooterSpeed = distance/10; break;
-            case 6: ShooterSpeed = distance/10; break;
-            case 7: ShooterSpeed = distance/10; break;
-            case 8: ShooterSpeed = distance/10; break;
+        double shooterspeed=Robot.shooter.shootDistance(distance,slot);
 
-        }
+
 
         addCommands(
                 new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
