@@ -154,7 +154,7 @@ public class AdjustToTarget extends CommandBase {
                 System.out.print("rotating");
             }
             else {
-                distanceAlign();
+                //distanceAlign();
             }
 
             goalLeftPower = Math.max(-0.2, Math.min(0.2, goalLeftPower));

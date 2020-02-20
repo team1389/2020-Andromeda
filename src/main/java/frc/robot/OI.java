@@ -1,10 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.commands.*;
+
+import java.time.Instant;
 
 public class OI {
     public XboxController driveController, manipController;
@@ -18,21 +21,27 @@ public class OI {
     private JoystickButton xBtn;
     private JoystickButton yBtn;
     private JoystickButton rBumper;
+    private JoystickButton lStick;
 
     public OI() {
         driveController = new XboxController(0);
         manipController = new XboxController(1);
 
+        yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
+        yBtn.whenPressed(new InstantCommand(() -> Robot.climber.retract()));
 
+        rBumper = new JoystickButton(manipController, XboxController.Button.kBumperRight.value);
+        rBumper.whenPressed(new InstantCommand(() -> Robot.intake.retractIntake()));
 
         aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
         aBtn.toggleWhenPressed(new RunIntake());
 
         xBtn = new JoystickButton(manipController, XboxController.Button.kX.value);
-        xBtn.toggleWhenPressed(new RunIntakeReverse());
+        xBtn.toggleWhenPressed(new InstantCommand(() -> Robot.climber.extend()));
 
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         lBumper.toggleWhenPressed(new RunConveyor());
+
 
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
     }
