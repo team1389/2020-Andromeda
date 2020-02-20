@@ -28,7 +28,7 @@ public class TurnToAngle extends CommandBase {
         addRequirements(drivetrain);
 
         if(isRelativeTurn) {
-            drivetrain.ahrs.reset();
+            targetAngle = Robot.drivetrain.getAngle() + targetDegrees;
         }
     }
 

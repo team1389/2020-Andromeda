@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        drivetrain.ahrs.reset(); //This is so 0 is the heading of robot on start of auto
         intake.extendIntake();
         //Example of setting auto: CommandScheduler.getInstance().schedule(YOUR AUTO);
         CommandScheduler.getInstance().schedule(autoChooser.getSelected());
