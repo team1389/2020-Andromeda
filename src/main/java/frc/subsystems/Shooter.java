@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
     public double shootDistance(double distance, int slot){
         double ShooterSpeed=0;
         switch (slot) {
-            case 1: ShooterSpeed = distance/10; break;
+            case 1: ShooterSpeed = distance/10; break;//need testing for exact equation
             case 2: ShooterSpeed = distance/10; break;
             case 3: ShooterSpeed = distance/10; break;
             case 4: ShooterSpeed = distance/10; break;
