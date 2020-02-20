@@ -9,15 +9,25 @@ import frc.robot.Robot;
 import frc.utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
-    double shootingSpeed;
-
+    double distance;
+    double ShooterSpeed;
     static boolean outOfBalls;
 
-    public ShootWithSensors(double shootingSpeed) {
+    public ShootWithSensors(double distance) {
         outOfBalls = false;
 
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-        this.shootingSpeed = shootingSpeed;
+        this.distance = distance;
+        double shooterspeed;
+        if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 1")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 2")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 3")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 4")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 5")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 6")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 7")){ShooterSpeed=distance/10;}
+        else if(SmartDashboard.getData("Autonomous Chooser").equals("Slot 8")){ShooterSpeed=distance/10;}
+
         addCommands(
                 new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
                 new WaitCommand(0.25),
@@ -46,7 +56,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shootingSpeed)),
+                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(ShooterSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(waitSeconds),
                     new SendBallToShooter()

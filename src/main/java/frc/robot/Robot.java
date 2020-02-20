@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
 
     public static OI oi = new OI();
 
-    private SendableChooser shooterSlotChooser = new SendableChooser();
+    public SendableChooser shooterSlotChooser = new SendableChooser();
     public SendableChooser<Command> autoChooser = new SendableChooser();
 
     @Override
