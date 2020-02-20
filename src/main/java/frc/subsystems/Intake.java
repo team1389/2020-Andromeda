@@ -8,19 +8,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
-    private DoubleSolenoid leftExtender, rightExtender;
+    private DoubleSolenoid extender;
     private VictorSPX intakeMotor;
 
     public Intake() {
         intakeMotor = new VictorSPX(RobotMap.INTAKE_MOTOR);
-        leftExtender = new DoubleSolenoid(RobotMap.PCM_CAN,RobotMap.INTAKE_LEFT_FORWARD_SOLENOID, RobotMap.INTAKE_LEFT_REVERSE_SOLENOID);
-        rightExtender = new DoubleSolenoid(RobotMap.PCM_CAN, RobotMap.INTAKE_RIGHT_FORWARD_SOLENOID,
-                RobotMap.INTAKE_RIGHT_REVERSE_SOLENOID);
+        extender = new DoubleSolenoid(RobotMap.PCM_CAN, RobotMap.INTAKE_FORWARD_SOLENOID,
+                RobotMap.INTAKE_REVERSE_SOLENOID);
     }
 
     public void extendIntake() {
-        leftExtender.set(DoubleSolenoid.Value.kForward);
-        rightExtender.set(DoubleSolenoid.Value.kForward);
+        extender.set(DoubleSolenoid.Value.kForward);
+    }
+    public void retractIntake(){
+        extender.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void runIntake(double percent) {
