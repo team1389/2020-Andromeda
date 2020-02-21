@@ -11,7 +11,7 @@ import frc.utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
 
-    enum ShootType {
+    public enum ShootType {
         Distance,
         Speed
     }

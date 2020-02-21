@@ -20,9 +20,9 @@ public class LeftToShieldGen extends SequentialCommandGroup {
 
     public LeftToShieldGen(){
         addRequirements(Robot.drivetrain,Robot.shooter);
-        addCommands(new ShootWithSensors(2000),
+        addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
                     new TurnToAngle(0,false),
                     new DriveDistance(da3),
-                    new ShootWithSensors(2000));
+                    new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0));
     }
 }

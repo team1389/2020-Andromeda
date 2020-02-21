@@ -13,7 +13,7 @@ public class ShootAndCrossAutoLine extends SequentialCommandGroup {
 
     public ShootAndCrossAutoLine(){
         addRequirements(Robot.drivetrain, Robot.shooter);
-        addCommands(new ShootWithSensors(2000),
+        addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
                     new InstantCommand(() -> Robot.drivetrain.set(1,1)),
                     new WaitCommand(0.5),
                     new InstantCommand(() -> Robot.drivetrain.set(0,0)));
