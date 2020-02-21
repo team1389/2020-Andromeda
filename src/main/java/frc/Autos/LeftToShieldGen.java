@@ -15,12 +15,14 @@ import frc.robot.Robot;
  * (For now it just goes straight forward)
  */
 public class LeftToShieldGen extends SequentialCommandGroup {
-public double da3 = -102.5; //Distance to the shield generator
-public LeftToShieldGen(){
-addRequirements(Robot.drivetrain,Robot.shooter);
-addCommands(new ShootWithSensors(2000),new TurnToAngle(0,false), new DriveDistance(da3), new ShootWithSensors(2000));
 
-}
+    private final double da3 = -102.5; //Distance to the shield generator
 
-
+    public LeftToShieldGen(){
+        addRequirements(Robot.drivetrain,Robot.shooter);
+        addCommands(new ShootWithSensors(2000),
+                    new TurnToAngle(0,false),
+                    new DriveDistance(da3),
+                    new ShootWithSensors(2000));
+    }
 }

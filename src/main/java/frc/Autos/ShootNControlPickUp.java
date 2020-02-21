@@ -6,8 +6,6 @@ import frc.commands.ShootWithSensors;
 import frc.commands.TurnToAngle;
 import frc.robot.Robot;
 
-import javax.swing.*;
-
 /**
  *
  * Shoots and picks up from the control panel and then shoots again
@@ -15,13 +13,11 @@ import javax.swing.*;
  */
 public class ShootNControlPickUp extends SequentialCommandGroup {
 
-public ShootNControlPickUp(){
-
-addRequirements(Robot.drivetrain, Robot.shooter);
-addCommands(new ShootWithSensors(2000),new TurnToAngle(0,false), new DriveDistance(-191.2), new ShootWithSensors(2000));
-
-
-
-}
-
+    public ShootNControlPickUp(){
+        addRequirements(Robot.drivetrain, Robot.shooter);
+        addCommands(new ShootWithSensors(2000),
+                new TurnToAngle(0,false),
+                new DriveDistance(-191.2),
+                new ShootWithSensors(2000));
+    }
 }
