@@ -16,6 +16,7 @@ import javax.swing.*;
 public class ShootNControlPickUp extends SequentialCommandGroup {
 
 public ShootNControlPickUp(){
+
 addRequirements(Robot.drivetrain, Robot.shooter);
 addCommands(new ShootWithSensors(2000),new TurnToAngle(0,false), new DriveDistance(-191.2), new ShootWithSensors(2000));
 

@@ -2,6 +2,7 @@ package frc.commands;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -20,6 +21,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     static boolean outOfBalls;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         this.value = distanceOrSpeedValue;
         outOfBalls = false;
@@ -43,6 +45,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         Robot.shooter.stopMotors();
         Robot.indexer.stopIndexer();
         Robot.conveyor.stopConveyor();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+
     }
 
     @Override
@@ -98,6 +102,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             System.out.println("killed command");
             Robot.indexer.stopIndexer();
             Robot.conveyor.stopConveyor();
+
         }
 
         @Override

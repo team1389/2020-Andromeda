@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -50,6 +51,7 @@ public class Robot extends TimedRobot {
         shooterSlotChooser.addOption("Slot 8", 8);
         SmartDashboard.putData(shooterSlotChooser);
         SmartDashboard.putData("Autonomous Chooser", autoChooser);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     /**
