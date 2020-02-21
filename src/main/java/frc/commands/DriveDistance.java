@@ -11,19 +11,19 @@ public class DriveDistance extends CommandBase {
     private double WHEEL_DIAMETER_CONSTANT = 10.3/(5*Math.PI);
 
     private double targetDistance;
-    private Drivetrain drivetrain = new Drivetrain();
+    private Drivetrain drivetrain;
 
-    private PIDController pid;
+    private CANPIDController leftPid;
+    private CANPIDController rightPid;
 
     private double error;
-    private double goalPower;
 
 
     public void initialize() {
-        pid = new PIDController(0.1, 0, 0);
         drivetrain = Robot.drivetrain;
 
-        drivetrain.resetEncoders();
+        leftPid = drivetrain.getLeftPidController();
+        rightPid = drivetrain.getRightPidController();
     }
 
     public DriveDistance(double targetInches) {
@@ -36,12 +36,9 @@ public class DriveDistance extends CommandBase {
     @Override
     public void execute() {
         error = targetDistance - drivetrain.leftLeaderEncoder();
-        goalPower = pid.calculate(drivetrain.leftLeaderEncoder(), targetDistance);
 
-        goalPower = Math.max(-0.2, Math.min(0.2, goalPower));
-
-        //Limit max speed (only for testing, remove later)
-        drivetrain.set(goalPower, goalPower);
+        leftPid.setReference(targetDistance, ControlType.kVelocity);
+        rightPid.setReference(targetDistance, ControlType.kVelocity);
 
         System.out.println(error);
     }

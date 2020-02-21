@@ -3,16 +3,16 @@ package frc.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class ExtendClimber extends CommandBase {
+public class RetractClimber extends CommandBase {
 
-    public ExtendClimber() {
+    public RetractClimber() {
         addRequirements(Robot.climber);
     }
 
     @Override
     public void initialize() {
-        Robot.climber.extend();
-        System.out.println("extending climber");
+        Robot.climber.retract();
+        System.out.println("retracting climber");
     }
 
 }

@@ -2,8 +2,10 @@ package frc.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,6 +16,7 @@ public class Drivetrain extends SubsystemBase {
     private DifferentialDrive differentialDrive;
     private CANSparkMax rightLeader, rightFollower, leftLeader, leftFollower;
     private CANEncoder leftLeaderEncoder, rightLeaderEncoder;
+    private CANPIDController leftPid, rightPid;
 
     public Drivetrain() {
         rightLeader = new CANSparkMax(RobotMap.RIGHT_DRIVE_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -37,10 +40,29 @@ public class Drivetrain extends SubsystemBase {
         leftLeaderEncoder.setPosition(0);
         rightLeaderEncoder.setPosition(0);
         ahrs.reset();
+
+        leftPid = new CANPIDController(leftLeader);
+        rightPid = new CANPIDController(rightLeader);
+
+        leftPid.setP(0.1);
+        leftPid.setI(0);
+        leftPid.setD(0);
+
+        rightPid.setP(0.1);
+        rightPid.setI(0);
+        rightPid.setD(0);
     }
 
     public double leftLeaderEncoder() {
         return leftLeaderEncoder.getPosition();
+    }
+
+    public CANPIDController getLeftPidController() {
+        return leftPid;
+    }
+
+    public CANPIDController getRightPidController() {
+        return rightPid;
     }
 
     public double rightLeaderEncoder() {
@@ -49,7 +71,6 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double leftY, double rightX, boolean isQuickTurn) {
         differentialDrive.curvatureDrive(leftY, rightX, isQuickTurn);
-        System.out.println("running drive method");
     }
 
     public void set(double leftPower, double rightPower) {
