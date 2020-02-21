@@ -13,7 +13,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.commands.ShootWithSensors;
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
@@ -65,7 +67,21 @@ public class Shooter extends SubsystemBase {
     public boolean ballInShooter() {
         return !shooterBeamBreak.get();
     }
+    public double shootDistance(double distance, int slot){
+        double ShooterSpeed=0;
+        switch (slot) {
+            case 1: ShooterSpeed = distance/10; break;//need testing for exact equation
+            case 2: ShooterSpeed = distance/10; break;
+            case 3: ShooterSpeed = distance/10; break;
+            case 4: ShooterSpeed = distance/10; break;
+            case 5: ShooterSpeed = distance/10; break;
+            case 6: ShooterSpeed = distance/10; break;
+            case 7: ShooterSpeed = distance/10; break;
+            case 8: ShooterSpeed = distance/10; break;
 
+        }
+        return ShooterSpeed;
+    }
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Ball in shooter", ballInShooter());

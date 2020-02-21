@@ -9,15 +9,25 @@ import frc.robot.Robot;
 import frc.utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
-    double shootingSpeed;
 
+    enum ShootType {
+        Distance,
+        Speed
+    }
+
+    double value;
+    double ShooterSpeed;
     static boolean outOfBalls;
 
-    public ShootWithSensors(double shootingSpeed) {
-        outOfBalls = false;
-
+    public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-        this.shootingSpeed = shootingSpeed;
+        this.value = distanceOrSpeedValue;
+        outOfBalls = false;
+        if(type == ShootType.Distance)
+            ShooterSpeed = Robot.shooter.shootDistance(distanceOrSpeedValue, slot);
+        else if(type == ShootType.Speed)
+            ShooterSpeed = distanceOrSpeedValue;
+
         addCommands(
                 new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
                 new WaitCommand(0.25),
@@ -46,7 +56,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shootingSpeed)),
+                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(ShooterSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(waitSeconds),
                     new SendBallToShooter()
