@@ -9,20 +9,24 @@ import frc.robot.Robot;
 import frc.utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
+
+    enum ShootType {
+        Distance,
+        Speed
+    }
+
     double value;
     double ShooterSpeed;
     static boolean outOfBalls;
 
-    public ShootWithSensors(double value, int slot, boolean Distance) {
-        outOfBalls = false;
-
+    public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-        this.value = value;
-        if(Distance) {
-            ShooterSpeed = Robot.shooter.shootDistance(value, slot);
-        }
-        else{ShooterSpeed=value;}
-
+        this.value = distanceOrSpeedValue;
+        outOfBalls = false;
+        if(type == ShootType.Distance)
+            ShooterSpeed = Robot.shooter.shootDistance(distanceOrSpeedValue, slot);
+        else if(type == ShootType.Speed)
+            ShooterSpeed = distanceOrSpeedValue;
 
         addCommands(
                 new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
