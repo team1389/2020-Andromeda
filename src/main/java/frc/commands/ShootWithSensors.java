@@ -29,8 +29,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         else if(type == ShootType.Speed)
             ShooterSpeed = distanceOrSpeedValue;
 
-        addCommands(
-                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
+        addCommands(new AdjustToTarget(),
+                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),new InstantCommand(() -> Robot.shooter.setShooterVoltage(1)),
                 new WaitCommand(0.25),
                 new ShootOnce(0.25),
                 new ShootOnce(0),
@@ -41,6 +41,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     @Override
     public void initialize() {
+        super.initialize();
         outOfBalls = false;
     }
 
@@ -65,7 +66,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(ShooterSpeed)),
+                    new SendBallToIndexer(),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(waitSeconds),
                     new SendBallToShooter()

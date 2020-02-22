@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
 
     public void robotInit() {
         Shuffleboard.getTab("gyro tab").add(drivetrain.ahrs);
-
+        climber.retract();
         shooterSlotChooser.addOption("Slot 1", 1);
         shooterSlotChooser.addOption("Slot 2", 2);
         shooterSlotChooser.addOption("Slot 3", 3);
@@ -86,7 +86,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
     }
 
     /**

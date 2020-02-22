@@ -9,8 +9,8 @@ import frc.robot.RobotMap;
 public class Climber extends SubsystemBase {
 
     public final DoubleSolenoid extender;
-    private CANSparkMax leftMotor;
-    private CANSparkMax rightMotor;
+    public CANSparkMax leftMotor;
+    public CANSparkMax rightMotor;
 
 
     public Climber() {                  // Here
@@ -18,8 +18,10 @@ public class Climber extends SubsystemBase {
                 RobotMap.CLIMBER_REVERSE_SOLENOID);
         leftMotor = new CANSparkMax(RobotMap.CLIMBER_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftMotor.restoreFactoryDefaults();
+        leftMotor.setInverted(true);
         rightMotor = new CANSparkMax(RobotMap.CLIMBER_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightMotor.restoreFactoryDefaults();
+
     }
 
     public void extend() {
