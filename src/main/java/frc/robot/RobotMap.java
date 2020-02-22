@@ -24,7 +24,7 @@ public class RobotMap {
     public static final int INDEX_MOTOR = 10;
     //Sensors
     public static final int DIO_INTAKE_BEAM_BREAK = 0;
-    public static final int DIO_PRE_INDEX_BEAM_BREAK = 1;
+    public static final int DIO_PRE_INDEX_BEAM_BREAK = 9;
     public static final int DIO_SHOOTER_BEAM_BREAK = 2;
     // Climber
     public static int CLIMBER_LEFT_MOTOR = 5;

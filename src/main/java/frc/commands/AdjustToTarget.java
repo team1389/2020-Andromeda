@@ -34,6 +34,8 @@ public class AdjustToTarget extends CommandBase {
 
     @Override
     public void initialize() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+
         SmartDashboard.putNumber("P Constant", DRIVE_ROTATION_P);
         SmartDashboard.putNumber("I Constant", DRIVE_ROTATION_I);
         SmartDashboard.putNumber("D Constant", DRIVE_ROTATION_D);

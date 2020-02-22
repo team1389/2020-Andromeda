@@ -19,12 +19,11 @@ public class ShootWithSensors extends SequentialCommandGroup {
     double value;
     double ShooterSpeed;
     static boolean outOfBalls;
+    public static double timeToWait = 5;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         this.value = distanceOrSpeedValue;
-        outOfBalls = false;
         if(type == ShootType.Distance)
             ShooterSpeed = Robot.shooter.shootDistance(distanceOrSpeedValue, slot);
         else if(type == ShootType.Speed)
@@ -41,10 +40,16 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     @Override
+    public void initialize() {
+        outOfBalls = false;
+    }
+
+    @Override
     public void end(boolean interrupted) {
         Robot.shooter.stopMotors();
         Robot.indexer.stopIndexer();
         Robot.conveyor.stopConveyor();
+        System.out.println("Killed Shoot With Sensors");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
     }
@@ -92,14 +97,13 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public void execute() {
-            System.out.println("Running command");
             Robot.conveyor.runConveyor(1);     // Move conveyor if not in place
             ballPreIndex = Robot.indexer.ballAtIndexer();     //Update ballPreIndex
         }
 
         @Override
         public void end(boolean interrupted) {
-            System.out.println("killed command");
+            System.out.println("killed Send Ball to Indexer command");
             Robot.indexer.stopIndexer();
             Robot.conveyor.stopConveyor();
 
@@ -107,7 +111,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            if(timer.get() >= 1) {
+            if(timer.get() >= ShootWithSensors.timeToWait) {
+                System.out.println("timed out on Send Ball To indexer");
                 outOfBalls = true;
                 return true;
             }
@@ -172,7 +177,10 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            return ballPostIndex || timer.get() >= 1;
+            if(timer.get() >= ShootWithSensors.timeToWait){
+                System.out.println("Timing out on SendBallToShooter");
+            }
+            return ballPostIndex || timer.get() >= ShootWithSensors.timeToWait;
         }
 
         @Override

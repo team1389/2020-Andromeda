@@ -21,9 +21,8 @@ public class SizeLimitedQueue {
 
     public double getAverage() {
         double sum = 0;
-        Iterator iterator = queue.iterator();
-        while (iterator.hasNext()) {
-            sum += (double) iterator.next();
+        for(Double num: queue){
+            sum+=num;
         }
         return sum/queue.size();
     }

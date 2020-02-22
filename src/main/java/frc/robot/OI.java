@@ -27,11 +27,15 @@ public class OI {
         driveController = new XboxController(0);
         manipController = new XboxController(1);
 
+        bBtn = new JoystickButton(manipController, XboxController.Button.kB.value);
+        bBtn.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed,200, 0));
+
         yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
-        yBtn.whenPressed(new InstantCommand(() -> Robot.climber.retract()));
+        yBtn.whenPressed(new InstantCommand(() -> Robot.indexer.runIndexer(1)));
 
         rBumper = new JoystickButton(manipController, XboxController.Button.kBumperRight.value);
-        rBumper.whenPressed(new InstantCommand(() -> Robot.intake.retractIntake()));
+        rBumper.whenPressed
+                (new InstantCommand(() -> Robot.intake.retractIntake()));
 
         aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
         aBtn.toggleWhenPressed(new RunIntake());
