@@ -20,48 +20,59 @@ import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-    private CANSparkMax shooterTopLeader;
-    private CANSparkMax shooterBottomFollower;
+    private CANSparkMax shooterTop;
+    private CANSparkMax shooterBottom;
     private DigitalInput shooterBeamBreak;
     private double kP = 0.000400;
     private double kI = 0.000001;
     private int kD = 0;
-    private CANPIDController pid;
+    private CANPIDController topPid;
+    private CANPIDController bottomPid;
+
 
     public Shooter() {
-        shooterTopLeader = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterTopLeader.restoreFactoryDefaults();
-        shooterBottomFollower = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
-        shooterBottomFollower.restoreFactoryDefaults();
-        shooterBottomFollower.follow(shooterTopLeader);
+        shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterTop.restoreFactoryDefaults();
+        shooterBottom = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
+        shooterBottom.restoreFactoryDefaults();
 
         shooterBeamBreak = new DigitalInput(RobotMap.DIO_SHOOTER_BEAM_BREAK);
 
-        pid = new CANPIDController(shooterTopLeader);
-        pid.setP(kP);
-        pid.setI(kI);
-        pid.setD(kD);
+        topPid = new CANPIDController(shooterTop);
+        topPid.setP(kP);
+        topPid.setI(kI);
+        topPid.setD(kD);
+
+        bottomPid = new CANPIDController(shooterBottom);
+        bottomPid.setP(kP);
+        bottomPid.setI(kI);
+        bottomPid.setD(kD);
     }
 
     public void setShooterVoltage(double percent) {
-        shooterTopLeader.set(percent);
+        shooterTop.set(percent);
+        shooterBottom.set(percent);
     }
 
     public void stopMotors() {
-        shooterTopLeader.set(0);
-        shooterBottomFollower.set(0);
+        shooterTop.set(0);
+        shooterBottom.set(0);
     }
 
     public CANPIDController getShooterTopPIDController() {
-        return pid;
+        return topPid;
+    }
+
+    public CANPIDController getShooterBottomPIDController() {
+        return bottomPid;
     }
 
     public double getShooterTopRPM() {
-        return shooterTopLeader.getEncoder().getVelocity();
+        return shooterTop.getEncoder().getVelocity();
     }
 
     public double getShooterBottomRPM() {
-        return shooterBottomFollower.getEncoder().getVelocity();
+        return shooterBottom.getEncoder().getVelocity();
     }
 
     public boolean ballInShooter() {
@@ -86,6 +97,6 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
 
         SmartDashboard.putBoolean("Ball in shooter", ballInShooter());
-        SmartDashboard.putNumber("Shooter RPM", shooterTopLeader.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Shooter Top RPM", shooterTop.getEncoder().getVelocity());
     }
 }

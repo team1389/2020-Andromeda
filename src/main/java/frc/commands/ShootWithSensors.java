@@ -118,7 +118,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     public static class SpinUpShooters extends CommandBase {
-        private CANPIDController pid = Robot.shooter.getShooterTopPIDController();
+        private CANPIDController topPid = Robot.shooter.getShooterTopPIDController();
+        private CANPIDController bottomPid = Robot.shooter.getShooterBottomPIDController();
         private double shooterTargetRPM;
         private double tolerance;
         private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
@@ -132,7 +133,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         @Override
         public void execute() {
             SmartDashboard.putBoolean("pid-ing", true);
-            pid.setReference(shooterTargetRPM, ControlType.kVelocity);
+            topPid.setReference(shooterTargetRPM, ControlType.kVelocity);
+            bottomPid.setReference(shooterTargetRPM, ControlType.kVelocity);
 
         }
 
@@ -146,7 +148,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         public boolean isFinished() {
             double error = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
             recentErrors.addElement(error);
-            SmartDashboard.putNumber("average error", recentErrors.getAverage());
+            SmartDashboard.putNumber("average top error", recentErrors.getAverage());
 
             return tolerance >= Math.abs(recentErrors.getAverage());
         }
