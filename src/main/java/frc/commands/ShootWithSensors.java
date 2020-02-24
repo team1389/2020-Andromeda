@@ -127,6 +127,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         public SpinUpShooters(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
             this.shooterTargetRPM = shooterTargetRPM;
+
+            this.shooterTargetRPM = Math.min(5000, shooterTargetRPM);
             tolerance = 3;
         }
 
