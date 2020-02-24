@@ -23,7 +23,7 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax shooterTopLeader;
     private CANSparkMax shooterBottomFollower;
     private DigitalInput shooterBeamBreak;
-    private double kP = 0.000350;
+    private double kP = 0.000400;
     private double kI = 0.000001;
     private int kD = 0;
     private CANPIDController pid;
@@ -84,6 +84,8 @@ public class Shooter extends SubsystemBase {
     }
     @Override
     public void periodic() {
+
         SmartDashboard.putBoolean("Ball in shooter", ballInShooter());
+        SmartDashboard.putNumber("Shooter RPM", shooterTopLeader.getEncoder().getVelocity());
     }
 }

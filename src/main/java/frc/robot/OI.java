@@ -1,14 +1,8 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.commands.*;
-
-import java.time.Instant;
 
 public class OI {
     public XboxController driveController, manipController;
@@ -16,7 +10,7 @@ public class OI {
     RunIntake runIntake = new RunIntake();
     RunConveyor runConveyor = new RunConveyor();
 
-    private JoystickButton bBtn,aBtn,lBumper,xBtn,yBtn,rBumper,lStick, rTrigger;
+    public JoystickButton bBtn,aBtn,lBumper,xBtn,yBtn,rBumper,lStick, rTrigger;
 
     public OI() {
         driveController = new XboxController(0);
@@ -35,15 +29,14 @@ public class OI {
                 (new WinchClimber());
 
         xBtn = new JoystickButton(manipController, XboxController.Button.kX.value);
-        xBtn.whenPressed(new ExtendClimber());
+        xBtn.toggleWhenPressed(new ToggleClimber());
 
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
-        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 20,0));
+        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000,0));
 
-        //Conveyor Commands
-        lStick = new JoystickButton(manipController, XboxController.Button.kStickLeft.value);
-        lStick.whenActive(new RunConveyor());
+        yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
+        yBtn.whenHeld(new AdjustToTarget());
 
 
 

@@ -3,6 +3,7 @@ package frc.Autos;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.commands.AdjustToTarget;
 import frc.commands.ShootWithSensors;
 import frc.robot.Robot;
 
@@ -13,9 +14,9 @@ public class ShootAndCrossAutoLine extends SequentialCommandGroup {
 
     public ShootAndCrossAutoLine(){
         addRequirements(Robot.drivetrain, Robot.shooter);
-        addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
-                    new InstantCommand(() -> Robot.drivetrain.set(1,1)),
-                    new WaitCommand(0.5),
-                    new InstantCommand(() -> Robot.drivetrain.set(0,0)));
+        addCommands(  new InstantCommand(() -> Robot.drivetrain.drive(1,0,false, false)),
+                new WaitCommand(1.5),
+                new InstantCommand(() -> Robot.drivetrain.set(0,0)),
+                new ShootWithSensors(ShootWithSensors.ShootType.Speed, 4750, 0));
     }
 }

@@ -17,20 +17,19 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     double value;
-    double ShooterSpeed;
-    static boolean outOfBalls;
-    public static double timeToWait = 5;
+    double shooterSpeed;
+    public static double timeToWait = 3;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         this.value = distanceOrSpeedValue;
         if(type == ShootType.Distance)
-            ShooterSpeed = Robot.shooter.shootDistance(distanceOrSpeedValue, slot);
+            shooterSpeed = Robot.shooter.shootDistance(distanceOrSpeedValue, slot);
         else if(type == ShootType.Speed)
-            ShooterSpeed = distanceOrSpeedValue;
+            shooterSpeed = distanceOrSpeedValue;
 
-        addCommands(new AdjustToTarget(),
-                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),new InstantCommand(() -> Robot.shooter.setShooterVoltage(1)),
+        addCommands(
+                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),new InstantCommand(() -> Robot.shooter.setShooterVoltage(shooterSpeed)),
                 new WaitCommand(0.25),
                 new ShootOnce(0.25),
                 new ShootOnce(0),
@@ -42,7 +41,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
     @Override
     public void initialize() {
         super.initialize();
-        outOfBalls = false;
     }
 
     @Override
@@ -55,10 +53,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     }
 
-    @Override
-    public boolean isFinished() {
-        return outOfBalls;
-    }
+
 
     private class ShootOnce extends SequentialCommandGroup {
 
@@ -66,7 +61,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new SendBallToIndexer(),
+                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shooterSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(waitSeconds),
                     new SendBallToShooter()
@@ -114,7 +109,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
         public boolean isFinished() {
             if(timer.get() >= ShootWithSensors.timeToWait) {
                 System.out.println("timed out on Send Ball To indexer");
-                outOfBalls = true;
                 return true;
             }
 
@@ -132,17 +126,20 @@ public class ShootWithSensors extends SequentialCommandGroup {
         public SpinUpShooters(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
             this.shooterTargetRPM = shooterTargetRPM;
-            tolerance = 5;
+            tolerance = 3;
         }
 
         @Override
         public void execute() {
+            SmartDashboard.putBoolean("pid-ing", true);
             pid.setReference(shooterTargetRPM, ControlType.kVelocity);
 
         }
 
         @Override
         public void end(boolean interrupted) {
+            SmartDashboard.putBoolean("pid-ing", false);
+
         }
 
         @Override
@@ -178,10 +175,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            if(timer.get() >= ShootWithSensors.timeToWait){
-                System.out.println("Timing out on SendBallToShooter");
-            }
-            return ballPostIndex || timer.get() >= ShootWithSensors.timeToWait;
+            return ballPostIndex;
         }
 
         @Override

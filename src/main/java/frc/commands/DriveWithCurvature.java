@@ -8,6 +8,7 @@ import frc.subsystems.Drivetrain;
 public class DriveWithCurvature extends CommandBase {
     private Drivetrain drivetrain = null;
 
+    private boolean toggleSlowMode = false;
     public DriveWithCurvature() {
         drivetrain = Robot.drivetrain;
     addRequirements(drivetrain);
@@ -16,9 +17,11 @@ public class DriveWithCurvature extends CommandBase {
     @Override
     public void execute() {
         //initially halved
-        double throttle = Robot.oi.driveController.getY(GenericHID.Hand.kLeft)/3;
-        double rotation = Robot.oi.driveController.getX(GenericHID.Hand.kRight)/3;
+        double throttle = Robot.oi.driveController.getY(GenericHID.Hand.kLeft)/2;
+        double rotation = Robot.oi.driveController.getX(GenericHID.Hand.kRight)/2;
         boolean isQuickTurn = Robot.oi.driveController.getBumper(GenericHID.Hand.kLeft);
-        Robot.drivetrain.drive(throttle, rotation, isQuickTurn);
+        boolean decreaseSpeed = Robot.oi.driveController.getAButton();
+        toggleSlowMode = decreaseSpeed ^ toggleSlowMode;
+        Robot.drivetrain.drive(throttle, rotation, isQuickTurn, toggleSlowMode);
     }
 }

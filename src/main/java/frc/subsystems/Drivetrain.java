@@ -69,8 +69,13 @@ public class Drivetrain extends SubsystemBase {
         return rightLeaderEncoder.getPosition();
     }
 
-    public void drive(double leftY, double rightX, boolean isQuickTurn) {
-        differentialDrive.curvatureDrive(leftY, rightX, isQuickTurn);
+    public void drive(double leftY, double rightX, boolean isQuickTurn, boolean decreaseSpeed) {
+        if(decreaseSpeed){
+            differentialDrive.curvatureDrive(leftY/2, rightX/2, isQuickTurn);
+        }
+        else {
+            differentialDrive.curvatureDrive(leftY, rightX, isQuickTurn);
+        }
     }
 
     public void set(double leftPower, double rightPower) {

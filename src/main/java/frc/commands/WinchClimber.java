@@ -10,7 +10,7 @@ public class WinchClimber extends CommandBase {
 
     @Override
     public void initialize() {
-        Robot.climber.winch(0.2);
+        Robot.climber.winch(0.5);
     }
 
     @Override

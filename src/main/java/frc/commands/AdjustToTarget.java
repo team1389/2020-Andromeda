@@ -20,6 +20,8 @@ public class AdjustToTarget extends CommandBase {
     private double DRIVE_ROTATION_I = 0.05;
     private double DRIVE_ROTATION_D = 0;
 
+    private double runTime = 2;
+
     private Timer timer = new Timer();
 
     //Limelight values
@@ -70,7 +72,10 @@ public class AdjustToTarget extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return 1 >= Math.abs(recentRotations.getAverage());
+        if(timer.get() > runTime){
+            System.out.println("Timed out of AdjustToTarget");
+        }
+        return timer.get() > runTime || 1 >= Math.abs(recentRotations.getAverage());
     }
 
     private void fetchValues() {
