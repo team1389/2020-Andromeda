@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
+/**
+ * IMPORTANT: Make sure the rope is wrapped the right way when running the climber. Ask Jorian for right direction
+ */
 public class Climber extends SubsystemBase {
 
     public final DoubleSolenoid extender;

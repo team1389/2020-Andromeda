@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
 
 //        configChoosers();
 
+        //NOTE: This isn't actually turning off the limelight
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
@@ -85,13 +86,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
 
-        double leftY = oi.manipController.getY(GenericHID.Hand.kLeft);
-        double rightY = oi.manipController.getY(GenericHID.Hand.kRight);
-
-        conveyor.conveyorMotorBack.set(ControlMode.PercentOutput, 1);
-
-//        conveyor.conveyorMotorBack.set(ControlMode.PercentOutput, leftY);
-//        conveyor.conveyorMotorFront.set(ControlMode.PercentOutput, rightY);
 
     }
 
@@ -105,6 +99,7 @@ public class Robot extends TimedRobot {
 
     public void configChoosers(){
 
+        //Running this kills the code. IDK why
         shooterSlotChooser.addOption("Slot 1", 1);
         shooterSlotChooser.addOption("Slot 2", 2);
         shooterSlotChooser.addOption("Slot 3", 3);
