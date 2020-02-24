@@ -10,7 +10,8 @@ public class OI {
     RunIntake runIntake = new RunIntake();
     RunConveyor runConveyor = new RunConveyor();
 
-    public JoystickButton bBtn,aBtn,lBumper,xBtn,yBtn,rBumper,lStick, rTrigger;
+    private JoystickButton bBtn,aBtn,lBumper, yBtn, xBtn,rBumper,lStick, rTrigger;
+    private JoystickButton driveYBtn;
 
     public OI() {
         driveController = new XboxController(0);
@@ -29,14 +30,19 @@ public class OI {
                 (new WinchClimber());
 
         xBtn = new JoystickButton(manipController, XboxController.Button.kX.value);
-        xBtn.toggleWhenPressed(new ToggleClimber());
+        xBtn.whenPressed(new ExtendClimber());
+
+        yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
+        yBtn.whenPressed(new RetractClimber());
 
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000,0));
 
-        yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
-        yBtn.whenHeld(new AdjustToTarget());
+
+
+        driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
+        driveYBtn.whenHeld(new AdjustToTarget());
 
 
 
