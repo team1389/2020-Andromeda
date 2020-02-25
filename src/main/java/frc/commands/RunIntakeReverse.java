@@ -6,13 +6,12 @@ import frc.robot.Robot;
 import frc.subsystems.Intake;
 
 public class RunIntakeReverse extends CommandBase {
-    private Intake intake = null;
-    private boolean isIntaking = false;
+
+    private Intake intake;
 
     public RunIntakeReverse() {
         intake = Robot.intake;
         addRequirements(intake);
-
     }
 
     @Override

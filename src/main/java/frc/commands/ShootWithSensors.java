@@ -16,8 +16,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         Speed
     }
 
-    double value;
-    double shooterSpeed;
+    private double value;
+    private double shooterSpeed;
     public static double timeToWait = 3;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
@@ -53,8 +53,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     }
 
-
-
     private class ShootOnce extends SequentialCommandGroup {
 
         public ShootOnce(double waitSeconds) {
@@ -75,7 +73,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     //Does the process to make sure only 1 ball is in place and preps the shooter motors
-    public static class SendBallToIndexer extends CommandBase {
+    private class SendBallToIndexer extends CommandBase {
         private Timer timer = new Timer();
         private boolean ballPreIndex;
 
@@ -117,7 +115,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         }
     }
 
-    public static class SpinUpShooters extends CommandBase {
+    private class SpinUpShooters extends CommandBase {
         private CANPIDController topPid = Robot.shooter.getShooterTopPIDController();
         private CANPIDController bottomPid = Robot.shooter.getShooterBottomPIDController();
         private double shooterTargetRPM;
@@ -157,7 +155,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         }
     }
 
-    public static class SendBallToShooter extends CommandBase {
+    private class SendBallToShooter extends CommandBase {
         private Timer timer = new Timer();
         private boolean ballPostIndex;
 
