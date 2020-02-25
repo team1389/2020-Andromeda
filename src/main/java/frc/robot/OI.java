@@ -12,7 +12,7 @@ public class OI {
     RunConveyor runConveyor = new RunConveyor();
 
     private JoystickButton bBtn,aBtn,lBumper, yBtn, xBtn,rBumper,lStick, rTrigger;
-    private JoystickButton driveYBtn;
+    public JoystickButton driveYBtn;
 
     public OI() {
         driveController = new XboxController(0);

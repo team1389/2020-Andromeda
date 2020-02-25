@@ -14,7 +14,7 @@ public class Climber extends SubsystemBase {
     public final DoubleSolenoid extender;
     public CANSparkMax leftMotor;
     public CANSparkMax rightMotor;
-
+    public boolean isClimbing;
 
     public Climber() {                  // Here
         extender = new DoubleSolenoid(RobotMap.PCM_CAN, RobotMap.CLIMBER_FORWARD_SOLENOID,
@@ -29,6 +29,7 @@ public class Climber extends SubsystemBase {
 
     public void extend() {
         extender.set(DoubleSolenoid.Value.kForward);
+        isClimbing = true;
     }
 
     public void retract()

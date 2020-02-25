@@ -29,7 +29,7 @@ public class DriveDistance extends CommandBase {
         addRequirements(drivetrain);
 
         //WHEEL_DIAMETER_CONSTANT = (drivetrain.encoderCountsPerRevolution() * 3.49090909093)/(Math.PI*5); //counts per revolution * gear ratio / distance per revolution (pi * diameter)
-        targetDistance = targetInches*WHEEL_DIAMETER_CONSTANT;
+        targetDistance = targetInches * WHEEL_DIAMETER_CONSTANT;
     }
 
     @Override
