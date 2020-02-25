@@ -36,10 +36,11 @@ public class OI {
         yBtn.whenPressed(new RetractClimber());
 
         //Shooter Commands
-        lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
-        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000,0));
+        //lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
+        //lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000,0));
 
-
+        lBumper = new JoystickButton(driveController, XboxController.Button.kBumperRight.value);
+        lBumper.whenHeld(new AdjustToTarget());
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
         driveYBtn.whenHeld(new AdjustToTarget());
@@ -47,7 +48,7 @@ public class OI {
 
 
 
-        Robot.drivetrain.setDefaultCommand(driveWithCurvature);
+        //Robot.drivetrain.setDefaultCommand(driveWithCurvature);
 
     }
 

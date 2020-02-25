@@ -16,8 +16,8 @@ public class AdjustToTarget extends CommandBase {
     private double integral, derivative, previousRotationError, goalRotationPower, currentTX;
     private double goalLeftPower, goalRightPower;
 
-    private double DRIVE_ROTATION_P = 0.0125;
-    private double DRIVE_ROTATION_I = 0.05;
+    private double DRIVE_ROTATION_P = 0.02;//0.0125
+    private double DRIVE_ROTATION_I = 0.0;
     private double DRIVE_ROTATION_D = 0;
 
     private double runTime = 2;
@@ -61,10 +61,13 @@ public class AdjustToTarget extends CommandBase {
             System.out.print("rotating");
 
             //Clip the speed while testing, remove in final
-            goalLeftPower = Math.max(-0.2, Math.min(0.2, goalLeftPower));
-            goalRightPower = Math.max(-0.2, Math.min(0.2, goalRightPower));
+            goalLeftPower = Math.max(-0.5, Math.min(0.5, goalLeftPower));
+            goalRightPower = Math.max(-0.5, Math.min(0.5, goalRightPower));
+
+            SmartDashboard.putNumber("Goal Left Power", goalLeftPower);
 
             drivetrain.set(goalLeftPower, goalRightPower);
+            //drivetrain.set(0.5, -0.5);
         } else {
             System.out.println("No target");
         }
@@ -75,7 +78,9 @@ public class AdjustToTarget extends CommandBase {
         if(timer.get() > runTime){
             System.out.println("Timed out of AdjustToTarget");
         }
-        return timer.get() > runTime || 1 >= Math.abs(recentRotations.getAverage());
+
+        return false;
+        //return timer.get() > runTime || 1 >= Math.abs(recentRotations.getAverage());
     }
 
     private void fetchValues() {
@@ -96,6 +101,8 @@ public class AdjustToTarget extends CommandBase {
 
         goalLeftPower += goalRotationPower;
         goalRightPower += -goalRotationPower;
+
+        SmartDashboard.putNumber("Error", recentRotations.getAverage());
     }
 
     private void RotationPID() {
