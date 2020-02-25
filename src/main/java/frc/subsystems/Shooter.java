@@ -23,7 +23,7 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax shooterTop;
     private CANSparkMax shooterBottom;
     private DigitalInput shooterBeamBreak;
-    private double kP = 0.000400;
+    private double kP = 0.000100; //0.000400;
     private double kI = 0.000001;
     private int kD = 0;
     private CANPIDController topPid;

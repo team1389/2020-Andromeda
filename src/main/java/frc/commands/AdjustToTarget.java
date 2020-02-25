@@ -17,8 +17,12 @@ public class AdjustToTarget extends CommandBase {
     private double goalLeftPower, goalRightPower;
 
     private double DRIVE_ROTATION_P = 0.0125;
-    private double DRIVE_ROTATION_I = 0.05;
+    private double DRIVE_ROTATION_I = 0.0;//0.05
     private double DRIVE_ROTATION_D = 0;
+
+    private double TARGET_HEIGHT_INCHES = 91; //98.25 on real field, 95 on shelf
+    private double CAMERA_ANGLE_DEGREES = 18.88485363; //REMEMBER TO CHANGE THIS EVERY MATCH IF WE ADJUST THE SHOOTER
+    private double CAMERA_HEIGHT_INCHES = 27;
 
     private double runTime = 2;
 
@@ -50,6 +54,8 @@ public class AdjustToTarget extends CommandBase {
 
     @Override
     public void execute() {
+        double distanceToTarget = (TARGET_HEIGHT_INCHES-CAMERA_HEIGHT_INCHES)/(Math.tan(Math.toRadians(CAMERA_ANGLE_DEGREES+ty)));
+
         fetchValues();
 
         goalLeftPower = 0;
@@ -63,6 +69,10 @@ public class AdjustToTarget extends CommandBase {
             //Clip the speed while testing, remove in final
             goalLeftPower = Math.max(-0.2, Math.min(0.2, goalLeftPower));
             goalRightPower = Math.max(-0.2, Math.min(0.2, goalRightPower));
+
+            SmartDashboard.putNumber("Goal Left Power", goalLeftPower);
+            SmartDashboard.putNumber("Distance To Target", distanceToTarget);
+            SmartDashboard.putNumber("Tangent", Math.tan(Math.toRadians(CAMERA_ANGLE_DEGREES+ty)));
 
             drivetrain.set(goalLeftPower, goalRightPower);
         } else {
@@ -81,7 +91,7 @@ public class AdjustToTarget extends CommandBase {
     private void fetchValues() {
         DRIVE_ROTATION_P = SmartDashboard.getNumber("P Constant", 0);
         DRIVE_ROTATION_I = SmartDashboard.getNumber("I Constant", 0);
-        DRIVE_ROTATION_D = SmartDashboard.getNumber("P Constant", 0);
+        DRIVE_ROTATION_D = SmartDashboard.getNumber("D Constant", 0);
 
         tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
         tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -96,6 +106,8 @@ public class AdjustToTarget extends CommandBase {
 
         goalLeftPower += goalRotationPower;
         goalRightPower += -goalRotationPower;
+
+        SmartDashboard.putNumber("Error", recentRotations.getAverage());
     }
 
     private void RotationPID() {

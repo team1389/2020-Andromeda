@@ -3,6 +3,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
 
     public SendableChooser<Integer> shooterSlotChooser = new SendableChooser();
     public SendableChooser<Command> autoChooser = new SendableChooser();
+
 
     @Override
 

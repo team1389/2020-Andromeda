@@ -21,7 +21,7 @@ public class RunIntake extends CommandBase {
     public void execute() {
         intake.runIntake(0.75);
         Robot.conveyor.conveyorMotorFront.set(ControlMode.PercentOutput, 0.5);
-        Robot.conveyor.conveyorMotorBack.set(ControlMode.PercentOutput, 0.15);
+        Robot.conveyor.conveyorMotorBack.set(ControlMode.PercentOutput, 0.5);
     }
 
     @Override

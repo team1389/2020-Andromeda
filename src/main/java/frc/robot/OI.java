@@ -39,8 +39,6 @@ public class OI {
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000,0));
 
-
-
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
         driveYBtn.whenHeld(new AdjustToTarget());
 

@@ -151,6 +151,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             double error = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
             recentErrors.addElement(error);
             SmartDashboard.putNumber("average top error", recentErrors.getAverage());
+            SmartDashboard.putNumber("Shooter Bottom RPM", Robot.shooter.getShooterBottomRPM());
 
             return tolerance >= Math.abs(recentErrors.getAverage());
         }
