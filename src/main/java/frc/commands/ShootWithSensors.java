@@ -4,12 +4,13 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
 import frc.utils.SizeLimitedQueue;
 
-public class ShootWithSensors extends SequentialCommandGroup {
+public class ShootWithSensors extends ParallelCommandGroup {
 
     public enum ShootType {
         Distance,
@@ -28,14 +29,17 @@ public class ShootWithSensors extends SequentialCommandGroup {
         else if(type == ShootType.Speed)
             shooterSpeed = distanceOrSpeedValue;
 
-        addCommands(
-                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),new InstantCommand(() -> Robot.shooter.setShooterVoltage(shooterSpeed)),
-                new WaitCommand(0.25),
-                new ShootOnce(0.25),
-                new ShootOnce(0),
-                new ShootOnce(0),
-                new ShootOnce(0),
-                new ShootOnce(0));
+        SequentialCommandGroup shoot = new SequentialCommandGroup();
+        shoot.addCommands(new InstantCommand(() -> Robot.conveyor.runConveyor(1)), new InstantCommand(() -> Robot.shooter.setShooterVoltage(shooterSpeed)),
+                            new WaitCommand(0.25),
+                            new ShootOnce(0.25),
+                            new ShootOnce(0),
+                            new ShootOnce(0),
+                            new ShootOnce(0),
+                            new ShootOnce(0)
+        );
+        addCommands(shoot, new ShooterPID(shooterSpeed));
+
     }
 
     @Override
@@ -50,10 +54,27 @@ public class ShootWithSensors extends SequentialCommandGroup {
         Robot.conveyor.stopConveyor();
         System.out.println("Killed Shoot With Sensors");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-
     }
 
+    private class ShooterPID extends CommandBase {
 
+        private CANPIDController topPid;
+        private CANPIDController bottomPid;
+        private Double shooterTargetRPM;
+
+        public ShooterPID(Double shooterTargetRPM) {
+            this.shooterTargetRPM = shooterTargetRPM;
+            topPid = Robot.shooter.getShooterTopPIDController();
+            bottomPid = Robot.shooter.getShooterBottomPIDController();
+        }
+
+        @Override
+        public void execute() {
+            topPid.setReference(shooterTargetRPM, ControlType.kVelocity);
+            bottomPid.setReference(shooterTargetRPM, ControlType.kVelocity);
+        }
+
+    }
 
     private class ShootOnce extends SequentialCommandGroup {
 
@@ -61,7 +82,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shooterSpeed)),
+                    new ParallelCommandGroup(new SendBallToIndexer(), new WaitUntilAtSpeed(shooterSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(waitSeconds),
                     new SendBallToShooter()
@@ -117,14 +138,13 @@ public class ShootWithSensors extends SequentialCommandGroup {
         }
     }
 
-    public static class SpinUpShooters extends CommandBase {
-        private CANPIDController topPid = Robot.shooter.getShooterTopPIDController();
-        private CANPIDController bottomPid = Robot.shooter.getShooterBottomPIDController();
+    public static class WaitUntilAtSpeed extends CommandBase {
+
         private double shooterTargetRPM;
         private double tolerance;
         private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
 
-        public SpinUpShooters(double shooterTargetRPM) {
+        public WaitUntilAtSpeed(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
             this.shooterTargetRPM = shooterTargetRPM;
             tolerance = 3;
@@ -133,15 +153,11 @@ public class ShootWithSensors extends SequentialCommandGroup {
         @Override
         public void execute() {
             SmartDashboard.putBoolean("pid-ing", true);
-            topPid.setReference(shooterTargetRPM, ControlType.kVelocity);
-            bottomPid.setReference(shooterTargetRPM, ControlType.kVelocity);
-
         }
 
         @Override
         public void end(boolean interrupted) {
             SmartDashboard.putBoolean("pid-ing", false);
-
         }
 
         @Override
