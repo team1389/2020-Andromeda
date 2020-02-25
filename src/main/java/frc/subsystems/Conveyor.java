@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
+
 public class Conveyor extends SubsystemBase {
     //Front of the robot is the intake side
     public VictorSPX conveyorMotorFront;

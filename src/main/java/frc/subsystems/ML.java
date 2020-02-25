@@ -1,3 +1,5 @@
+package frc.subsystems;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -33,7 +35,7 @@ public class ML extends SubsystemBase {
                 largest = x;
             }
         }
-        return (((largest.x1 +largest.x2)/2) - middleX);
+        return (((largest.x1 +largest.x2)/2) - middleX) / middleX;
 
     }
 }
