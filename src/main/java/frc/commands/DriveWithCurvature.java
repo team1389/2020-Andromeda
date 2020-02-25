@@ -6,12 +6,13 @@ import frc.robot.Robot;
 import frc.subsystems.Drivetrain;
 
 public class DriveWithCurvature extends CommandBase {
-    private Drivetrain drivetrain = null;
 
+    private Drivetrain drivetrain;
     private boolean toggleSlowMode = false;
+
     public DriveWithCurvature() {
         drivetrain = Robot.drivetrain;
-    addRequirements(drivetrain);
+        addRequirements(drivetrain);
 }
 
     @Override

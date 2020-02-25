@@ -9,12 +9,10 @@ import frc.utils.SizeLimitedQueue;
 
 //This commands turns the robot to a specified angle, measured in degrees
 public class TurnToAngle extends CommandBase {
+
     private double targetAngle;
-    private Drivetrain drivetrain = new Drivetrain();
-
+    private Drivetrain drivetrain;
     private PIDController pid;
-
-    private double error;
     private double goalPower;
 
     private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);

@@ -3,7 +3,6 @@ package frc.Autos;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.commands.AdjustToTarget;
 import frc.commands.ShootWithSensors;
 import frc.robot.Robot;
 
