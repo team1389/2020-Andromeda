@@ -19,6 +19,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private double value;
     private double shooterSpeed;
     public static double timeToWait = 3;
+    private final double MAX_SHOOTER_SPEED = 5000;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
@@ -124,9 +125,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         public SpinUpShooters(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
-            this.shooterTargetRPM = shooterTargetRPM;
 
-            this.shooterTargetRPM = Math.min(5000, shooterTargetRPM);
+            this.shooterTargetRPM = Math.min(MAX_SHOOTER_SPEED, shooterTargetRPM);
             tolerance = 3;
         }
 
