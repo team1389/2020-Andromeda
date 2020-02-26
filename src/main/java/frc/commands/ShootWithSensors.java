@@ -167,11 +167,9 @@ public class ShootWithSensors extends ParallelCommandGroup {
 
     public static class SendBallToShooter extends CommandBase {
         private Timer timer = new Timer();
-        private boolean ballPostIndex;
 
         public SendBallToShooter() {
-            addRequirements(Robot.conveyor, Robot.shooter);
-            ballPostIndex = Robot.shooter.ballInShooter();
+            addRequirements(Robot.conveyor);
         }
 
         @Override
@@ -182,13 +180,12 @@ public class ShootWithSensors extends ParallelCommandGroup {
 
         @Override
         public void execute() {
-            ballPostIndex = Robot.shooter.ballInShooter();
             Robot.conveyor.runConveyor(1);
         }
 
         @Override
         public boolean isFinished() {
-            return ballPostIndex;
+            return timer.get() >= 0.1;
         }
 
         @Override

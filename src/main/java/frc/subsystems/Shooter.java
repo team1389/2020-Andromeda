@@ -75,9 +75,6 @@ public class Shooter extends SubsystemBase {
         return shooterBottom.getEncoder().getVelocity();
     }
 
-    public boolean ballInShooter() {
-        return !shooterBeamBreak.get();
-    }
     public double shootDistance(double distance, int slot){
         double ShooterSpeed=0;
         switch (slot) {
@@ -96,7 +93,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
 
-        SmartDashboard.putBoolean("Ball in shooter", ballInShooter());
         SmartDashboard.putNumber("Shooter Top RPM", shooterTop.getEncoder().getVelocity());
     }
 }
