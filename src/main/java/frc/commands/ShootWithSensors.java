@@ -28,8 +28,9 @@ public class ShootWithSensors extends ParallelCommandGroup {
             shooterSpeed = distanceOrSpeedValue;
 
         SequentialCommandGroup shoot = new SequentialCommandGroup();
-        shoot.addCommands(new InstantCommand(() -> Robot.conveyor.runConveyor(1)), new InstantCommand(() -> Robot.shooter.setShooterVoltage(shooterSpeed)),
-                new WaitCommand(0.25),
+
+        //Wait for 0.25 seconds on the first shot to let the indexer speed up
+        shoot.addCommands(new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
                 new ShootOnce(0.25),
                 new ShootOnce(0),
                 new ShootOnce(0),
@@ -76,13 +77,13 @@ public class ShootWithSensors extends ParallelCommandGroup {
 
     private class ShootOnce extends SequentialCommandGroup {
 
-        public ShootOnce(double waitSeconds) {
+        public ShootOnce(double waitForIndexerSeconds) {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
                     new ParallelCommandGroup(new SendBallToIndexer(), new WaitUntilAtSpeed(shooterSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
-                    new WaitCommand(waitSeconds),
+                    new WaitCommand(waitForIndexerSeconds),
                     new SendBallToShooter()
             );
         }
@@ -119,7 +120,6 @@ public class ShootWithSensors extends ParallelCommandGroup {
         @Override
         public void end(boolean interrupted) {
             System.out.println("killed Send Ball to Indexer command");
-            Robot.indexer.stopIndexer();
             Robot.conveyor.stopConveyor();
 
         }
@@ -137,7 +137,8 @@ public class ShootWithSensors extends ParallelCommandGroup {
 
         private double shooterTargetRPM;
         private double tolerance;
-        private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
+        private SizeLimitedQueue recentTopErrors = new SizeLimitedQueue(15);
+        private SizeLimitedQueue recentBottomErrors = new SizeLimitedQueue(15);
 
         public WaitUntilAtSpeed(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
@@ -148,6 +149,14 @@ public class ShootWithSensors extends ParallelCommandGroup {
         @Override
         public void execute() {
             SmartDashboard.putBoolean("pid-ing", true);
+
+            double topError = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
+            recentTopErrors.addElement(topError);
+            SmartDashboard.putNumber("average top error", recentTopErrors.getAverage());
+
+            double bottomError = shooterTargetRPM - Robot.shooter.getShooterBottomRPM();
+            recentBottomErrors.addElement(bottomError);
+            SmartDashboard.putNumber("average bottom error", recentBottomErrors.getAverage());
         }
 
         @Override
@@ -157,11 +166,7 @@ public class ShootWithSensors extends ParallelCommandGroup {
 
         @Override
         public boolean isFinished() {
-            double error = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
-            recentErrors.addElement(error);
-            SmartDashboard.putNumber("average top error", recentErrors.getAverage());
-
-            return tolerance >= Math.abs(recentErrors.getAverage());
+            return tolerance >= Math.abs(recentTopErrors.getAverage()) && tolerance >= Math.abs(recentBottomErrors.getAverage());
         }
     }
 
