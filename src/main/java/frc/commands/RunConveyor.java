@@ -9,24 +9,25 @@ import frc.subsystems.Conveyor;
 public class RunConveyor extends CommandBase {
 
     private Conveyor conveyor;
+    private double bufferZone;
 
-    private double bufferZone = .1;
 
     public RunConveyor() {
         conveyor = Robot.conveyor;
-
         addRequirements(conveyor);
+        bufferZone = 0.1;
     }
 
     @Override
     public void execute() {
-        if (Math.abs(Robot.oi.manipController.getY(GenericHID.Hand.kLeft)) > bufferZone) {
+        if(conveyor.ballAtSecondPosition() || Robot.oi.manipController.getTriggerAxis(GenericHID.Hand.kLeft) > bufferZone){
             conveyor.runConveyor(1);
         }
-        else {
+        else{
             conveyor.runConveyor(0);
         }
     }
+
     @Override
     public void end(boolean interrupted) {
         conveyor.stopConveyor();

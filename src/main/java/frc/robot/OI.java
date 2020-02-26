@@ -11,7 +11,7 @@ public class OI {
     RunIntake runIntake = new RunIntake();
     RunConveyor runConveyor = new RunConveyor();
 
-    private JoystickButton bBtn,aBtn,lBumper, yBtn, xBtn,rBumper,lStick, rTrigger;
+    private JoystickButton bBtn,aBtn,lBumper, yBtn, xBtn,rBumper;
     private JoystickButton driveYBtn;
 
     public OI() {
@@ -27,8 +27,7 @@ public class OI {
 
         //Climber Commands
         rBumper = new JoystickButton(manipController, XboxController.Button.kBumperRight.value);
-        rBumper.whenHeld
-                (new WinchClimber());
+        rBumper.whenHeld(new WinchClimber());
 
         xBtn = new JoystickButton(manipController, XboxController.Button.kX.value);
         xBtn.whenPressed(new ExtendClimber());
@@ -43,8 +42,8 @@ public class OI {
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
         driveYBtn.whenHeld(new AdjustToTarget());
 
-        Robot.conveyor.setDefaultCommand(runConveyor);
 
+        Robot.conveyor.setDefaultCommand(new RunConveyor());
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
 
     }
