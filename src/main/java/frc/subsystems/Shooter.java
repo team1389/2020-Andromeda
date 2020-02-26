@@ -22,7 +22,6 @@ public class Shooter extends SubsystemBase {
 
     private CANSparkMax shooterTop;
     private CANSparkMax shooterBottom;
-    private DigitalInput shooterBeamBreak;
     private double kP = 0.000100; //0.000400;
     private double kI = 0.000001;
     private int kD = 0;
@@ -35,8 +34,6 @@ public class Shooter extends SubsystemBase {
         shooterTop.restoreFactoryDefaults();
         shooterBottom = new CANSparkMax(RobotMap.SHOOTER_BOTTOM, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooterBottom.restoreFactoryDefaults();
-
-        shooterBeamBreak = new DigitalInput(RobotMap.DIO_SHOOTER_BEAM_BREAK);
 
         topPid = new CANPIDController(shooterTop);
         topPid.setP(kP);
