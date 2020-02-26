@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
 import frc.utils.SizeLimitedQueue;
 
-public class ShootWithSensors extends SequentialCommandGroup {
+public class ShootWithSensors extends ParallelCommandGroup {
 
     public enum ShootType {
         Distance,
@@ -18,8 +18,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     private double value;
     private double shooterSpeed;
-    public static double timeToWait = 3;
-    private final double MAX_SHOOTER_SPEED = 5000;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot){
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
@@ -29,14 +27,17 @@ public class ShootWithSensors extends SequentialCommandGroup {
         else if(type == ShootType.Speed)
             shooterSpeed = distanceOrSpeedValue;
 
-        addCommands(
-                new InstantCommand(() -> Robot.conveyor.runConveyor(1)),new InstantCommand(() -> Robot.shooter.setShooterVoltage(shooterSpeed)),
+        SequentialCommandGroup shoot = new SequentialCommandGroup();
+        shoot.addCommands(new InstantCommand(() -> Robot.conveyor.runConveyor(1)), new InstantCommand(() -> Robot.shooter.setShooterVoltage(shooterSpeed)),
                 new WaitCommand(0.25),
                 new ShootOnce(0.25),
                 new ShootOnce(0),
                 new ShootOnce(0),
                 new ShootOnce(0),
-                new ShootOnce(0));
+                new ShootOnce(0)
+        );
+        addCommands(shoot, new ShooterPID(shooterSpeed));
+
     }
 
     @Override
@@ -51,6 +52,25 @@ public class ShootWithSensors extends SequentialCommandGroup {
         Robot.conveyor.stopConveyor();
         System.out.println("Killed Shoot With Sensors");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    }
+
+    private class ShooterPID extends CommandBase {
+
+        private CANPIDController topPid;
+        private CANPIDController bottomPid;
+        private Double shooterTargetRPM;
+
+        public ShooterPID(Double shooterTargetRPM) {
+            this.shooterTargetRPM = shooterTargetRPM;
+            topPid = Robot.shooter.getShooterTopPIDController();
+            bottomPid = Robot.shooter.getShooterBottomPIDController();
+        }
+
+        @Override
+        public void execute() {
+            topPid.setReference(shooterTargetRPM, ControlType.kVelocity);
+            bottomPid.setReference(shooterTargetRPM, ControlType.kVelocity);
+        }
 
     }
 
@@ -60,7 +80,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shooterSpeed)),
+                    new ParallelCommandGroup(new SendBallToIndexer(), new WaitUntilAtSpeed(shooterSpeed)),
                     new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                     new WaitCommand(waitSeconds),
                     new SendBallToShooter()
@@ -74,7 +94,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     }
 
     //Does the process to make sure only 1 ball is in place and preps the shooter motors
-    private class SendBallToIndexer extends CommandBase {
+    public static class SendBallToIndexer extends CommandBase {
         private Timer timer = new Timer();
         private boolean ballPreIndex;
 
@@ -106,42 +126,33 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         @Override
         public boolean isFinished() {
-            if(timer.get() >= ShootWithSensors.timeToWait) {
-                System.out.println("timed out on Send Ball To indexer");
-                return true;
-            }
+
 
             //End if the ball reaches the indexer or if 1 second has passed
             return ballPreIndex;
         }
     }
 
-    private class SpinUpShooters extends CommandBase {
-        private CANPIDController topPid = Robot.shooter.getShooterTopPIDController();
-        private CANPIDController bottomPid = Robot.shooter.getShooterBottomPIDController();
+    public static class WaitUntilAtSpeed extends CommandBase {
+
         private double shooterTargetRPM;
         private double tolerance;
         private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
 
-        public SpinUpShooters(double shooterTargetRPM) {
+        public WaitUntilAtSpeed(double shooterTargetRPM) {
             addRequirements(Robot.shooter);
-
-            this.shooterTargetRPM = Math.min(MAX_SHOOTER_SPEED, shooterTargetRPM);
+            this.shooterTargetRPM = shooterTargetRPM;
             tolerance = 3;
         }
 
         @Override
         public void execute() {
             SmartDashboard.putBoolean("pid-ing", true);
-            topPid.setReference(shooterTargetRPM, ControlType.kVelocity);
-            bottomPid.setReference(shooterTargetRPM, ControlType.kVelocity);
-
         }
 
         @Override
         public void end(boolean interrupted) {
             SmartDashboard.putBoolean("pid-ing", false);
-
         }
 
         @Override
@@ -149,13 +160,12 @@ public class ShootWithSensors extends SequentialCommandGroup {
             double error = shooterTargetRPM - Robot.shooter.getShooterTopRPM();
             recentErrors.addElement(error);
             SmartDashboard.putNumber("average top error", recentErrors.getAverage());
-            SmartDashboard.putNumber("Shooter Bottom RPM", Robot.shooter.getShooterBottomRPM());
 
             return tolerance >= Math.abs(recentErrors.getAverage());
         }
     }
 
-    private class SendBallToShooter extends CommandBase {
+    public static class SendBallToShooter extends CommandBase {
         private Timer timer = new Timer();
         private boolean ballPostIndex;
 
