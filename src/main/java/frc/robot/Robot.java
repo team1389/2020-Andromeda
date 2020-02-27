@@ -36,8 +36,9 @@ public class Robot extends TimedRobot {
     public static Shooter shooter = new Shooter();
     //NOTE: OI must be initialized after all the the other systems
     public static Climber climber = new Climber();
-
+    public static ML ml = new ML();
     public static OI oi = new OI();
+
 
     public SendableChooser<Integer> shooterSlotChooser = new SendableChooser();
     public SendableChooser<Command> autoChooser = new SendableChooser();

@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.commands.*;
+import frc.subsystems.ML;
 
 public class OI {
     public XboxController driveController, manipController;
     DriveWithCurvature driveWithCurvature = new DriveWithCurvature();
     RunIntake runIntake = new RunIntake();
     RunConveyor runConveyor = new RunConveyor();
+    MLPID ml = new MLPID();
 
     private JoystickButton bBtn,aBtn,lBumper, yBtn, xBtn,rBumper;
     private JoystickButton driveYBtn;
@@ -20,7 +22,7 @@ public class OI {
 
         //Intake Buttons
         aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
-        aBtn.toggleWhenPressed(new RunIntake());
+        aBtn.toggleWhenPressed(new MLPID());
 
         bBtn = new JoystickButton(manipController, XboxController.Button.kB.value);
         bBtn.toggleWhenPressed(new Outtake());
