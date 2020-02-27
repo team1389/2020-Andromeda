@@ -52,8 +52,11 @@ public class Drivetrain extends SubsystemBase {
         rightPid.setD(0);
     }
 
-    public double leftLeaderEncoder() {
+    public double getLeftPosition() {
         return leftLeaderEncoder.getPosition();
+    }
+    public double getRightPosition(){
+        return rightLeaderEncoder.getPosition();
     }
 
     public CANPIDController getLeftPidController() {
