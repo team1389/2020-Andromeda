@@ -58,7 +58,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private class ShootOnce extends SequentialCommandGroup {
 
         public ShootOnce(double waitSeconds) {
-            addRequirements(Robot.shooter, Robot.conveyor Robot.indexer);
+            addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
                     new ParallelCommandGroup(new SendBallToIndexer(), new SpinUpShooters(shooterSpeed)),

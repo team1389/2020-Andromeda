@@ -23,12 +23,12 @@ public class MLPID extends CommandBase {
     @Override
     public void execute() {
         double error  = Robot.ml.movement(); //from -1 to 1
-
-        Robot.drivetrain.set(kP,-kP);
         SmartDashboard.putNumber("ML error", error);
         kP = SmartDashboard.getNumber("kP", kP);
         kI = SmartDashboard.getNumber("kI", kI);
         kD = SmartDashboard.getNumber("kD", kD);
+
+        Robot.drivetrain.set(kP,-kP);
 
     }
 
