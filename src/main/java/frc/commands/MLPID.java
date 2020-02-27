@@ -14,24 +14,14 @@ public class MLPID extends CommandBase {
 
     public MLPID() {
         addRequirements(Robot.ml);
-        kP = 0.0000001;
-        SmartDashboard.putNumber("kP", kP);
-        SmartDashboard.putNumber("kI", kI);
-        SmartDashboard.putNumber("kD", kD);
-        pid = new PIDController(kP, kI, kD);
+        pid = new PIDController(0.5, 0.05, 0);
     }
     @Override
     public void execute() {
-        kP = SmartDashboard.getNumber("kP", kP);
-        kI = SmartDashboard.getNumber("kI", kI);
-        kD = SmartDashboard.getNumber("kD", kD);
-        pid.setP(kP);
-        pid.setI(kI);
-        pid.setD(kD);
         double error = Robot.ml.movement();
-        double power = pid.calculate(error,0); //from -1 to 1
-        SmartDashboard.putNumber("ML error", error);
-        Robot.drivetrain.set(power,-power);
+        double power = pid.calculate(error,0);
+//        SmartDashboard.putNumber("ML error", error);
+        Robot.drivetrain.set(-power,power);
 
     }
 
