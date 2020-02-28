@@ -14,37 +14,59 @@ public class TurnToAngle extends CommandBase {
     private Drivetrain drivetrain;
     private PIDController pid;
     private double goalPower;
+    private double kP = 0.01;
+    private double kI = 0.001;
+    private double kD = 0;
+    private boolean isRelativeTurn;
 
     private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
 
     public TurnToAngle(double targetDegrees, boolean isRelativeTurn) {
-        pid = new PIDController(0.1, 0, 0);
-
+        pid = new PIDController(kP, kI, kD);
+        this.isRelativeTurn = isRelativeTurn;
+        pid.enableContinuousInput(0, 360);
         targetAngle = targetDegrees;
+        SmartDashboard.putNumber("kP", kP);
+        SmartDashboard.putNumber("kI", kI);
+        SmartDashboard.putNumber("kD", kD);
+
 
         drivetrain = Robot.drivetrain;
         addRequirements(drivetrain);
 
-        if(isRelativeTurn) {
-            targetAngle = Robot.drivetrain.getAngle() + targetDegrees;
+
+    }
+
+    @Override
+    public void initialize() {
+        if (isRelativeTurn) {
+            targetAngle = Robot.drivetrain.getAngle() + targetAngle;
         }
+        pid.setPID(SmartDashboard.getNumber("kP", 0), SmartDashboard.getNumber("kI", 0),
+                SmartDashboard.getNumber("kD", 0));
     }
 
     @Override
     public void execute() {
-        goalPower = pid.calculate(targetAngle, drivetrain.getAngle());
+        pid.setPID(SmartDashboard.getNumber("kP", 0),
+                SmartDashboard.getNumber("kI", 0),
+                SmartDashboard.getNumber("kD", 0));
+        goalPower = pid.calculate(drivetrain.getAngle(), targetAngle);
 
         //Limit max speed (only for testing, remove later)
-        goalPower = Math.max(-0.2, Math.min(0.2, goalPower));
 
-        drivetrain.set(-goalPower, goalPower);
+        SmartDashboard.putNumber("set power", goalPower);
+        SmartDashboard.putNumber("turn error", pid.getPositionError());
+        drivetrain.set(goalPower, -goalPower);
+        System.out.println("running");
     }
 
     @Override
     public boolean isFinished() {
-        recentErrors.addElement(drivetrain.getAngle()-targetAngle);
+        recentErrors.addElement(pid.getPositionError());
 
         SmartDashboard.putNumber("average error", recentErrors.getAverage());
-        return 1 >= Math.abs(recentErrors.getAverage());
+        return false;
+//        return 1 >= Math.abs(recentErrors.getAverage());
     }
 }

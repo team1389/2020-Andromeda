@@ -11,7 +11,7 @@ public class OI {
     RunIntake runIntake = new RunIntake();
     RunConveyor runConveyor = new RunConveyor();
 
-    private JoystickButton bBtn,aBtn,lBumper, yBtn, xBtn,rBumper;
+    private JoystickButton bBtn, aBtn, lBumper, yBtn, xBtn, rBumper;
     private JoystickButton driveYBtn;
 
     public OI() {
@@ -37,17 +37,15 @@ public class OI {
 
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
-        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000,0));
+        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000, 0));
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
-        driveYBtn.whenHeld(new AdjustToTarget());
 
 
         Robot.conveyor.setDefaultCommand(new RunConveyor());
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
 
     }
-
 
 
 }

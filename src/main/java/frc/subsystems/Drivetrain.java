@@ -12,9 +12,9 @@ import frc.robot.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
     public AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
+    public CANEncoder leftLeaderEncoder, rightLeaderEncoder;
     private DifferentialDrive differentialDrive;
     private CANSparkMax rightLeader, rightFollower, leftLeader, leftFollower;
-    private CANEncoder leftLeaderEncoder, rightLeaderEncoder;
     private CANPIDController leftPid, rightPid;
 
     public Drivetrain() {
@@ -34,6 +34,7 @@ public class Drivetrain extends SubsystemBase {
         differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
 
         leftLeaderEncoder = new CANEncoder(leftLeader);
+        leftLeaderEncoder.setPositionConversionFactor(-1);
         rightLeaderEncoder = new CANEncoder(rightLeader);
 
         leftLeaderEncoder.setPosition(0);
@@ -55,7 +56,8 @@ public class Drivetrain extends SubsystemBase {
     public double getLeftPosition() {
         return leftLeaderEncoder.getPosition();
     }
-    public double getRightPosition(){
+
+    public double getRightPosition() {
         return rightLeaderEncoder.getPosition();
     }
 
@@ -72,10 +74,9 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void drive(double leftY, double rightX, boolean isQuickTurn, boolean decreaseSpeed) {
-        if(decreaseSpeed){
-            differentialDrive.curvatureDrive(leftY/2, rightX/2, isQuickTurn);
-        }
-        else {
+        if (decreaseSpeed) {
+            differentialDrive.curvatureDrive(leftY / 2, rightX / 2, isQuickTurn);
+        } else {
             differentialDrive.curvatureDrive(leftY, rightX, isQuickTurn);
         }
     }

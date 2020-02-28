@@ -1,11 +1,8 @@
 package frc.robot;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -13,9 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.Autos.InFrontShooter;
-import frc.Autos.LeftToShieldGen;
+import frc.Autos.ShootAndShieldGenerator;
 import frc.Autos.ShootAndCrossAutoLine;
 import frc.Autos.ShootNControlPickUp;
+import frc.commands.TurnToAngle;
 import frc.subsystems.*;
 
 /**
@@ -36,18 +34,18 @@ public class Robot extends TimedRobot {
     public static Shooter shooter = new Shooter();
     //NOTE: OI must be initialized after all the the other systems
     public static Climber climber = new Climber();
-
     public static OI oi = new OI();
-
     public SendableChooser<Integer> shooterSlotChooser = new SendableChooser();
     public SendableChooser<Command> autoChooser = new SendableChooser();
-
+    Compressor compressor;
 
     @Override
 
     public void robotInit() {
         Shuffleboard.getTab("gyro tab").add(drivetrain.ahrs);
         climber.retract();
+        compressor = new Compressor(RobotMap.PCM_CAN);
+        compressor.stop();
 
 //        configChoosers();
 
@@ -70,8 +68,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         drivetrain.ahrs.reset(); //This is so 0 is the heading of robot on start of auto
-        intake.extendIntake();
-        CommandScheduler.getInstance().schedule(new ShootAndCrossAutoLine());
     }
 
     /**
@@ -88,7 +84,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
 
 
-
     }
 
     /**
@@ -99,7 +94,7 @@ public class Robot extends TimedRobot {
 
     }
 
-    public void configChoosers(){
+    public void configChoosers() {
 
         //Running this kills the code. IDK why
         shooterSlotChooser.addOption("Slot 1", 1);
@@ -114,7 +109,7 @@ public class Robot extends TimedRobot {
 
         autoChooser.addOption("in front shoot -> control panel", new InFrontShooter());
         autoChooser.addOption("Basic Shoot and cross auto line", new ShootAndCrossAutoLine());
-        autoChooser.addOption("left shoot -> Shield gen", new LeftToShieldGen());
+        autoChooser.addOption("left shoot -> Shield gen", new ShootAndShieldGenerator());
         autoChooser.addOption("shoot -> control panel", new ShootNControlPickUp());
         autoChooser.setDefaultOption("Basic Shoot and Cross auto line", new ShootAndCrossAutoLine());
         SmartDashboard.putData("Autonomous Chooser", autoChooser);

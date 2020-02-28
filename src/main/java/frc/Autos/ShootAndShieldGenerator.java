@@ -14,12 +14,12 @@ import frc.robot.Robot;
  * Our Approach to get the balls from the shield generator should be further discussed
  * (For now it just goes straight forward)
  */
-public class LeftToShieldGen extends SequentialCommandGroup {
+public class ShootAndShieldGenerator extends SequentialCommandGroup {
 
     private final double da3 = -102.5; //Distance to the shield generator
     //^ Measured at field, this number should be 142.5 from the power port side
 
-    public LeftToShieldGen(){
+    public ShootAndShieldGenerator(){
         addRequirements(Robot.drivetrain,Robot.shooter);
         addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
                     new TurnToAngle(0,false),
