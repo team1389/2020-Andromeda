@@ -11,9 +11,9 @@ import frc.robot.Robot;
  * Shoots and picks up from the control panel and then shoots again
  *
  */
-public class ShootNControlPickUp extends SequentialCommandGroup {
+public class StraightControlPanel extends SequentialCommandGroup {
 
-    public ShootNControlPickUp(){
+    public StraightControlPanel(){
         addRequirements(Robot.drivetrain, Robot.shooter);
         addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
                 new TurnToAngle(0,false),

@@ -9,11 +9,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.Autos.InFrontShooter;
+import frc.Autos.PowerPortToControlPanel;
 import frc.Autos.ShootAndShieldGenerator;
 import frc.Autos.ShootAndCrossAutoLine;
-import frc.Autos.ShootNControlPickUp;
-import frc.commands.TurnToAngle;
+import frc.Autos.StraightControlPanel;
 import frc.subsystems.*;
 
 /**
@@ -107,10 +106,10 @@ public class Robot extends TimedRobot {
         shooterSlotChooser.addOption("Slot 8", 8);
         SmartDashboard.putData(shooterSlotChooser);
 
-        autoChooser.addOption("in front shoot -> control panel", new InFrontShooter());
+        autoChooser.addOption("in front shoot -> control panel", new PowerPortToControlPanel());
         autoChooser.addOption("Basic Shoot and cross auto line", new ShootAndCrossAutoLine());
         autoChooser.addOption("left shoot -> Shield gen", new ShootAndShieldGenerator());
-        autoChooser.addOption("shoot -> control panel", new ShootNControlPickUp());
+        autoChooser.addOption("shoot -> control panel", new StraightControlPanel());
         autoChooser.setDefaultOption("Basic Shoot and Cross auto line", new ShootAndCrossAutoLine());
         SmartDashboard.putData("Autonomous Chooser", autoChooser);
     }
