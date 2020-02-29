@@ -24,13 +24,13 @@ public class ShootWithSensors extends SequentialCommandGroup {
         bottomPID = Robot.shooter.getShooterBottomPIDController();
 
 
-        //Wait for 0.25 seconds on the first shot to let the indexer speed up
-        addCommands(new InstantCommand(() -> Robot.conveyor.runConveyor(1)),
-                new ShootOnce(0.25),
-                new ShootOnce(0),
-                new ShootOnce(0),
-                new ShootOnce(0),
-                new ShootOnce(0)
+        //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
+        addCommands(new InstantCommand(() -> Robot.indexer.runIndexer(1)),
+                new ShootOnce(),
+                new ShootOnce(),
+                new ShootOnce(),
+                new ShootOnce(),
+                new ShootOnce()
         );
 
 
@@ -157,30 +157,20 @@ public class ShootWithSensors extends SequentialCommandGroup {
             return timer.get() >= 0.1;
         }
 
-        @Override
-        public void end(boolean interrupted) {
-            Robot.conveyor.stopConveyor();
-        }
     }
 
 
     private class ShootOnce extends SequentialCommandGroup {
 
-        public ShootOnce(double waitForIndexerSeconds) {
+        public ShootOnce() {
             addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
             addCommands(
                     // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
                     new ParallelCommandGroup(new SendBallToIndexer(), new WaitUntilAtSpeed(shooterTargetRPM)),
-                    new InstantCommand(() -> Robot.indexer.runIndexer(1)),
-                    new WaitCommand(waitForIndexerSeconds),
                     new SendBallToShooter()
             );
         }
 
-        @Override
-        public void end(boolean interrupted) {
-            Robot.indexer.stopIndexer();
-        }
     }
 
 }
