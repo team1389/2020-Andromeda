@@ -16,8 +16,6 @@ public class RobotMap {
     public static final int LEFT_DRIVE_FOLLOWER = 2;
     //Intake
     public static final int INTAKE_MOTOR = 11;
-    public static final int INTAKE_FORWARD_SOLENOID = 2;
-    public static final int INTAKE_REVERSE_SOLENOID = 5;
     //Conveyor
     public static final int CONVEYOR_MOTOR_BACK = 9;
     public static final int CONVEYOR_MOTOR_FRONT = 12;

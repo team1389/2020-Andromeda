@@ -9,22 +9,12 @@ import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
     private double intakePercent = 0.75;
-    private DoubleSolenoid extender;
     private VictorSPX intakeMotor;
 
     public Intake() {
         intakeMotor = new VictorSPX(RobotMap.INTAKE_MOTOR);
-        extender = new DoubleSolenoid(RobotMap.PCM_CAN, RobotMap.INTAKE_FORWARD_SOLENOID,
-                RobotMap.INTAKE_REVERSE_SOLENOID);
     }
 
-    public void extendIntake() {
-        extender.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void retractIntake() {
-        extender.set(DoubleSolenoid.Value.kReverse);
-    }
 
     public void runIntake() {
         intakeMotor.set(ControlMode.PercentOutput, intakePercent);
