@@ -17,12 +17,12 @@ public class AdjustToTarget extends CommandBase {
     private double goalLeftPower, goalRightPower;
 
     private double DRIVE_ROTATION_P = 0.0125;
-    private double DRIVE_ROTATION_I = 0.0;//0.05
+    private double DRIVE_ROTATION_I = 0.0023;//0.05
     private double DRIVE_ROTATION_D = 0;
 
-    private double TARGET_HEIGHT_INCHES = 91; //98.25 on real field, 95 on shelf
-    private double CAMERA_ANGLE_DEGREES = 18.88485363; //REMEMBER TO CHANGE THIS EVERY MATCH IF WE ADJUST THE SHOOTER
-    private double CAMERA_HEIGHT_INCHES = 27;
+    private double TARGET_HEIGHT_INCHES = 83.25; //83.25 on real field, 95 on shelf
+    private double CAMERA_ANGLE_DEGREES = 27.21212218; //REMEMBER TO CHANGE THIS EVERY MATCH IF WE ADJUST THE SHOOTER
+    private double CAMERA_HEIGHT_INCHES = 26;
 
     private double runTime = 2;
 
