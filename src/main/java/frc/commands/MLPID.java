@@ -21,8 +21,10 @@ public class MLPID extends CommandBase {
         double error = Robot.ml.movement();
         double power = pid.calculate(error,0);
 //        SmartDashboard.putNumber("ML error", error);
+        if (power < 0.05) {
+            power += 0.6;
+        }
         Robot.drivetrain.set(-power,power);
-
     }
 
     @Override
