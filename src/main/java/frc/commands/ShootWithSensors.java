@@ -12,9 +12,10 @@ import frc.utils.SizeLimitedQueue;
 public class ShootWithSensors extends SequentialCommandGroup {
 
     private double shooterTargetRPM;
+    private double bottomTargetRPM;
     private double conveyorPercent;
     private CANPIDController topPID, bottomPID;
-
+    private double scale = 0.8;
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot) {
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         if (type == ShootType.Distance)
@@ -23,10 +24,12 @@ public class ShootWithSensors extends SequentialCommandGroup {
             shooterTargetRPM = distanceOrSpeedValue;
         topPID = Robot.shooter.getShooterTopPIDController();
         bottomPID = Robot.shooter.getShooterBottomPIDController();
-        conveyorPercent = 1;
+        bottomTargetRPM = shooterTargetRPM * scale;
+
+        conveyorPercent = 0.6;
 
         //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
-        addCommands(new WaitUntilAtSpeed(shooterTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)));
+        addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)));
 
 
     }
@@ -35,7 +38,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     public void initialize() {
         super.initialize();
         topPID.setReference(shooterTargetRPM, ControlType.kVelocity);
-        bottomPID.setReference(shooterTargetRPM, ControlType.kVelocity);
+        bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
     }
 
     @Override
@@ -61,14 +64,15 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     public static class WaitUntilAtSpeed extends CommandBase {
 
-        private double shooterTargetRPM;
+        private double shooterTargetRPM, bottomTargetRPM;
         private double tolerance;
         private SizeLimitedQueue recentTopErrors = new SizeLimitedQueue(15);
         private SizeLimitedQueue recentBottomErrors = new SizeLimitedQueue(15);
 
-        public WaitUntilAtSpeed(double shooterTargetRPM) {
+        public WaitUntilAtSpeed(double shooterTargetRPM, double bottomTargetRPM) {
             addRequirements(Robot.shooter);
             this.shooterTargetRPM = shooterTargetRPM;
+            this.bottomTargetRPM = bottomTargetRPM;
             tolerance = 3;
         }
 
@@ -80,7 +84,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             recentTopErrors.addElement(topError);
             SmartDashboard.putNumber("average top error", recentTopErrors.getAverage());
 
-            double bottomError = shooterTargetRPM - Robot.shooter.getShooterBottomRPM();
+            double bottomError = bottomTargetRPM - Robot.shooter.getShooterBottomRPM();
             recentBottomErrors.addElement(bottomError);
             SmartDashboard.putNumber("average bottom error", recentBottomErrors.getAverage());
         }
