@@ -22,6 +22,7 @@ public class Indexer extends SubsystemBase {   //The motor to stop the balls is 
     }
 
 
+
     public void runIndexer(double percent) {
         indexMotor.set(ControlMode.PercentOutput, percent);
     }

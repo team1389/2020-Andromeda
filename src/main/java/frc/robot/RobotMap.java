@@ -16,8 +16,6 @@ public class RobotMap {
     public static final int LEFT_DRIVE_FOLLOWER = 4;
     //Intake
     public static final int INTAKE_MOTOR = 11;
-    public static final int INTAKE_FORWARD_SOLENOID = 2;
-    public static final int INTAKE_REVERSE_SOLENOID = 5;
     //Conveyor
     public static final int CONVEYOR_MOTOR_BACK = 9;
     public static final int CONVEYOR_MOTOR_FRONT = 12;
@@ -25,7 +23,7 @@ public class RobotMap {
     //Sensors
     public static final int DIO_INTAKE_BEAM_BREAK = 0;
     public static final int DIO_PRE_INDEX_BEAM_BREAK = 9;
-    public static final int DIO_SHOOTER_BEAM_BREAK = 2;
+    public static final int DIO_SECOND_BALL_INDEX = 2;
     // Climber
     public static int CLIMBER_LEFT_MOTOR = 5;
     public static int CLIMBER_RIGHT_MOTOR = 7;

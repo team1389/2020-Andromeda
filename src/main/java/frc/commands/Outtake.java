@@ -10,11 +10,11 @@ public class Outtake extends CommandBase {
 
     @Override
     public void initialize() {
-        Robot.intake.runIntake(-1);
+        Robot.intake.runOuttake();
     }
 
     @Override
     public void end(boolean interrupted) {
-        Robot.intake.runIntake(0);
+        Robot.intake.stopIntaking();
     }
 }
