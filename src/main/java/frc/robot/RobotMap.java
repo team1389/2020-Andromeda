@@ -11,9 +11,9 @@ public class RobotMap {
     public static int SHOOTER_BOTTOM = 6;
 
     public static final int RIGHT_DRIVE_LEADER = 1;
-    public static final int RIGHT_DRIVE_FOLLOWER = 4;
+    public static final int RIGHT_DRIVE_FOLLOWER = 2;
     public static final int LEFT_DRIVE_LEADER = 3;
-    public static final int LEFT_DRIVE_FOLLOWER = 2;
+    public static final int LEFT_DRIVE_FOLLOWER = 4;
     //Intake
     public static final int INTAKE_MOTOR = 11;
     public static final int INTAKE_FORWARD_SOLENOID = 2;
