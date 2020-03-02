@@ -12,6 +12,7 @@ import frc.utils.SizeLimitedQueue;
 public class ShootWithSensors extends SequentialCommandGroup {
 
     private double shooterTargetRPM;
+    private double conveyorPercent;
     private CANPIDController topPID, bottomPID;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot) {
@@ -22,16 +23,10 @@ public class ShootWithSensors extends SequentialCommandGroup {
             shooterTargetRPM = distanceOrSpeedValue;
         topPID = Robot.shooter.getShooterTopPIDController();
         bottomPID = Robot.shooter.getShooterBottomPIDController();
-
+        conveyorPercent = 1;
 
         //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
-        addCommands(new InstantCommand(() -> Robot.indexer.runIndexer(1)),
-                new ShootOnce(),
-                new ShootOnce(),
-                new ShootOnce(),
-                new ShootOnce(),
-                new ShootOnce()
-        );
+        addCommands(new WaitUntilAtSpeed(shooterTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)));
 
 
     }
@@ -52,49 +47,17 @@ public class ShootWithSensors extends SequentialCommandGroup {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
     public enum ShootType {
         Distance,
         Speed
     }
 
-    //Does the process to make sure only 1 ball is in place and preps the shooter motors
-    public static class SendBallToIndexer extends CommandBase {
-        private Timer timer = new Timer();
-        private boolean ballPreIndex;
 
-        public SendBallToIndexer() {
-            addRequirements(Robot.conveyor, Robot.indexer);
-        }
-
-        @Override
-        public void initialize() {
-            ballPreIndex = Robot.indexer.ballAtIndexer();
-
-            timer.reset();
-            timer.start();
-        }
-
-        @Override
-        public void execute() {
-            Robot.conveyor.runConveyor(1);     // Move conveyor if not in place
-            ballPreIndex = Robot.indexer.ballAtIndexer();     //Update ballPreIndex
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            System.out.println("killed Send Ball to Indexer command");
-            Robot.conveyor.stopConveyor();
-
-        }
-
-        @Override
-        public boolean isFinished() {
-
-
-            //End if the ball reaches the indexer or if 1 second has passed
-            return ballPreIndex;
-        }
-    }
 
     public static class WaitUntilAtSpeed extends CommandBase {
 
@@ -134,43 +97,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
         }
     }
 
-    public static class SendBallToShooter extends CommandBase {
-        private Timer timer = new Timer();
 
-        public SendBallToShooter() {
-            addRequirements(Robot.conveyor);
-        }
-
-        @Override
-        public void initialize() {
-            timer.reset();
-            timer.start();
-        }
-
-        @Override
-        public void execute() {
-            Robot.conveyor.runConveyor(1);
-        }
-
-        @Override
-        public boolean isFinished() {
-            return timer.get() >= 0.1;
-        }
-
-    }
-
-
-    private class ShootOnce extends SequentialCommandGroup {
-
-        public ShootOnce() {
-            addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-            addCommands(
-                    // To make sure only 1 ball is in range of shooter by moving conveyor backwards (need testing wrong)
-                    new ParallelCommandGroup(new SendBallToIndexer(), new WaitUntilAtSpeed(shooterTargetRPM)),
-                    new SendBallToShooter()
-            );
-        }
-
-    }
 
 }
