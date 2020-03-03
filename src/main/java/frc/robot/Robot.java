@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
     public static Indexer indexer = new Indexer();
     public static Intake intake = new Intake();
     public static Shooter shooter = new Shooter();
+    public static ML ml = new ML();
     //NOTE: OI must be initialized after all the the other systems
     public static Climber climber = new Climber();
     public static OI oi = new OI();
@@ -67,6 +68,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         drivetrain.ahrs.reset(); //This is so 0 is the heading of robot on start of auto
+        CommandScheduler.getInstance().schedule(new StraightControlPanel());
     }
 
     /**
