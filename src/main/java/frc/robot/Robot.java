@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.Autos.PowerPortToControlPanel;
-import frc.Autos.ShootAndShieldGenerator;
+//import frc.Autos.ShootAndShieldGenerator;
 import frc.Autos.ShootAndCrossAutoLine;
 import frc.Autos.StraightControlPanel;
+import frc.commands.DriveDistance;
+import frc.commands.RunIntake;
 import frc.subsystems.*;
 
 /**
@@ -76,6 +78,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+
     }
 
     /**
@@ -110,7 +113,7 @@ public class Robot extends TimedRobot {
 
         autoChooser.addOption("in front shoot -> control panel", new PowerPortToControlPanel());
         autoChooser.addOption("Basic Shoot and cross auto line", new ShootAndCrossAutoLine());
-        autoChooser.addOption("left shoot -> Shield gen", new ShootAndShieldGenerator());
+        //autoChooser.addOption("left shoot -> Shield gen", new ShootAndShieldGenerator());
         autoChooser.addOption("shoot -> control panel", new StraightControlPanel());
         autoChooser.setDefaultOption("Basic Shoot and Cross auto line", new ShootAndCrossAutoLine());
         SmartDashboard.putData("Autonomous Chooser", autoChooser);

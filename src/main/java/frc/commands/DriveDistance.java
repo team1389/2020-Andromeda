@@ -25,6 +25,7 @@ public class DriveDistance extends CommandBase {
     private double rightKI = 0;
     private double rightKD = 0;
 
+    double percentCap = 0.375;
     double tolerance = 15;
     private SizeLimitedQueue recentLeftErrors = new SizeLimitedQueue(7);
     private SizeLimitedQueue recentRightErrors = new SizeLimitedQueue(7);
@@ -72,6 +73,8 @@ public class DriveDistance extends CommandBase {
         double leftPower = leftPid.calculate(drivetrain.getLeftPosition(), -targetDistanceInEncoderCounts);
         double rightPower = rightPid.calculate(-drivetrain.getRightPosition(), -targetDistanceInEncoderCounts);
 
+        leftPower = Math.max(-percentCap, Math.min(leftPower, percentCap));
+        rightPower = Math.max(-percentCap, Math.min(rightPower, percentCap));
 
         Robot.drivetrain.set(leftPower, rightPower);
         SmartDashboard.putNumber("drive left error", leftPid.getPositionError());

@@ -51,6 +51,11 @@ public class Drivetrain extends SubsystemBase {
         rightPid.setP(0.1);
         rightPid.setI(0);
         rightPid.setD(0);
+        rightLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        rightFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        leftFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        leftFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
     }
 
     public double getLeftPosition() {

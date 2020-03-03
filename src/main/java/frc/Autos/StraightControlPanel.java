@@ -18,12 +18,11 @@ public class StraightControlPanel extends SequentialCommandGroup {
 
     public StraightControlPanel(){
         addRequirements(Robot.drivetrain, Robot.shooter);
-        addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
-                new TurnToAngle(0,false), new InstantCommand(() -> Robot.intake.runIntake()),
-                new TurnToAngle(10, false),
+        addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000, false), new InstantCommand(() -> Robot.intake.runIntake()),
+                new TurnToAngle(15, false),
                 new MLTurnToBall(),
                 new DriveDistance(194.63),
                 new InstantCommand(() -> Robot.intake.stopIntaking()),
-                new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0));
+                new ShootWithSensors(ShootWithSensors.ShootType.Speed, 3300));
     }
 }

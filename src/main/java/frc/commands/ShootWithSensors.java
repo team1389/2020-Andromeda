@@ -16,20 +16,24 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private double conveyorPercent;
     private CANPIDController topPID, bottomPID;
     private double scale = 0.8;
-    public ShootWithSensors(ShootType type, double distanceOrSpeedValue, int slot) {
+    boolean stopShooterRunning;
+    public ShootWithSensors(ShootType type, double distanceOrSpeedValue){
+        this(type, distanceOrSpeedValue, true);
+    }
+    public ShootWithSensors(ShootType type, double distanceOrSpeedValue, boolean stopShooterRunning) {
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         if (type == ShootType.Distance)
-            shooterTargetRPM = Robot.shooter.shootDistance(distanceOrSpeedValue, slot);
+            shooterTargetRPM = Robot.shooter.shootDistance(distanceOrSpeedValue);
         else if (type == ShootType.Speed)
             shooterTargetRPM = distanceOrSpeedValue;
         topPID = Robot.shooter.getShooterTopPIDController();
         bottomPID = Robot.shooter.getShooterBottomPIDController();
         bottomTargetRPM = shooterTargetRPM * scale;
 
-        conveyorPercent = 0.6;
-
+        conveyorPercent = 0.3;
+        this.stopShooterRunning = stopShooterRunning;
         //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
-        addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)));
+        addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
 
 
     }
@@ -43,17 +47,15 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     @Override
     public void end(boolean interrupted) {
-        Robot.shooter.stopMotors();
+        if(stopShooterRunning){
+            Robot.shooter.stopMotors();
+        }
         Robot.indexer.stopIndexer();
         Robot.conveyor.stopConveyor();
         System.out.println("Killed Shoot With Sensors");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
 
     public enum ShootType {
         Distance,
@@ -73,7 +75,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             addRequirements(Robot.shooter);
             this.shooterTargetRPM = shooterTargetRPM;
             this.bottomTargetRPM = bottomTargetRPM;
-            tolerance = 3;
+            tolerance = 1.5;
         }
 
         @Override
