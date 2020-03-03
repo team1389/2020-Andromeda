@@ -3,9 +3,11 @@ package frc.Autos;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.DriveDistance;
+import frc.commands.MLTurnToBall;
 import frc.commands.ShootWithSensors;
 import frc.commands.TurnToAngle;
 import frc.robot.Robot;
+import frc.subsystems.ML;
 
 /**
  *
@@ -18,7 +20,10 @@ public class StraightControlPanel extends SequentialCommandGroup {
         addRequirements(Robot.drivetrain, Robot.shooter);
         addCommands(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0),
                 new TurnToAngle(0,false), new InstantCommand(() -> Robot.intake.runIntake()),
-                new DriveDistance(194.63), new InstantCommand(() -> Robot.intake.stopIntaking()),
+                new TurnToAngle(10, false),
+                new MLTurnToBall(),
+                new DriveDistance(194.63),
+                new InstantCommand(() -> Robot.intake.stopIntaking()),
                 new ShootWithSensors(ShootWithSensors.ShootType.Speed, 2000, 0));
     }
 }
