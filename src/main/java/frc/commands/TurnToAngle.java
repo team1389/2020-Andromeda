@@ -66,7 +66,6 @@ public class TurnToAngle extends CommandBase {
         recentErrors.addElement(pid.getPositionError());
 
         SmartDashboard.putNumber("average error", recentErrors.getAverage());
-        return false;
-//        return 1 >= Math.abs(recentErrors.getAverage());
+        return 1 >= Math.abs(recentErrors.getAverage());
     }
 }

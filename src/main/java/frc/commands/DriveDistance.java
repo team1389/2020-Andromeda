@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.subsystems.Drivetrain;
+import frc.utils.SizeLimitedQueue;
 
 public class DriveDistance extends CommandBase {
     private double ENCODER_COUNTS_PER_INCH = 10.3 / (5 * Math.PI);
@@ -23,6 +24,11 @@ public class DriveDistance extends CommandBase {
     private double rightKP = 0.07;
     private double rightKI = 0;
     private double rightKD = 0;
+
+    double tolerance = 15;
+    private SizeLimitedQueue recentLeftErrors = new SizeLimitedQueue(7);
+    private SizeLimitedQueue recentRightErrors = new SizeLimitedQueue(7);
+
 
 
     public DriveDistance(double targetInches) {
@@ -72,5 +78,11 @@ public class DriveDistance extends CommandBase {
         SmartDashboard.putNumber("drive right error", rightPid.getPositionError());
     }
 
+    @Override
+    public boolean isFinished() {
+        recentLeftErrors.addElement(leftPid.getPositionError());
+        recentRightErrors.addElement(rightPid.getPositionError());
 
+        return Math.abs(recentLeftErrors.getAverage()) < tolerance && Math.abs(recentRightErrors.getAverage()) < tolerance;
+    }
 }
