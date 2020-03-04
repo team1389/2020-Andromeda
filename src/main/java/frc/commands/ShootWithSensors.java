@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Robot;
+import frc.subsystems.Shooter;
 import frc.utils.SizeLimitedQueue;
 
 public class ShootWithSensors extends SequentialCommandGroup {
@@ -15,7 +16,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private double bottomTargetRPM;
     private double conveyorPercent;
     private CANPIDController topPID, bottomPID;
-    private double scale = 0.8;
     boolean stopShooterRunning;
 
     public ShootWithSensors(ShootType type, double distanceOrSpeedValue) {
@@ -26,15 +26,15 @@ public class ShootWithSensors extends SequentialCommandGroup {
             shooterTargetRPM = distanceOrSpeedValue;
         topPID = Robot.shooter.getShooterTopPIDController();
         bottomPID = Robot.shooter.getShooterBottomPIDController();
-        bottomTargetRPM = shooterTargetRPM * scale;
+        bottomTargetRPM = shooterTargetRPM * Shooter.topSpinFactor;
 
         conveyorPercent = 0.3;
-        //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
         addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(5));
 
 
     }
 
+    //TODO: Switch this to use the method from shooter after its been tested
     @Override
     public void initialize() {
         super.initialize();

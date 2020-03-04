@@ -11,6 +11,7 @@ package frc.subsystems;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -24,7 +25,7 @@ public class Shooter extends SubsystemBase {
     private int kD = 0;
     private CANPIDController topPid;
     private CANPIDController bottomPid;
-
+    public static double topSpinFactor = 0.8;
 
     public Shooter() {
         shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -74,9 +75,14 @@ public class Shooter extends SubsystemBase {
 
         return shooterSpeed;
     }
+
+    public void setPIDWithTopSpin(double topShooterTargetRPM){
+        double bottomTargetRPM = topShooterTargetRPM * topSpinFactor;
+        topPid.setReference(topShooterTargetRPM, ControlType.kVelocity);
+        bottomPid.setReference(bottomTargetRPM, ControlType.kVelocity);
+    }
     @Override
     public void periodic() {
-
         SmartDashboard.putNumber("Shooter Top RPM", shooterTop.getEncoder().getVelocity());
         SmartDashboard.putNumber("Shooter Bottom RPM", shooterBottom.getEncoder().getVelocity());
 
