@@ -14,7 +14,7 @@ public class TurnToAngle extends CommandBase {
     private Drivetrain drivetrain;
     private PIDController pid;
     private double goalPower;
-    private double kP = 0.01;
+    private double kP = 0.012;
     private double kI = 0.001;
     private double kD = 0;
     private boolean isRelativeTurn;

@@ -89,9 +89,9 @@ public class AdjustToTarget extends CommandBase {
     }
 
     private void fetchValues() {
-        DRIVE_ROTATION_P = SmartDashboard.getNumber("P Constant", 0);
-        DRIVE_ROTATION_I = SmartDashboard.getNumber("I Constant", 0);
-        DRIVE_ROTATION_D = SmartDashboard.getNumber("D Constant", 0);
+      //  DRIVE_ROTATION_P = SmartDashboard.getNumber("P Constant", 0);
+      //  DRIVE_ROTATION_I = SmartDashboard.getNumber("I Constant", 0);
+      //  DRIVE_ROTATION_D = SmartDashboard.getNumber("D Constant", 0);
 
         tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
         tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);

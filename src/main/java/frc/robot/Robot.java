@@ -13,8 +13,7 @@ import frc.Autos.PowerPortToControlPanel;
 //import frc.Autos.ShootAndShieldGenerator;
 import frc.Autos.ShootAndCrossAutoLine;
 import frc.Autos.StraightControlPanel;
-import frc.commands.DriveDistance;
-import frc.commands.RunIntake;
+import frc.commands.*;
 import frc.subsystems.*;
 
 /**
@@ -63,13 +62,13 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-
+        System.out.println("Built");
     }
 
 
     @Override
     public void autonomousInit() {
-        drivetrain.ahrs.reset(); //This is so 0 is the heading of robot on start of auto
+         //This is so 0 is the heading of robot on start of auto
         CommandScheduler.getInstance().schedule(new StraightControlPanel());
     }
 
@@ -79,6 +78,11 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
 
+    }
+
+    @Override
+    public void teleopInit() {
+        drivetrain.ahrs.reset();
     }
 
     /**

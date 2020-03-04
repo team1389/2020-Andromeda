@@ -33,7 +33,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         conveyorPercent = 0.3;
         this.stopShooterRunning = stopShooterRunning;
         //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
-        addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
+        addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(5));
 
 
     }
