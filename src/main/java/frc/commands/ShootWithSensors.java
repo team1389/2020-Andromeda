@@ -17,10 +17,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private CANPIDController topPID, bottomPID;
     private double scale = 0.8;
     boolean stopShooterRunning;
-    public ShootWithSensors(ShootType type, double distanceOrSpeedValue){
-        this(type, distanceOrSpeedValue, true);
-    }
-    public ShootWithSensors(ShootType type, double distanceOrSpeedValue, boolean stopShooterRunning) {
+
+    public ShootWithSensors(ShootType type, double distanceOrSpeedValue) {
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
         if (type == ShootType.Distance)
             shooterTargetRPM = Robot.shooter.shootDistance(distanceOrSpeedValue);
@@ -31,7 +29,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
         bottomTargetRPM = shooterTargetRPM * scale;
 
         conveyorPercent = 0.3;
-        this.stopShooterRunning = stopShooterRunning;
         //TODO: Test if we need a wait time after running the indexer (i.e. if the indexer speed affects shot distance)
         addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(5));
 
@@ -47,9 +44,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
     @Override
     public void end(boolean interrupted) {
-        if(stopShooterRunning){
-            Robot.shooter.stopMotors();
-        }
+        Robot.shooter.stopMotors();
         Robot.indexer.stopIndexer();
         Robot.conveyor.stopConveyor();
         System.out.println("Killed Shoot With Sensors");
