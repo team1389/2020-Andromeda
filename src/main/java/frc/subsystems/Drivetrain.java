@@ -108,4 +108,18 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
     }
 
+    public void setCoast() {
+        leftLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        leftFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        rightLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        rightFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    }
+
+    public void setBrake() {
+        leftLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        leftFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        rightLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        rightFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    }
+
 }

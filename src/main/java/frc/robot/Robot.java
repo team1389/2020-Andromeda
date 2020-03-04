@@ -48,6 +48,8 @@ public class Robot extends TimedRobot {
         compressor = new Compressor(RobotMap.PCM_CAN);
         compressor.stop();
 
+        drivetrain.setCoast();
+
 //        configChoosers();
 
         //NOTE: This isn't actually turning off the limelight
@@ -70,6 +72,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
          //This is so 0 is the heading of robot on start of auto
         CommandScheduler.getInstance().schedule(new StraightControlPanel());
+        drivetrain.setBrake();
     }
 
     /**
@@ -83,6 +86,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         drivetrain.ahrs.reset();
+        drivetrain.setCoast();
     }
 
     /**
