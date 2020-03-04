@@ -8,7 +8,6 @@ import frc.commands.*;
 public class OI {
     public XboxController driveController, manipController;
     DriveWithCurvature driveWithCurvature = new DriveWithCurvature();
-    RunIntake runIntake = new RunIntake();
 
     private JoystickButton bBtn, aBtn, lBumper, yBtn, xBtn, rBumper;
     private JoystickButton driveYBtn;
@@ -19,7 +18,7 @@ public class OI {
 
         //Intake Buttons
         aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
-        aBtn.toggleWhenPressed(new RunIntake());
+        aBtn.toggleWhenPressed(new RunIntakeAndSendBallToIndexer());
 
         bBtn = new JoystickButton(manipController, XboxController.Button.kB.value);
         bBtn.toggleWhenPressed(new Outtake());

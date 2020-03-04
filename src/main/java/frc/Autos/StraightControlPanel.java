@@ -26,8 +26,8 @@ public class StraightControlPanel extends SequentialCommandGroup {
 
         addCommands(new ShootWithoutPID(0.8, 0.5, 1),
                 new TurnToAngle(0, false), new ShakeToDropIntake(), new InstantCommand(() -> Robot.intake.runIntake()),
-                new DriveDistance(194.63),
-                new InstantCommand(() -> Robot.intake.stopIntaking()), new AdjustToTarget(), driveIntakeAndSpinUp,
+                driveIntakeAndSpinUp,
+                new InstantCommand(() -> Robot.intake.stopIntaking()), new AdjustToTarget(),
                 new ShootWithSensors(ShootWithSensors.ShootType.Speed, topTargetRPM));
     }
 }
