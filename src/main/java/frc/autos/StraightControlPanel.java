@@ -30,7 +30,7 @@ public class StraightControlPanel extends SequentialCommandGroup {
                 new InstantCommand(() -> Robot.intake.runIntake()),
                 driveIntakeAndSpinUp,
                 new InstantCommand(() -> Robot.intake.stopIntaking()), new AdjustToTarget(),
-                new ShootWithSensors(ShootWithSensors.ShootType.Speed, topTargetRPM));
+                new ShootWithSensors());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -50,6 +51,7 @@ public class Robot extends TimedRobot {
 
         drivetrain.setCoast();
 
+        CameraServer.getInstance().startAutomaticCapture();
 //        configChoosers();
 
         //NOTE: This isn't actually turning off the limelight
