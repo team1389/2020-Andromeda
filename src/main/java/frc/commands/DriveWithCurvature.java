@@ -21,7 +21,7 @@ public class DriveWithCurvature extends CommandBase {
         double throttle = Robot.oi.driveController.getY(GenericHID.Hand.kLeft)*0.75;
         double rotation = Robot.oi.driveController.getX(GenericHID.Hand.kRight)*0.75;
         boolean isQuickTurn = Robot.oi.driveController.getBumper(GenericHID.Hand.kLeft);
-        boolean decreaseSpeed = Robot.oi.driveController.getAButton();
+        boolean decreaseSpeed = Robot.oi.driveController.getAButtonPressed();
         toggleSlowMode = decreaseSpeed ^ toggleSlowMode;
         Robot.drivetrain.drive(throttle, rotation, isQuickTurn, toggleSlowMode);
     }
