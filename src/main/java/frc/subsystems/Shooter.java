@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
     private int kD = 0;
     private CANPIDController topPid;
     private CANPIDController bottomPid;
-    public static double topSpinFactor = 0.8;
+    public static double topSpinFactor = 0.6;
 
     public Shooter() {
         shooterTop = new CANSparkMax(RobotMap.SHOOTER_TOP, CANSparkMaxLowLevel.MotorType.kBrushless);

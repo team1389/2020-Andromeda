@@ -14,7 +14,7 @@ public class RunIntakeAndSendBallToIndexer extends CommandBase {
 
     public RunIntakeAndSendBallToIndexer() {
         intake = Robot.intake;
-        addRequirements(Robot.conveyor, Robot.indexer, Robot.indexer);
+        addRequirements(Robot.conveyor, Robot.intake, Robot.indexer);
     }
 
     @Override

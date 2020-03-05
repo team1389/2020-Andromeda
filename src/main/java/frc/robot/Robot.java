@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.Autos.PowerPortToControlPanel;
 //import frc.Autos.ShootAndShieldGenerator;
 import frc.Autos.ShootAndCrossAutoLine;
@@ -43,10 +42,12 @@ public class Robot extends TimedRobot {
     @Override
 
     public void robotInit() {
+
         Shuffleboard.getTab("gyro tab").add(drivetrain.ahrs);
+        drivetrain.ahrs.reset();
         climber.retract();
         compressor = new Compressor(RobotMap.PCM_CAN);
-        compressor.stop();
+        //compressor.stop();
 
         drivetrain.setCoast();
 
@@ -64,15 +65,17 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        System.out.println("Built");
+        System.out.println("Built 2 ");
     }
 
 
     @Override
     public void autonomousInit() {
          //This is so 0 is the heading of robot on start of auto
+        Robot.intake.stopIntaking();
+        Robot.drivetrain.setBrake();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
         CommandScheduler.getInstance().schedule(new StraightControlPanel());
-        drivetrain.setBrake();
     }
 
     /**
@@ -85,8 +88,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        drivetrain.ahrs.reset();
         drivetrain.setCoast();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+
     }
 
     /**

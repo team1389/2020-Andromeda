@@ -10,6 +10,8 @@ import frc.robot.Robot;
 import frc.subsystems.Shooter;
 import frc.utils.SizeLimitedQueue;
 
+import javax.naming.ldap.Control;
+
 public class ShootWithSensors extends SequentialCommandGroup {
 
     private double shooterTargetRPM;
@@ -28,8 +30,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         bottomPID = Robot.shooter.getShooterBottomPIDController();
         bottomTargetRPM = shooterTargetRPM * Shooter.topSpinFactor;
 
-        conveyorPercent = 0.3;
-        addCommands(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM),new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(5));
+        conveyorPercent = 0.6;
+        addCommands(new ParallelCommandGroup(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM), new AdjustToTarget()), new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
 
 
     }
@@ -47,6 +49,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
         Robot.shooter.stopMotors();
         Robot.indexer.stopIndexer();
         Robot.conveyor.stopConveyor();
+        topPID.setReference(0, ControlType.kVelocity);
+        bottomPID.setReference(0, ControlType.kVelocity);
         System.out.println("Killed Shoot With Sensors");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }

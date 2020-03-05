@@ -10,12 +10,13 @@ import frc.robot.Robot;
  */
 public class ShakeToDropIntake extends SequentialCommandGroup {
     double speed = 1;
-    double shakeTime = 0.1;
+    double shakeTime = 0.5;
 
     public ShakeToDropIntake() {
         addRequirements(Robot.drivetrain);
-        addCommands(new InstantCommand(() -> Robot.drivetrain.set(speed, speed)), new WaitCommand(shakeTime),
-                new InstantCommand(() -> Robot.drivetrain.set(-speed, -speed)),
+        addCommands(new InstantCommand(() -> Robot.drivetrain.set(-speed, -speed)), new WaitCommand(shakeTime),
+                new InstantCommand(() -> Robot.drivetrain.set(speed, speed)),
+                new WaitCommand(shakeTime),
                 new InstantCommand(() -> Robot.drivetrain.set(0, 0)));
     }
 

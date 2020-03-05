@@ -11,12 +11,12 @@ import frc.utils.SizeLimitedQueue;
 public class AdjustToTarget extends CommandBase {
     private Drivetrain drivetrain;
 
-    private SizeLimitedQueue recentRotations = new SizeLimitedQueue(7);
+    private SizeLimitedQueue recentRotations = new SizeLimitedQueue(14);
 
     private double integral, derivative, previousRotationError, goalRotationPower, currentTX;
     private double goalLeftPower, goalRightPower;
 
-    private double DRIVE_ROTATION_P = 0.0125;
+    private double DRIVE_ROTATION_P = 0.01;
     private double DRIVE_ROTATION_I = 0.0023;//0.05
     private double DRIVE_ROTATION_D = 0;
 
@@ -24,7 +24,7 @@ public class AdjustToTarget extends CommandBase {
     private double CAMERA_ANGLE_DEGREES = 27.21212218; //REMEMBER TO CHANGE THIS EVERY MATCH IF WE ADJUST THE SHOOTER
     private double CAMERA_HEIGHT_INCHES = 26;
 
-    private double runTime = 2;
+    private double runTime = 3;
 
     private Timer timer = new Timer();
 
@@ -35,7 +35,6 @@ public class AdjustToTarget extends CommandBase {
         drivetrain = Robot.drivetrain;
         addRequirements(drivetrain);
 
-        timer.start();
     }
 
     @Override
@@ -50,6 +49,10 @@ public class AdjustToTarget extends CommandBase {
         tx = 0;
         ty = 0;
         ta = 0;
+        recentRotations = new SizeLimitedQueue(14);
+        timer.reset();
+        timer.start();
+
     }
 
     @Override
@@ -82,16 +85,12 @@ public class AdjustToTarget extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(timer.get() > runTime){
-            System.out.println("Timed out of AdjustToTarget");
-        }
-        return timer.get() > runTime || 1 >= Math.abs(recentRotations.getAverage());
+        return timer.get()> runTime;
+//        return 0.5 >= Math.abs(recentRotations.getAverage());
     }
 
     private void fetchValues() {
-      //  DRIVE_ROTATION_P = SmartDashboard.getNumber("P Constant", 0);
-      //  DRIVE_ROTATION_I = SmartDashboard.getNumber("I Constant", 0);
-      //  DRIVE_ROTATION_D = SmartDashboard.getNumber("D Constant", 0);
+
 
         tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
         tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -111,6 +110,10 @@ public class AdjustToTarget extends CommandBase {
     }
 
     private void RotationPID() {
+        DRIVE_ROTATION_P = SmartDashboard.getNumber("P Constant", 0);
+        DRIVE_ROTATION_I = SmartDashboard.getNumber("I Constant", 0);
+
+        DRIVE_ROTATION_D = SmartDashboard.getNumber("D Constant", 0);
         currentTX = recentRotations.getAverage();
 
         integral += (currentTX*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)

@@ -19,7 +19,6 @@ public class OI {
         //Intake Buttons
         aBtn = new JoystickButton(manipController, XboxController.Button.kA.value);
         aBtn.toggleWhenPressed(new RunIntakeAndSendBallToIndexer());
-
         bBtn = new JoystickButton(manipController, XboxController.Button.kB.value);
         bBtn.toggleWhenPressed(new Outtake());
 
@@ -36,8 +35,7 @@ public class OI {
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         //3300-3500rpm is control panel shot
-        //lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 3300));
-        lBumper.whenPressed(new TurnToAngle(25, true));
+        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000)); //4400
         //lBumper.whenHeld(new AdjustToTarget());
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);

@@ -13,9 +13,8 @@ public class ShootWithoutPID extends SequentialCommandGroup {
     double postSpinUpTimeToWait;
 
     /**
-     *
-     * @param voltagePercent Percent of voltage to set shooter at
-     * @param spinUpTimeInSeconds Time to give the shooter to speed up
+     * @param voltagePercent       Percent of voltage to set shooter at
+     * @param spinUpTimeInSeconds  Time to give the shooter to speed up
      * @param postSpinUpTimeToWait Time to run the command after the shooter is given time to speed up
      */
     public ShootWithoutPID(double voltagePercent, double spinUpTimeInSeconds, double postSpinUpTimeToWait) {
@@ -23,11 +22,12 @@ public class ShootWithoutPID extends SequentialCommandGroup {
         this.voltagePercent = voltagePercent;
         this.spinUpTime = spinUpTimeInSeconds;
         this.postSpinUpTimeToWait = postSpinUpTimeToWait;
-        double conveyorPercent = 1;
+        double conveyorPercent = 0.7;
         addCommands(new InstantCommand(() -> Robot.shooter.setShooterVoltage(voltagePercent)),
+                new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                 new WaitCommand(spinUpTimeInSeconds),
                 new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)),
-                new InstantCommand(() -> Robot.indexer.runIndexer(1)), new WaitCommand(postSpinUpTimeToWait)
+                new WaitCommand(postSpinUpTimeToWait)
         );
     }
 
@@ -42,6 +42,8 @@ public class ShootWithoutPID extends SequentialCommandGroup {
     @Override
     public void end(boolean interrupted) {
         Robot.shooter.setShooterVoltage(0);
+        Robot.indexer.stopIndexer();
+        Robot.conveyor.stopConveyor();
         super.end(interrupted);
     }
 }

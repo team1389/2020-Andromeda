@@ -1,5 +1,6 @@
 package frc.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,6 +19,7 @@ public class TurnToAngle extends CommandBase {
     private double kI = 0.001;
     private double kD = 0;
     private boolean isRelativeTurn;
+    private Timer timer = new Timer();
 
     private SizeLimitedQueue recentErrors = new SizeLimitedQueue(7);
 
@@ -44,6 +46,11 @@ public class TurnToAngle extends CommandBase {
         }
         pid.setPID(SmartDashboard.getNumber("kP", 0), SmartDashboard.getNumber("kI", 0),
                 SmartDashboard.getNumber("kD", 0));
+
+        recentErrors = new SizeLimitedQueue(7);
+        timer.reset();
+        timer.start();
+
     }
 
     @Override
@@ -66,6 +73,6 @@ public class TurnToAngle extends CommandBase {
         recentErrors.addElement(pid.getPositionError());
 
         SmartDashboard.putNumber("average error", recentErrors.getAverage());
-        return 1 >= Math.abs(recentErrors.getAverage());
+        return 1.4 >= Math.abs(recentErrors.getAverage()) || timer.get()>1;
     }
 }
