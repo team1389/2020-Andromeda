@@ -1,8 +1,7 @@
-package frc.Autos;
+package frc.autos;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.commands.DriveDistance;
-import frc.commands.ShootWithSensors;
 import frc.commands.TurnToAngle;
 import frc.robot.Robot;
 

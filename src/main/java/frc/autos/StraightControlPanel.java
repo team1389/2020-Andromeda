@@ -1,4 +1,4 @@
-package frc.Autos;
+package frc.autos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.commands.*;
 import frc.robot.Robot;
-import frc.subsystems.ML;
 
 /**
  * Shoots and picks up from the control panel and then shoots again

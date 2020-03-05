@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.Autos.PowerPortToControlPanel;
+import frc.autos.PowerPortToControlPanel;
 //import frc.Autos.ShootAndShieldGenerator;
-import frc.Autos.ShootAndCrossAutoLine;
-import frc.Autos.StraightControlPanel;
-import frc.commands.*;
+import frc.autos.ShootAndCrossAutoLine;
+import frc.autos.StraightControlPanel;
 import frc.subsystems.*;
 
 /**
