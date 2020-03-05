@@ -20,10 +20,6 @@ public class AdjustToTarget extends CommandBase {
     private double DRIVE_ROTATION_I = 0.0023;//0.05
     private double DRIVE_ROTATION_D = 0;
 
-    private double TARGET_HEIGHT_INCHES = 83.25; //83.25 on real field, 95 on shelf
-    private double CAMERA_ANGLE_DEGREES = 27.21212218; //REMEMBER TO CHANGE THIS EVERY MATCH IF WE ADJUST THE SHOOTER
-    private double CAMERA_HEIGHT_INCHES = 26;
-
     private double runTime = 3;
 
     private Timer timer = new Timer();
@@ -57,8 +53,6 @@ public class AdjustToTarget extends CommandBase {
 
     @Override
     public void execute() {
-        double distanceToTarget = (TARGET_HEIGHT_INCHES-CAMERA_HEIGHT_INCHES)/(Math.tan(Math.toRadians(CAMERA_ANGLE_DEGREES+ty)));
-
         fetchValues();
 
         goalLeftPower = 0;
@@ -74,13 +68,17 @@ public class AdjustToTarget extends CommandBase {
             goalRightPower = Math.max(-0.2, Math.min(0.2, goalRightPower));
 
             SmartDashboard.putNumber("Goal Left Power", goalLeftPower);
-            SmartDashboard.putNumber("Distance To Target", distanceToTarget);
-            SmartDashboard.putNumber("Tangent", Math.tan(Math.toRadians(CAMERA_ANGLE_DEGREES+ty)));
 
             drivetrain.set(goalLeftPower, goalRightPower);
         } else {
             System.out.println("No target");
         }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+
     }
 
     @Override
@@ -94,7 +92,6 @@ public class AdjustToTarget extends CommandBase {
 
         tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
         tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-        ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
         ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
     }
 

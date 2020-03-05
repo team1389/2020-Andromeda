@@ -35,7 +35,7 @@ public class OI {
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         //3300-3500rpm is control panel shot
-        lBumper.whenHeld(new ShootWithSensors(ShootWithSensors.ShootType.Speed, 5000)); //4400
+        lBumper.whenHeld(new RealShoot()); //4400
         //lBumper.whenHeld(new AdjustToTarget());
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);

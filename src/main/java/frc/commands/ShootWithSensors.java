@@ -20,19 +20,24 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private CANPIDController topPID, bottomPID;
     boolean stopShooterRunning;
 
-    public ShootWithSensors(ShootType type, double distanceOrSpeedValue) {
+    public ShootWithSensors() {
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
-        if (type == ShootType.Distance)
-            shooterTargetRPM = Robot.shooter.shootDistance(distanceOrSpeedValue);
-        else if (type == ShootType.Speed)
-            shooterTargetRPM = distanceOrSpeedValue;
+
+        double distanceToTarget = SmartDashboard.getNumber("Distance To Target", 0);
+
+        if(distanceToTarget <= 200) {
+            shooterTargetRPM = 4600;
+        }
+        else if(distanceToTarget > 200) {
+            shooterTargetRPM = 5000;
+        }
+
         topPID = Robot.shooter.getShooterTopPIDController();
         bottomPID = Robot.shooter.getShooterBottomPIDController();
         bottomTargetRPM = shooterTargetRPM * Shooter.topSpinFactor;
 
         conveyorPercent = 0.6;
         addCommands(new ParallelCommandGroup(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM), new AdjustToTarget()), new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
-
 
     }
 
@@ -54,14 +59,6 @@ public class ShootWithSensors extends SequentialCommandGroup {
         System.out.println("Killed Shoot With Sensors");
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
-
-
-    public enum ShootType {
-        Distance,
-        Speed
-    }
-
-
 
     public static class WaitUntilAtSpeed extends CommandBase {
 
