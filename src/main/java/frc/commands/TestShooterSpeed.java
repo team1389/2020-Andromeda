@@ -2,11 +2,27 @@ package frc.commands;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class TestShooterSpeed extends CommandBase {
     private CANPIDController topPID, bottomPID;
+    double topP = 0.00000000000000000001;
+    double topI = 0;
+    double topD = 0;
+    double topF = 1/5571;
+
+    double bottomP = 0.00000000000000000001;
+    double bottomI = 0;
+    double bottomD = 0;
+    double bottomF = 1/5571;
+
+    double topSpeed = 5000;
+    double bottomSpeed = 3000;
+
+    double leftFeedForwardInVolts = 0;
+    double rightFeedForwardInVolts = 0;
 
     public TestShooterSpeed() {
         addRequirements(Robot.shooter);
@@ -16,14 +32,41 @@ public class TestShooterSpeed extends CommandBase {
 
     @Override
     public void initialize() {
-        topPID.setP(0.00000000000000000001);
-        topPID.setFF(1/5571);
+        SmartDashboard.putNumber("topP", topP);
+        SmartDashboard.putNumber("topI", topI);
+        SmartDashboard.putNumber("topD", topD);
+        SmartDashboard.putNumber("topF", topF);
+        topPID.setP(topP);
+        topPID.setI(topI);
+        topPID.setD(topD);
+        topPID.setFF(topF);
 
-        bottomPID.setP(0.00000000000000000001);
-        bottomPID.setFF(1/5571);
+        bottomPID.setP(bottomP);
+        bottomPID.setI(bottomI);
+        bottomPID.setD(bottomD);
+        bottomPID.setFF(bottomF);
 
-        topPID.setReference(3000, ControlType.kVelocity);
-        bottomPID.setReference(2000, ControlType.kVelocity);
+        SmartDashboard.putNumber("bottomP", bottomP);
+        SmartDashboard.putNumber("bottomI", bottomI);
+        SmartDashboard.putNumber("bottomD", bottomD);
+        SmartDashboard.putNumber("bottomF", bottomF);
+
+    }
+
+    @Override
+    public void execute() {
+        topPID.setP(SmartDashboard.getNumber("topP", 0));
+        topPID.setI(SmartDashboard.getNumber("topI", 0));
+        topPID.setD(SmartDashboard.getNumber("topD", 0));
+        topPID.setFF(SmartDashboard.getNumber("topF", 0));
+
+        bottomPID.setP(SmartDashboard.getNumber("bottomP", 0));
+        bottomPID.setI(SmartDashboard.getNumber("bottomI", 0));
+        bottomPID.setD(SmartDashboard.getNumber("bottomD", 0));
+        bottomPID.setFF(SmartDashboard.getNumber("bottomF", 0));
+
+        topPID.setReference(topSpeed, ControlType.kVelocity, 0, leftFeedForwardInVolts);
+        bottomPID.setReference(topSpeed, ControlType.kVelocity, 0, rightFeedForwardInVolts);
 
     }
 }
