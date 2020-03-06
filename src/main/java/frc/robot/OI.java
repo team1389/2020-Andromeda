@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.commands.*;
@@ -36,7 +35,7 @@ public class OI {
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         //3300-3500rpm is control panel shot
-        lBumper.whenHeld(new RealShoot()); //4400
+        lBumper.whenHeld(new DistanceShoot()); //4400
         //lBumper.whenHeld(new AdjustToTarget());
         //lBumper.whenHeld(new TestShooterSpeed());
 
