@@ -18,6 +18,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private double bottomTargetRPM;
     private double conveyorPercent;
     private CANPIDController topPID, bottomPID;
+    double kV = 473;
     boolean stopShooterRunning;
 
     public ShootWithSensors() {
@@ -37,7 +38,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         bottomTargetRPM = shooterTargetRPM * Shooter.topSpinFactor;
 
         conveyorPercent = 0.6;
-        addCommands(new ParallelCommandGroup(new WaitUntilAtSpeed(shooterTargetRPM, bottomTargetRPM), new AdjustToTarget()), new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
+        addCommands(new ParallelCommandGroup(new WaitCommand(1), new AdjustToTarget()), new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
 
     }
 
@@ -45,8 +46,8 @@ public class ShootWithSensors extends SequentialCommandGroup {
     @Override
     public void initialize() {
         super.initialize();
-        topPID.setReference(shooterTargetRPM, ControlType.kVelocity);
-        bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
+        topPID.setReference(shooterTargetRPM/kV, ControlType.kVoltage);
+        bottomPID.setReference(bottomTargetRPM/kV, ControlType.kVoltage);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         private double tolerance;
         private SizeLimitedQueue recentTopErrors = new SizeLimitedQueue(15);
         private SizeLimitedQueue recentBottomErrors = new SizeLimitedQueue(15);
+        private Timer timer = new Timer();
 
         public WaitUntilAtSpeed(double shooterTargetRPM, double bottomTargetRPM) {
             addRequirements(Robot.shooter);
@@ -73,6 +75,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
             this.bottomTargetRPM = bottomTargetRPM;
             tolerance = 1.5;
         }
+
 
         @Override
         public void execute() {

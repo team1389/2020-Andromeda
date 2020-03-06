@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
         drivetrain.ahrs.reset();
         climber.retract();
         compressor = new Compressor(RobotMap.PCM_CAN);
-        //compressor.stop();
+        compressor.stop();
 
         drivetrain.setCoast();
 

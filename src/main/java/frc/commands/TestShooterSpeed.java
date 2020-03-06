@@ -8,12 +8,12 @@ import frc.robot.Robot;
 
 public class TestShooterSpeed extends CommandBase {
     private CANPIDController topPID, bottomPID;
-    double topP = 0.00000000000000000001;
+    double topP = 0.;
     double topI = 0;
     double topD = 0;
     double topF = 1/5571;
 
-    double bottomP = 0.00000000000000000001;
+    double bottomP = 0;
     double bottomI = 0;
     double bottomD = 0;
     double bottomF = 1/5571;
@@ -21,8 +21,8 @@ public class TestShooterSpeed extends CommandBase {
     double topSpeed = 5000;
     double bottomSpeed = 3000;
 
-    double leftFeedForwardInVolts = 0;
-    double rightFeedForwardInVolts = 0;
+    double leftFeedForwardInVolts = topSpeed/473;
+    double rightFeedForwardInVolts = bottomSpeed/473;
 
     public TestShooterSpeed() {
         addRequirements(Robot.shooter);

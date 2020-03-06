@@ -17,7 +17,7 @@ public class AdjustToTarget extends CommandBase {
     private double goalLeftPower, goalRightPower;
 
     private double DRIVE_ROTATION_P = 0.01;
-    private double DRIVE_ROTATION_I = 0.0023;//0.05
+    private double DRIVE_ROTATION_I = 0.0073;//0.05
     private double DRIVE_ROTATION_D = 0;
 
     private double runTime = 3;
@@ -83,7 +83,7 @@ public class AdjustToTarget extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return timer.get()> runTime;
+        return timer.get() > runTime;
 //        return 0.5 >= Math.abs(recentRotations.getAverage());
     }
 
