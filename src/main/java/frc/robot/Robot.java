@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
     public static Intake intake = new Intake();
     public static Shooter shooter = new Shooter();
     public static ML ml = new ML();
+
     //NOTE: OI must be initialized after all the the other systems
     public static Climber climber = new Climber();
     public static OI oi = new OI();
@@ -77,7 +78,9 @@ public class Robot extends TimedRobot {
         Robot.intake.stopIntaking();
         Robot.drivetrain.setBrake();
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-        CommandScheduler.getInstance().schedule(new StraightControlPanel());
+        CommandScheduler.getInstance().schedule(new InstantCommand(() -> Robot.intake.runIntake()),
+                new StraightControlPanel().driveAndIntake,
+                new InstantCommand(() -> Robot.intake.stopIntaking()));
     }
 
     /**

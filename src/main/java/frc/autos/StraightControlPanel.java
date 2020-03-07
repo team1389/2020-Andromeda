@@ -12,12 +12,13 @@ import frc.robot.Robot;
  */
 public class StraightControlPanel extends SequentialCommandGroup {
 
+    public ParallelCommandGroup driveAndIntake;
     //If this doesn't get it fast enough, speed up the last shoot command
     public StraightControlPanel() {
         addRequirements(Robot.drivetrain, Robot.shooter);
         double conveyorSpeed = 0.6;
         //slowing conveyor speed to stack the balls in the conveyor
-        ParallelCommandGroup driveIntakeAndSpinUp = new ParallelCommandGroup(new DriveDistance(145),
+        driveAndIntake = new ParallelCommandGroup(new DriveDistance(145),
                 new SendBallToIndexer(conveyorSpeed));
 
         //Shot can take less time
@@ -28,7 +29,7 @@ public class StraightControlPanel extends SequentialCommandGroup {
                 new TurnToAngle(0, false),
                 new WaitCommand(0.5),
                 new InstantCommand(() -> Robot.intake.runIntake()),
-                driveIntakeAndSpinUp,
+                driveAndIntake,
                 new InstantCommand(() -> Robot.intake.stopIntaking()),
                 new DistanceShoot());
     }
