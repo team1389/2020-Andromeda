@@ -8,7 +8,7 @@ public class OI {
     public XboxController driveController, manipController;
     DriveWithCurvature driveWithCurvature = new DriveWithCurvature();
 
-    private JoystickButton bBtn, aBtn, lBumper, yBtn, xBtn, rBumper;
+    private JoystickButton bBtn, aBtn, lBumper, yBtn, xBtn, rBumper, lTrigger;
     private JoystickButton driveYBtn;
 
     public OI() {
@@ -42,8 +42,8 @@ public class OI {
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
 
-
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
+        Robot.conveyor.setDefaultCommand(new DescendConveyor());
 
     }
 

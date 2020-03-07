@@ -52,10 +52,14 @@ public class Robot extends TimedRobot {
         drivetrain.setCoast();
 
         CameraServer.getInstance().startAutomaticCapture();
+        Number tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getNumber(0);
+        boolean limelightHasTarget = tv.intValue() > 0;
+        SmartDashboard.putBoolean("Has Target", limelightHasTarget);
+
 //        configChoosers();
 
         //NOTE: This isn't actually turning off the limelight
-        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
     }
 
     /**
@@ -78,9 +82,8 @@ public class Robot extends TimedRobot {
         Robot.intake.stopIntaking();
         Robot.drivetrain.setBrake();
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-        CommandScheduler.getInstance().schedule(new InstantCommand(() -> Robot.intake.runIntake()),
-                new StraightControlPanel().driveAndIntake,
-                new InstantCommand(() -> Robot.intake.stopIntaking()));
+        //CommandScheduler.getInstance().schedule(new StraightControlPanel());
+        CommandScheduler.getInstance().schedule(new StraightControlPanel());
     }
 
     /**
@@ -94,7 +97,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         drivetrain.setCoast();
-        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
     }
 

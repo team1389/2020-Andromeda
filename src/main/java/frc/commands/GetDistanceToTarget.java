@@ -25,7 +25,7 @@ public class GetDistanceToTarget extends CommandBase {
 
     @Override
     public void execute() {
-        ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+        ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(3);
         distanceToTarget = (TARGET_HEIGHT_INCHES-CAMERA_HEIGHT_INCHES)/(Math.tan(Math.toRadians(CAMERA_ANGLE_DEGREES+ty)));
 
         SmartDashboard.putNumber("Distance To Target", distanceToTarget);

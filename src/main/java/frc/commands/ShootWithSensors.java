@@ -58,7 +58,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         topPID.setReference(0, ControlType.kVelocity);
         bottomPID.setReference(0, ControlType.kVelocity);
         System.out.println("Killed Shoot With Sensors");
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+//        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     public static class WaitUntilAtSpeed extends CommandBase {

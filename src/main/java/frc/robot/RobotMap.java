@@ -21,9 +21,9 @@ public class RobotMap {
     public static final int CONVEYOR_MOTOR_FRONT = 12;
     public static final int INDEX_MOTOR = 10;
     //Sensors
-    public static final int DIO_INTAKE_BEAM_BREAK = 0;
-    public static final int DIO_PRE_INDEX_BEAM_BREAK = 9;
-    public static final int DIO_SECOND_BALL_INDEX = 2;
+    public static final int DIO_INTAKE_BEAM_BREAK = 0; //NOT IN USE
+    public static final int DIO_PRE_INDEX_BEAM_BREAK = 2;
+    public static final int DIO_SECOND_BALL_INDEX = 9; //NOT IN USE
     // Climber
     public static int CLIMBER_LEFT_MOTOR = 5;
     public static int CLIMBER_RIGHT_MOTOR = 7;
