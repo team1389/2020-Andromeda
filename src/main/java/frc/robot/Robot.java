@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
 //        configChoosers();
 
         //NOTE: This isn't actually turning off the limelight
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     /**
@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         drivetrain.setCoast();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
     }
 

@@ -29,8 +29,11 @@ public class ShootWithSensors extends SequentialCommandGroup {
         if(distanceToTarget <= 200) {
             shooterTargetRPM = 4600;
         }
-        else if(distanceToTarget > 200) {
+        else if(distanceToTarget > 200 && distanceToTarget <= 420) {
             shooterTargetRPM = 5000;
+        }
+        else if(distanceToTarget > 420) {
+            shooterTargetRPM = 5300;
         }
 
         topPID = Robot.shooter.getShooterTopPIDController();

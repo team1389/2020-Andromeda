@@ -1,6 +1,8 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.commands.*;
 
@@ -32,6 +34,8 @@ public class OI {
         yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
         yBtn.whenPressed(new RetractClimber());
 
+
+
         //Shooter Commands
         lBumper = new JoystickButton(manipController, XboxController.Button.kBumperLeft.value);
         //3300-3500rpm is control panel shot
@@ -41,6 +45,9 @@ public class OI {
 
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
+        driveYBtn.whenHeld(new InstantCommand(() -> NetworkTableInstance.getDefault().getTable("limelight")
+                .getEntry("ledMode").setNumber(3)));
+
 
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
         Robot.conveyor.setDefaultCommand(new DescendConveyor());

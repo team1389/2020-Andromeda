@@ -28,7 +28,7 @@ public class RobotMap {
     public static int CLIMBER_LEFT_MOTOR = 5;
     public static int CLIMBER_RIGHT_MOTOR = 7;
     public static int CLIMBER_FORWARD_SOLENOID = 3;
-    public static int CLIMBER_REVERSE_SOLENOID = 4;
+    public static int CLIMBER_REVERSE_SOLENOID = 5;
 
 
 }
