@@ -17,7 +17,7 @@ public class GetDistanceToTarget extends CommandBase {
 
     @Override
     public void initialize() {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
 
         timer.reset();
         timer.start();
@@ -33,7 +33,7 @@ public class GetDistanceToTarget extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     @Override

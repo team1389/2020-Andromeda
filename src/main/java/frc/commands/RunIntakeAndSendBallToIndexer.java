@@ -9,7 +9,7 @@ import frc.subsystems.Intake;
 public class RunIntakeAndSendBallToIndexer extends CommandBase {
 
     private Intake intake;
-    double conveyorSpeed = 1;
+    double conveyorSpeed = 0.75;
     private boolean ballPreIndex;
 
     public RunIntakeAndSendBallToIndexer() {

@@ -16,21 +16,21 @@ public class StraightControlPanel extends SequentialCommandGroup {
     public StraightControlPanel() {
         addRequirements(Robot.drivetrain, Robot.shooter);
         double conveyorSpeed = 0.6;
-        double topTargetRPM = 4400;
         //slowing conveyor speed to stack the balls in the conveyor
         ParallelCommandGroup driveIntakeAndSpinUp = new ParallelCommandGroup(new DriveDistance(145),
-                new SendBallToIndexer(conveyorSpeed),
-                new InstantCommand(() -> Robot.shooter.setPIDWithTopSpin(topTargetRPM)));
+                new SendBallToIndexer(conveyorSpeed));
 
         //Shot can take less time
 
         addCommands(new ShootWithoutPID(0.8, 0.5, 1),
-                new TurnToAngle(0, false),new DriveDistance(10), new TurnToAngle(0, false),
+                new TurnToAngle(0, false),
+                new DriveDistance(10),
+                new TurnToAngle(0, false),
                 new WaitCommand(0.5),
                 new InstantCommand(() -> Robot.intake.runIntake()),
                 driveIntakeAndSpinUp,
-                new InstantCommand(() -> Robot.intake.stopIntaking()), new AdjustToTarget(),
-                new ShootWithSensors());
+                new InstantCommand(() -> Robot.intake.stopIntaking()),
+                new DistanceShoot());
     }
 
     @Override

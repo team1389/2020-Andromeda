@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
         drivetrain.ahrs.reset();
         climber.retract();
         compressor = new Compressor(RobotMap.PCM_CAN);
-        compressor.stop();
 
         drivetrain.setCoast();
 
@@ -55,7 +54,7 @@ public class Robot extends TimedRobot {
 //        configChoosers();
 
         //NOTE: This isn't actually turning off the limelight
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     /**
@@ -67,6 +66,8 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         System.out.println("Built 2 ");
+
+        SmartDashboard.putBoolean("In Range", NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1);
     }
 
 
@@ -90,7 +91,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         drivetrain.setCoast();
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
     }
 
@@ -113,7 +114,7 @@ public class Robot extends TimedRobot {
 
     public void configChoosers() {
 
-        //Running this kills the code. IDK why
+        //Running this kills the code. IDK why. Nice comment
         shooterSlotChooser.addOption("Slot 1", 1);
         shooterSlotChooser.addOption("Slot 2", 2);
         shooterSlotChooser.addOption("Slot 3", 3);
