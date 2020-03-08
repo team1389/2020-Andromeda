@@ -23,10 +23,10 @@ public class StraightControlPanel extends SequentialCommandGroup {
 
         //Shot can take less time
 
-        addCommands(new ShootWithoutPID(0.8, 1, 1),
-                new TurnToAngle(-13, false),
+        addCommands(new ShootWithoutPID(0.675, 1, 1),
+                new TurnToAngle(3, false),
                 new DriveDistance(10),
-                new TurnToAngle(-13, false),
+                new TurnToAngle(3, false),
                 new WaitCommand(0.5),
                 new InstantCommand(() -> Robot.intake.runIntake(0.85)),
                 driveAndSendBallToIndexer,

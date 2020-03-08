@@ -33,7 +33,7 @@ public class DriveDistance extends CommandBase {
     private double gyroI = 0;
     private double gyroD = 0;
 
-    double percentCap = 0.375;
+    double percentCap = 0.3;
     double tolerance = 0.4;
 
 

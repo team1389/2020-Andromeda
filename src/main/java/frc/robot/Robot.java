@@ -70,7 +70,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        System.out.println("Built 2 ");
 
         SmartDashboard.putBoolean("In Range", NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1);
     }

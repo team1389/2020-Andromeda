@@ -28,12 +28,15 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         if(distanceToTarget <= 200) {
             shooterTargetRPM = 4600;
+            System.out.println("Short distance");
         }
         else if(distanceToTarget > 200 && distanceToTarget <= 420) {
             shooterTargetRPM = 5000;
+            System.out.println("Medium distance");
         }
         else if(distanceToTarget > 420) {
             shooterTargetRPM = 5300;
+            System.out.println("High Distance");
         }
 
         topPID = Robot.shooter.getShooterTopPIDController();
@@ -61,7 +64,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
         topPID.setReference(0, ControlType.kVelocity);
         bottomPID.setReference(0, ControlType.kVelocity);
         System.out.println("Killed Shoot With Sensors");
-//        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     public static class WaitUntilAtSpeed extends CommandBase {
