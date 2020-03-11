@@ -1,6 +1,7 @@
 package frc.robot;
 
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
@@ -13,7 +14,10 @@ import frc.autos.PowerPortToControlPanel;
 //import frc.Autos.ShootAndShieldGenerator;
 import frc.autos.ShootAndCrossAutoLine;
 import frc.autos.StraightControlPanel;
+import frc.commands.SystemsTest;
 import frc.subsystems.*;
+
+import javax.naming.ldap.Control;
 
 /**
  * Don't change the name of this class since the VM is set up to run this
@@ -105,7 +109,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-
+       // Robot.indexer.runIndexer(1);
 
     }
 
@@ -114,6 +118,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
+
 
     }
 

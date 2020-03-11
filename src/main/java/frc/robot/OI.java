@@ -31,6 +31,7 @@ public class OI {
         xBtn = new JoystickButton(manipController, XboxController.Button.kX.value);
         xBtn.whenPressed(new ExtendClimber());
 
+
         yBtn = new JoystickButton(manipController, XboxController.Button.kY.value);
         yBtn.whenPressed(new RetractClimber());
 
@@ -50,7 +51,7 @@ public class OI {
 
 
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
-        Robot.conveyor.setDefaultCommand(new DescendConveyor());
+        //Robot.conveyor.setDefaultCommand(new DescendConveyor());
 
     }
 

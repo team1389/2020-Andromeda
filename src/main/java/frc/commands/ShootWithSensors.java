@@ -20,6 +20,7 @@ public class ShootWithSensors extends SequentialCommandGroup {
     private CANPIDController topPID, bottomPID;
     double kV = 473;
     boolean stopShooterRunning;
+    String distance;
 
     public ShootWithSensors() {
         addRequirements(Robot.shooter, Robot.conveyor, Robot.indexer);
@@ -28,22 +29,24 @@ public class ShootWithSensors extends SequentialCommandGroup {
 
         if(distanceToTarget <= 200) {
             shooterTargetRPM = 4600;
-            System.out.println("Short distance");
+            distance = "Short";
         }
         else if(distanceToTarget > 200 && distanceToTarget <= 420) {
-            shooterTargetRPM = 5000;
-            System.out.println("Medium distance");
+            shooterTargetRPM = 5050;
+            distance = "Medium";
         }
         else if(distanceToTarget > 420) {
-            shooterTargetRPM = 5300;
-            System.out.println("High Distance");
+            shooterTargetRPM = 5400;
+            distance = "Long";
         }
+
+        SmartDashboard.putString("Distance", distance);
 
         topPID = Robot.shooter.getShooterTopPIDController();
         bottomPID = Robot.shooter.getShooterBottomPIDController();
         bottomTargetRPM = shooterTargetRPM * Shooter.topSpinFactor;
 
-        conveyorPercent = 0.6;
+        conveyorPercent = 0.7;
         addCommands(new ParallelCommandGroup(new WaitCommand(1), new AdjustToTarget()), new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
 
     }

@@ -23,7 +23,7 @@ public class StraightControlPanel extends SequentialCommandGroup {
 
         //Shot can take less time
 
-        addCommands(new ShootWithoutPID(0.675, 1, 1),
+        addCommands(new ShootWithoutPID(0.5, 1, 1),
                 new TurnToAngle(3, false),
                 new DriveDistance(10),
                 new TurnToAngle(3, false),
