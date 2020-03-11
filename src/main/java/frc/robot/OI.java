@@ -11,7 +11,7 @@ public class OI {
     DriveWithCurvature driveWithCurvature = new DriveWithCurvature();
 
     private JoystickButton bBtn, aBtn, lBumper, yBtn, xBtn, rBumper, lTrigger;
-    private JoystickButton driveYBtn;
+    private JoystickButton driveYBtn, driveXBtn, driveABtn, driveBBtn;
 
     public OI() {
         driveController = new XboxController(0);
@@ -44,6 +44,17 @@ public class OI {
         //lBumper.whenHeld(new AdjustToTarget());
         //lBumper.whenHeld(new TestShooterSpeed());
 
+        driveABtn = new JoystickButton(driveController, XboxController.Button.kA.value);
+        driveABtn.whenHeld(new ConveryMotorBack());
+
+        driveBBtn = new JoystickButton(driveController, XboxController.Button.kB.value);
+        driveBBtn.whenHeld(new ConveryMotorFront());
+
+        driveXBtn = new JoystickButton(driveController, XboxController.Button.kX.value);
+        driveXBtn.whenHeld(new ConveryMotorIndexer());
+
+
+
 
         driveYBtn = new JoystickButton(driveController, XboxController.Button.kY.value);
         driveYBtn.whenHeld(new InstantCommand(() -> NetworkTableInstance.getDefault().getTable("limelight")
@@ -51,7 +62,6 @@ public class OI {
 
 
         Robot.drivetrain.setDefaultCommand(driveWithCurvature);
-        //Robot.conveyor.setDefaultCommand(new DescendConveyor());
 
     }
 

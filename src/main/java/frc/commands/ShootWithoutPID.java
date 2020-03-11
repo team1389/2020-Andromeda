@@ -26,7 +26,7 @@ public class ShootWithoutPID extends SequentialCommandGroup {
         addCommands(new InstantCommand(() -> Robot.shooter.setShooterVoltage(voltagePercent)),
                 new InstantCommand(() -> Robot.indexer.runIndexer(1)),
                 new WaitCommand(spinUpTimeInSeconds),
-                new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)),
+                //new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)),
                 new WaitCommand(postSpinUpTimeToWait)
         );
     }

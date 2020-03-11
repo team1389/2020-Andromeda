@@ -16,7 +16,7 @@ public class SystemsTest extends SequentialCommandGroup {
         addCommands(
                 new InstantCommand(() -> NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3)),
                 new InstantCommand(() -> Robot.intake.runIntake()),
-                new InstantCommand(() -> Robot.conveyor.runConveyor(0.5)),
+                //new InstantCommand(() -> Robot.conveyor.runConveyor(0.5)),
                 new WaitCommand(0.3),
                 new InstantCommand(() -> Robot.intake.stopIntaking()),
                 new InstantCommand(() -> Robot.conveyor.stopConveyor()),

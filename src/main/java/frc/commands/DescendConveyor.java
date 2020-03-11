@@ -12,7 +12,7 @@ public class DescendConveyor extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.conveyor.runConveyor(-Robot.oi.manipController.getTriggerAxis(GenericHID.Hand.kLeft));
+        //Robot.conveyor.runConveyor(-Robot.oi.manipController.getTriggerAxis(GenericHID.Hand.kLeft));
     }
 
     @Override

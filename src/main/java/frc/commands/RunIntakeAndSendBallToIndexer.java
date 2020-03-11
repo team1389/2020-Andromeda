@@ -25,12 +25,23 @@ public class RunIntakeAndSendBallToIndexer extends CommandBase {
     @Override
     public void execute() {
         intake.runIntake();
-        if(Robot.indexer.ballAtIndexer()) {
-            Robot.conveyor.stopConveyor();     // Move conveyor if not in place
+
+        if (!(Robot.conveyor.ballAtSecondPosition() &&
+                Robot.conveyor.ballAtBottomConveyor() &&
+                Robot.indexer.ballAtIndexer())) {
+
+            Robot.conveyor.runBottomConveyor(conveyorSpeed);
+
+        } else {
+            Robot.conveyor.conveyorMotorBack.set(ControlMode.PercentOutput, 0);
         }
-        else
-        {
-            Robot.conveyor.runConveyor(conveyorSpeed);     // Move conveyor if not in place
+
+        if (Robot.conveyor.ballAtBottomConveyor() && !Robot.indexer.ballAtIndexer()) {
+            Robot.conveyor.runTopConveyor(conveyorSpeed);
+            Robot.indexer.runIndexer(conveyorSpeed); // Move conveyor if not in place
+        } else {
+            Robot.conveyor.conveyorMotorFront.set(ControlMode.PercentOutput, 0);
+            Robot.indexer.stopIndexer();// Move conveyor if not in place
         }
     }
 

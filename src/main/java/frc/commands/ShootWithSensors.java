@@ -47,7 +47,13 @@ public class ShootWithSensors extends SequentialCommandGroup {
         bottomTargetRPM = shooterTargetRPM * Shooter.topSpinFactor;
 
         conveyorPercent = 0.7;
-        addCommands(new ParallelCommandGroup(new WaitCommand(1), new AdjustToTarget()), new InstantCommand(() -> Robot.indexer.runIndexer(1)), new InstantCommand(() -> Robot.conveyor.runConveyor(conveyorPercent)), new WaitCommand(10));
+        addCommands(new ParallelCommandGroup(new WaitCommand(1),
+                new AdjustToTarget()),
+                new InstantCommand(() -> Robot.indexer.runIndexer(1)),
+                new InstantCommand(() -> Robot.conveyor.runTopConveyor(conveyorPercent)),
+                new InstantCommand(() -> Robot.conveyor.runBottomConveyor(conveyorPercent)),
+                new InstantCommand(() -> Robot.intake.runIntake(conveyorPercent)),
+                new WaitCommand(10));
 
     }
 

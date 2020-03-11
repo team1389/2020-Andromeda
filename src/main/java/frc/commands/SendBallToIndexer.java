@@ -23,7 +23,9 @@ public class SendBallToIndexer extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.conveyor.runConveyor(conveyorSpeed);     // Move conveyor if not in place
+        Robot.conveyor.runTopConveyor(conveyorSpeed);
+        Robot.conveyor.runBottomConveyor(conveyorSpeed);
+        Robot.indexer.runIndexer(conveyorSpeed);// Move conveyor if not in place
         ballPreIndex = Robot.indexer.ballAtIndexer();     //Update ballPreIndex
     }
 
